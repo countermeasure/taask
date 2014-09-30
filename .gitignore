@@ -1,0 +1,5 @@
+# Ignore the following types of files
+
+*.sqlite3
+*.pyc
+*.swp
