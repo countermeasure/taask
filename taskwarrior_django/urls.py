@@ -7,4 +7,7 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^add_task$', 'tasks.views.add_task', name='add-task'),
+    url(r'^list_tasks$', 'tasks.views.list_tasks',
+        name='list-tasks'),
 )
