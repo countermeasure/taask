@@ -13,4 +13,6 @@ urlpatterns = patterns('',
     url(r'^edit-task/(\d{1,6})/$', 'tasks.views.edit_task', name='edit-task'),
     url(r'^delete-task/(\d{1,6})/$', 'tasks.views.delete_task',
         name='delete-task'),
+    url(r'^configuration/$', 'tasks.views.configuration', name='configuration'),
+    url(r'^documentation/$', 'tasks.views.documentation', name='documentation'),
 )

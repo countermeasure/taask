@@ -80,3 +80,15 @@ def delete_task(request, task_id):
 
     w.task_delete(id=task_id)
     return HttpResponseRedirect(reverse('list-tasks'))
+
+
+def documentation(request):
+    """Shows documentation."""
+
+    return render(request, 'documentation.html')
+
+
+def configuration(request):
+    """Shows configuration page."""
+
+    return render(request, 'configuration.html')
