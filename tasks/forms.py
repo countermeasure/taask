@@ -12,4 +12,5 @@ class TaskForm(forms.Form):
     wait = forms.CharField(max_length=200, required=False)
     scheduled = forms.CharField(max_length=200, required=False)
     depends = forms.CharField(max_length=200, required=False)
-    # Add the necessary UDAs in here later
+    annotations = forms.CharField(max_length=200, required=False)
+    tags = forms.CharField(max_length=200, required=False)

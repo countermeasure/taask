@@ -25,10 +25,12 @@ def add_task(request):
             wait = form.cleaned_data['wait']
             scheduled = form.cleaned_data['scheduled']
             depends = form.cleaned_data['depends']
-            # Add the necessary UDAs in here later
+            annotations = form.cleaned_data['annotations']
+            tags = form.cleaned_data['tags']
             w.task_add(description, project=project, priority=priority,
                        due=due, recur=recur, until=until, wait=wait,
-                       scheduled=scheduled, depends=depends)
+                       scheduled=scheduled, depends=depends,
+                       annotations=annotations, tags=tags)
             return HttpResponseRedirect(reverse('list-tasks'))
     else:
         form = TaskForm()
@@ -57,7 +59,8 @@ def edit_task(request, task_id):
         if form.is_valid():
             # Add the necessary UDAs into attributes later
             attributes = ['description', 'project', 'priority', 'due', 'recur',
-                          'until', 'wait', 'scheduled']
+                          'until', 'wait', 'scheduled', 'depends',
+                          'annotations', 'tags']
             for attribute in attributes:
                 a = form.cleaned_data[attribute]
                 # if a and (task[1][attribute] != a):
