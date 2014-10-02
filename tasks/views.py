@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
-from tasks.forms import AddTaskForm
+from tasks.forms import TaskForm
 
 from taskw import TaskWarrior
 
@@ -14,7 +14,7 @@ w = TaskWarrior(marshal=True)
 def add_task(request):
     """Add a task."""
     if request.method == "POST":
-        form = AddTaskForm(request.POST, label_suffix='')
+        form = TaskForm(request.POST, label_suffix='')
         if form.is_valid():
             description = form.cleaned_data['description']
             project = form.cleaned_data['project']
@@ -31,7 +31,7 @@ def add_task(request):
                        scheduled=scheduled, depends=depends)
             return HttpResponseRedirect(reverse('list-tasks'))
     else:
-        form = AddTaskForm()
+        form = TaskForm()
 
     return render(request, 'add_task.html', {
                            'form': form,
@@ -39,9 +39,10 @@ def add_task(request):
 
 
 def list_tasks(request):
-
+    """Lists all pending tasks."""
     tasks = w.load_tasks()
-    list = tasks['pending']
+    task_list = tasks['pending']
     return render(request, 'list_tasks.html', {
-                           'list': list,
+                           'task_list': task_list,
+                           })
                            })

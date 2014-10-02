@@ -1,7 +1,7 @@
 from django import forms
 
 
-class AddTaskForm(forms.Form):
+class TaskForm(forms.Form):
 
     description = forms.CharField(max_length=200)
     project = forms.CharField(max_length=200, required=False)
