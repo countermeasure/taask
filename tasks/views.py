@@ -73,3 +73,10 @@ def edit_task(request, task_id):
                            'task_id': task_id,
                            'form': form,
                            })
+
+
+def delete_task(request, task_id):
+    """Deletes a task."""
+
+    w.task_delete(id=task_id)
+    return HttpResponseRedirect(reverse('list-tasks'))

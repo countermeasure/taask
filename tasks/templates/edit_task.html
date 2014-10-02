@@ -18,6 +18,10 @@
             {{field.errors}}
           </div>
         {%endfor%}
+        <a href={% url 'delete-task' task_id %} type="button"
+          class="btn btn-default">
+          <i class="fa fa-minus-circle fa-lg"></i>&nbsp;Delete task
+        </a>
         <div class="pull-right">
           <a href={% url 'list-tasks' %} type="button" class="btn btn-default">
             <i class="fa fa-minus-circle fa-lg"></i>&nbsp;Cancel

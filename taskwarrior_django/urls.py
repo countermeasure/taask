@@ -11,4 +11,6 @@ urlpatterns = patterns('',
     url(r'^list-tasks$', 'tasks.views.list_tasks',
         name='list-tasks'),
     url(r'^edit-task/(\d{1,6})/$', 'tasks.views.edit_task', name='edit-task'),
+    url(r'^delete-task/(\d{1,6})/$', 'tasks.views.delete_task',
+        name='delete-task'),
 )
