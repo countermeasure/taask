@@ -45,4 +45,31 @@ def list_tasks(request):
     return render(request, 'list_tasks.html', {
                            'task_list': task_list,
                            })
+
+
+def edit_task(request, task_id):
+    """Opens a task for viewing or editing."""
+
+    task = w.get_task(id=task_id)
+
+    if request.method == "POST":
+        form = TaskForm(request.POST, label_suffix='')
+        if form.is_valid():
+            # Add the necessary UDAs into attributes later
+            attributes = ['description', 'project', 'priority', 'due', 'recur',
+                          'until', 'wait', 'scheduled']
+            for attribute in attributes:
+                a = form.cleaned_data[attribute]
+                # if a and (task[1][attribute] != a):
+                task[1][attribute] = a
+            # The task_update function only accepts a task object's dictionary,
+            # which is the second object in the task's tuple.
+            w.task_update(task[1])
+            return HttpResponseRedirect(reverse('list-tasks'))
+    else:
+        form = TaskForm(task[1])
+
+    return render(request, 'edit_task.html', {
+                           'task_id': task_id,
+                           'form': form,
                            })
