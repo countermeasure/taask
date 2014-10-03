@@ -96,7 +96,9 @@ class EditTaskForm(forms.Form):
         ('M', 'Medium'),
         ('L', 'Low'),
         )
-    priority = forms.ChoiceField(choices=PRIORITY_CHOICES)
+    # If required is not set to False for priority, the form raises an error if
+    # the task wasn't given a priority value on creation.
+    priority = forms.ChoiceField(choices=PRIORITY_CHOICES, required=False)
 
     # Tag which defines the order of tasks in the tables
     ORDER_CHOICES = (
