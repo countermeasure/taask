@@ -47,10 +47,10 @@
             <input type="text" class="form-control" placeholder="Search...">
           </form>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Project A</a></li>
-            <li><a href="#">Project B</a></li>
-            <li><a href="#">Project C</a></li>
-            <li><a href="#">Project D</a></li>
+            <li><a href="#">Context A</a></li>
+            <li><a href="#">Context B</a></li>
+            <li><a href="#">Context C</a></li>
+            <li><a href="#">Context D</a></li>
           </ul>
         </div>
       </div>
@@ -60,8 +60,22 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="{% url 'add-task' %}">Add task</a></li>
-            <li><a href="{% url 'list-tasks' %}">List tasks</a></li>
+            <li class="active"><a href="{% url 'add-task' %}">New task</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li><a href="{% url 'inbox' %}">Inbox</a></li>
+            <li><a href="#">Today</a></li>
+            <li><a href="#">Next</a></li>
+            <li><a href="#">Scheduled</a></li>
+            <li><a href="#">Someday</a></li>
+            <li><a href="#">Completed</a></li>
+            <li><a href="#">Rubbish</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li><a href="#">Project A</a></li>
+            <li><a href="#">Project B</a></li>
+            <li><a href="#">Project C</a></li>
+            <li><a href="#">Project D</a></li>
           </ul>
           <ul class="nav nav-sidebar">
             <li><a href="{% url 'documentation' %}">Documentation</a></li>
