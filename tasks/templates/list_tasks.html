@@ -13,6 +13,12 @@
           <th>Priority</th>
           <th>Project</th>
           <th>Due</th>
+          <th>Recur</th>
+          <th>Until</th>
+          <th>Wait</th>
+          <th>View</th>
+          <th>Order</th>
+          <th>Time</th>
         </tr>
       </thead>
       <tbody>
@@ -24,6 +30,12 @@
             <td>{{ task.priority }}</td>
             <td>{{ task.project }}</td>
             <td>{{ task.due }}</td>
+            <td>{{ task.recur }}</td>
+            <td>{{ task.until }}</td>
+            <td>{{ task.wait }}</td>
+            {% for tag in task.tags %}
+              <td>{{ tag }}</td>
+            {% endfor %}
           </tr>
         {% endfor %}
       </tbody>
