@@ -49,19 +49,24 @@ class AddTaskForm(forms.Form):
     project = forms.CharField(max_length=200, required=False)
 
     # 'due' is a date on which the task should be finished
-    due = forms.DateTimeField(required=False, label='Due date')
+    due = forms.DateTimeField(required=False, label='Due date',
+        widget=forms.TextInput(attrs={'class':'datepicker'})
+        )
 
     # 'recur' is a string which represents the interval between recurring tasks,
     # such as '3wks'
     recur = forms.CharField(max_length=200, required=False, label='Frequency')
 
     # 'until' is a date on which a recurring task will cease to recur
-    until = forms.DateTimeField(required=False, label='Recurs until')
+    until = forms.DateTimeField(required=False, label='Recurs until',
+        widget=forms.TextInput(attrs={'class':'datepicker'})
+        )
 
     # 'wait' is a date on which a task with status 'waiting' will have it's
     # status changed to 'pending'
-    wait = forms.DateTimeField(required=False, label='Schedule for')
-
+    wait = forms.DateTimeField(required=False, label='Schedule for',
+        widget=forms.TextInput(attrs={'class':'datepicker'})
+        )
 
 class EditTaskForm(forms.Form):
 
@@ -122,15 +127,21 @@ class EditTaskForm(forms.Form):
     project = forms.CharField(max_length=200, required=False)
 
     # 'due' is a date on which the task should be finished
-    due = forms.DateTimeField(required=False, label='Due date')
+    due = forms.DateTimeField(required=False, label='Due date',
+        widget=forms.TextInput(attrs={'class':'datepicker'})
+        )
 
     # 'recur' is a string which represents the interval between recurring tasks,
     # such as '3wks'
     recur = forms.CharField(max_length=200, required=False, label='Frequency')
 
     # 'until' is a date on which a recurring task will cease to recur
-    until = forms.DateTimeField(required=False, label='Recurs until')
+    until = forms.DateTimeField(required=False, label='Recurs until',
+        widget=forms.TextInput(attrs={'class':'datepicker'})
+        )
 
     # 'wait' is a date on which a task with status 'waiting' will have it's
     # status changed to 'pending'
-    wait = forms.DateTimeField(required=False, label='Schedule for')
+    wait = forms.DateTimeField(required=False, label='Schedule for',
+        widget=forms.TextInput(attrs={'class':'datepicker'})
+        )
