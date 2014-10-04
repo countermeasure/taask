@@ -1,5 +1,5 @@
 """
-Django settings for taskwarrior_django project.
+Django settings for twango project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.7/topics/settings/
@@ -49,9 +49,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'taskwarrior_django.urls'
+ROOT_URLCONF = 'twango.urls'
 
-WSGI_APPLICATION = 'taskwarrior_django.wsgi.application'
+WSGI_APPLICATION = 'twango.wsgi.application'
 
 
 # Database
