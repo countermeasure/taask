@@ -11,6 +11,7 @@
           <th>ID</th>
           <th>Description</th>
           <th>Priority</th>
+          <th>Time</th>
           <th>Project</th>
           <th>Due</th>
           <th>Recur</th>
@@ -18,7 +19,9 @@
           <th>Wait</th>
           <th>View</th>
           <th>Order</th>
-          <th>Time</th>
+          <th>Context 1</th>
+          <th>Context 2</th>
+          <th>Context 3</th>
         </tr>
       </thead>
       <tbody>
@@ -28,11 +31,14 @@
             <td>{{ task.id }}</td>
             <td>{{ task.description }}</td>
             <td>{{ task.priority }}</td>
+            <td>{{ task.time }}</td>
             <td>{{ task.project }}</td>
             <td>{{ task.due }}</td>
             <td>{{ task.recur }}</td>
             <td>{{ task.until }}</td>
             <td>{{ task.wait }}</td>
+            <td>{{ task.view }}</td>
+            <td>{{ task.order }}</td>
             {% for tag in task.tags %}
               <td>{{ tag }}</td>
             {% endfor %}
