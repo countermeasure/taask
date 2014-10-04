@@ -43,6 +43,16 @@
           <a class="navbar-brand" href="#">Twango</a>
         </div>
         <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i>&nbsp;<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'documentation' %}">Documentation</a></li>
+                <li class="divider"></li>
+                <li><a href="{% url 'configuration' %}">Configuration</a></li>
+              </ul>
+            </li>
+          </ul>
           <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">
           </form>
@@ -68,8 +78,6 @@
             <li><a href="{% url 'list-tasks' 'next' %}">Next</a></li>
             <li><a href="{% url 'list-tasks' 'scheduled' %}">Scheduled</a></li>
             <li><a href="#">Someday</a></li>
-            <li><a href="{% url 'list-tasks' 'completed' %}">Completed</a></li>
-            <li><a href="{% url 'list-tasks' 'rubbish' %}">Rubbish</a></li>
           </ul>
           <ul class="nav nav-sidebar">
             <li><a href="#">Project A</a></li>
@@ -78,8 +86,8 @@
             <li><a href="#">Project D</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li><a href="{% url 'documentation' %}">Documentation</a></li>
-            <li><a href="{% url 'configuration' %}">Configuration</a></li>
+            <li><a href="{% url 'list-tasks' 'completed' %}">Completed</a></li>
+            <li><a href="{% url 'list-tasks' 'rubbish' %}">Rubbish</a></li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
