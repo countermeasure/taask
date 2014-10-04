@@ -63,13 +63,13 @@
             <li class="active"><a href="{% url 'add-task' %}">New task</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li><a href="{% url 'inbox' %}">Inbox</a></li>
-            <li><a href="#">Today</a></li>
-            <li><a href="#">Next</a></li>
-            <li><a href="#">Scheduled</a></li>
+            <li><a href="{% url 'list-tasks' 'inbox' %}">Inbox</a></li>
+            <li><a href="{% url 'list-tasks' 'today' %}">Today</a></li>
+            <li><a href="{% url 'list-tasks' 'next' %}">Next</a></li>
+            <li><a href="{% url 'list-tasks' 'scheduled' %}">Scheduled</a></li>
             <li><a href="#">Someday</a></li>
-            <li><a href="#">Completed</a></li>
-            <li><a href="#">Rubbish</a></li>
+            <li><a href="{% url 'list-tasks' 'completed' %}">Completed</a></li>
+            <li><a href="{% url 'list-tasks' 'rubbish' %}">Rubbish</a></li>
           </ul>
           <ul class="nav nav-sidebar">
             <li><a href="#">Project A</a></li>

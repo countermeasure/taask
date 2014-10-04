@@ -19,7 +19,7 @@
           </div>
         {%endfor%}
         <div class="pull-right">
-          <a href={% url 'inbox' %} type="button" class="btn btn-default">
+          <a href="{% url 'list-tasks' 'inbox' %}" type="button" class="btn btn-default">
             <i class="fa fa-minus-circle fa-lg"></i>&nbsp;Cancel
           </a>
           <button type="submit" class="btn btn-primary">

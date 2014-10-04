@@ -8,7 +8,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^add-task/', 'tasks.views.add_task', name='add-task'),
-    url(r'^inbox/', 'tasks.views.inbox', name='inbox'),
+    url(r'^list-tasks/(\w+)/', 'tasks.views.list_tasks', name='list-tasks'),
     url(r'^edit-task/(\d{1,6})/', 'tasks.views.edit_task', name='edit-task'),
     url(r'^delete-task/(\d{1,6})/', 'tasks.views.delete_task',
         name='delete-task'),

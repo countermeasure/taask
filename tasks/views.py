@@ -38,7 +38,7 @@ def add_task(request):
                        until=until,
                        wait=wait,
                        tags=tags)
-            return HttpResponseRedirect(reverse('inbox'))
+            return HttpResponseRedirect(reverse('list-tasks', args=['inbox']))
     else:
         form = AddTaskForm()
 
@@ -47,12 +47,24 @@ def add_task(request):
                            })
 
 
-def inbox(request):
-    """Shows tasks in the inbox."""
+def list_tasks(request, view):
+    """Shows a filtered list of tasks.
 
-    task_list = w.filter_tasks({'tags.contains': 'inbox'})
+       filter_tasks() returns a list which contains one dictionary per task."""
+
+    if view in ['inbox', 'today', 'next', 'rubbish']:
+        task_list = w.filter_tasks({'status': 'pending',
+                                    'tags.contains': view,})
+
+    elif view == 'scheduled':
+        task_list = w.filter_tasks({'status': 'waiting',})
+
+    elif view == 'completed':
+        task_list = w.filter_tasks({'status': 'completed',})
+
     return render(request, 'list_tasks.html', {
                            'task_list': task_list,
+                           'view': view,
                            })
 
 
@@ -87,7 +99,7 @@ def edit_task(request, task_id):
             task['tags'] = tags
             # Update the task
             w.task_update(task)
-            return HttpResponseRedirect(reverse('inbox'))
+            return HttpResponseRedirect(reverse('list-tasks', args=['inbox']))
     else:
         # Add each individual tag item to the task object so that they are
         # displayed in the form
@@ -112,7 +124,7 @@ def delete_task(request, task_id):
     """Deletes a task."""
 
     w.task_delete(id=task_id)
-    return HttpResponseRedirect(reverse('inbox'))
+    return HttpResponseRedirect(reverse('list-tasks', args=['inbox']))
 
 
 def documentation(request):
