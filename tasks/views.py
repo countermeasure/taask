@@ -141,7 +141,11 @@ def edit_task(request, task_id):
 def delete_task(request, task_id):
     """Deletes a task."""
 
-    w.task_delete(id=task_id)
+    # Check that the tasks is in the 'rubbish' view before deleting it
+    id, task = w.get_task(id=task_id)
+    if task['view'] == 'rubbish':
+        w.task_delete(id=task_id)
+
     return HttpResponseRedirect(reverse('list-tasks', args=['inbox']))
 
 
