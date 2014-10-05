@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
 from tasks.forms import AddTaskForm, EditTaskForm
+from tasks.utils import get_task_count
 from taskw import TaskWarrior
 
 
@@ -70,8 +71,11 @@ def list_tasks(request, view):
     # task_list.sort(key = lambda task : task['description'].lower())
     # task_list.sort(key = lambda task : task['tags'][2])
 
+    task_count = get_task_count()
+
     return render(request, 'list_tasks.html', {
                            'task_list': task_list,
+                           'task_count': task_count,
                            'view': view,
                            })
 

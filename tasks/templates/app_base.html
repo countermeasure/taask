@@ -73,9 +73,9 @@
             <li class="active"><a href="{% url 'add-task' %}">New task</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li><a href="{% url 'list-tasks' 'inbox' %}">Inbox</a></li>
-            <li><a href="{% url 'list-tasks' 'today' %}">Today</a></li>
-            <li><a href="{% url 'list-tasks' 'next' %}">Next</a></li>
+            <li><a href="{% url 'list-tasks' 'inbox' %}">Inbox: {{ task_count.inbox }}</a></li>
+            <li><a href="{% url 'list-tasks' 'today' %}">Today: {{ task_count.today }}</a></li>
+            <li><a href="{% url 'list-tasks' 'next' %}">Next: {{ task_count.next }}</a></li>
             <li><a href="{% url 'list-tasks' 'scheduled' %}">Scheduled</a></li>
             <li><a href="#">Someday</a></li>
           </ul>
@@ -87,7 +87,7 @@
           </ul>
           <ul class="nav nav-sidebar">
             <li><a href="{% url 'list-tasks' 'completed' %}">Completed</a></li>
-            <li><a href="{% url 'list-tasks' 'rubbish' %}">Rubbish</a></li>
+            <li><a href="{% url 'list-tasks' 'rubbish' %}">Rubbish: {{ task_count.rubbish }}</a></li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
