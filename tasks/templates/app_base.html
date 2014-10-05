@@ -70,14 +70,14 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="{% url 'add-task' %}">New task</a></li>
+            <li><a href="{% url 'add-task' %}">New task</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li><a href="{% url 'list-tasks' 'inbox' %}">Inbox: {{ task_count.inbox }}</a></li>
-            <li><a href="{% url 'list-tasks' 'today' %}">Today: {{ task_count.today }}</a></li>
-            <li><a href="{% url 'list-tasks' 'next' %}">Next: {{ task_count.next }}</a></li>
-            <li><a href="{% url 'list-tasks' 'scheduled' %}">Scheduled</a></li>
-            <li><a href="#">Someday</a></li>
+            <li id="inbox"><a href="{% url 'list-tasks' 'inbox' %}">Inbox: {{ task_count.inbox }}</a></li>
+            <li id="today"><a href="{% url 'list-tasks' 'today' %}">Today: {{ task_count.today }}</a></li>
+            <li id="next"><a href="{% url 'list-tasks' 'next' %}">Next: {{ task_count.next }}</a></li>
+            <li id="scheduled"><a href="{% url 'list-tasks' 'scheduled' %}">Scheduled</a></li>
+            <li id="someday"><a href="#">Someday</a></li>
           </ul>
           <ul class="nav nav-sidebar">
             <li><a href="#">Project A</a></li>
@@ -86,8 +86,8 @@
             <li><a href="#">Project D</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li><a href="{% url 'list-tasks' 'completed' %}">Completed</a></li>
-            <li><a href="{% url 'list-tasks' 'rubbish' %}">Rubbish: {{ task_count.rubbish }}</a></li>
+            <li id="completed"><a href="{% url 'list-tasks' 'completed' %}">Completed</a></li>
+            <li id="rubbish"><a href="{% url 'list-tasks' 'rubbish' %}">Rubbish: {{ task_count.rubbish }}</a></li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -112,6 +112,11 @@
       $( ".datepicker" ).datepicker({
         inline: true
       });
+    </script>
+
+    <!-- Set the active view on the sidebar -->
+    <script>
+      $( "#{{ view }}" ).addClass( "active" );
     </script>
 
   </body>
