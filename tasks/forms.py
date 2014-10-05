@@ -1,7 +1,11 @@
 from django import forms
 
+from utils import get_choices, get_options
+
 
 class AddTaskForm(forms.Form):
+
+    options = get_options()
 
     # 'description' is a string which describes the task
     description = forms.CharField(max_length=200)
@@ -41,7 +45,9 @@ class AddTaskForm(forms.Form):
                              required=False)
 
     # 'project' is a string which gives the name of the project.
-    project = forms.CharField(max_length=200, required=False)
+    projects = options['projects']
+    PROJECT_CHOICES = get_choices(projects)
+    project = forms.ChoiceField(choices=PROJECT_CHOICES, required=False)
 
     # 'due' is a date on which the task should be finished
     due = forms.DateTimeField(required=False, label='Due date',
@@ -68,14 +74,18 @@ class AddTaskForm(forms.Form):
     # ["home","garden"]
     # We'll collect several tags then merge them to create the tags list
     # The three 'context's will be stored in 'tags'
-    context_1 = forms.CharField(max_length=200, required=False,
+    contexts = options['contexts']
+    CONTEXT_CHOICES = get_choices(contexts)
+    context_1 = forms.ChoiceField(choices=CONTEXT_CHOICES, required=False,
                                 label='Context 1')
-    context_2 = forms.CharField(max_length=200, required=False,
+    context_2 = forms.ChoiceField(choices=CONTEXT_CHOICES, required=False,
                                 label='Context 2')
-    context_3 = forms.CharField(max_length=200, required=False,
+    context_3 = forms.ChoiceField(choices=CONTEXT_CHOICES, required=False,
                                 label='Context 3')
 
 class EditTaskForm(forms.Form):
+
+    options = get_options()
 
     # 'description' is a string which describes the task
     description = forms.CharField(max_length=200)
@@ -129,7 +139,9 @@ class EditTaskForm(forms.Form):
                              required=False)
 
     # 'project' is a string which gives the name of the project.
-    project = forms.CharField(max_length=200, required=False)
+    projects = options['projects']
+    PROJECT_CHOICES = get_choices(projects)
+    project = forms.ChoiceField(choices=PROJECT_CHOICES, required=False)
 
     # 'due' is a date on which the task should be finished
     due = forms.DateTimeField(required=False, label='Due date',
@@ -156,10 +168,11 @@ class EditTaskForm(forms.Form):
     # ["home","garden"]
     # We'll collect several tags then merge them to create the tags list
     # The three 'context's will be stored in 'tags'
-    context_1 = forms.CharField(max_length=200, required=False,
+    contexts = options['contexts']
+    CONTEXT_CHOICES = get_choices(contexts)
+    context_1 = forms.ChoiceField(choices=CONTEXT_CHOICES, required=False,
                                 label='Context 1')
-    context_2 = forms.CharField(max_length=200, required=False,
+    context_2 = forms.ChoiceField(choices=CONTEXT_CHOICES, required=False,
                                 label='Context 2')
-    context_3 = forms.CharField(max_length=200, required=False,
+    context_3 = forms.ChoiceField(choices=CONTEXT_CHOICES, required=False,
                                 label='Context 3')
-

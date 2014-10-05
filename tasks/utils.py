@@ -11,6 +11,17 @@ def get_options():
     return options
 
 
+def get_choices(attribute):
+    """Returns a tuple of choices for a form field"""
+
+    choices = [(None, '')]
+    for choice in attribute:
+        choice_tuple = choice, choice
+        choices.append(choice_tuple)
+
+    return choices
+
+
 def get_task_count():
     """Returns a dictionary of the number of tasks in each view."""
 
