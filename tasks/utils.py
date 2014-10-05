@@ -14,6 +14,8 @@ def get_options():
 def get_choices(attribute):
     """Returns a tuple of choices for a form field"""
 
+    # Start the list of choices with a None option, otherwise there is no option
+    # to leave the field blank
     choices = [(None, '')]
     for choice in attribute:
         choice_tuple = choice, choice
@@ -44,3 +46,13 @@ def get_task_count():
     task_count['rubbish'] = rubbish_count
 
     return task_count
+
+
+def check_task(task):
+    """Checks the task makes sense, and fixes it if it contains internal
+    inconsistencies."""
+
+    if task['wait']:
+        task['view'] = 'scheduled'
+
+    return task
