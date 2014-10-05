@@ -44,6 +44,9 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
+            {% for context in contexts %}
+              <li><a href="#">{{ context }}</a></li>
+            {% endfor %}
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i>&nbsp;<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
@@ -52,14 +55,6 @@
                 <li><a href="{% url 'configuration' %}">Configuration</a></li>
               </ul>
             </li>
-          </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
-          <ul class="nav navbar-nav navbar-right">
-            {% for context in contexts %}
-              <li><a href="#">{{ context }}</a></li>
-            {% endfor %}
           </ul>
         </div>
       </div>
@@ -87,6 +82,9 @@
             <li id="completed"><a href="{% url 'list-tasks' 'completed' %}">Completed</a></li>
             <li id="rubbish"><a href="{% url 'list-tasks' 'rubbish' %}">Rubbish: {{ task_count.rubbish }}</a></li>
           </ul>
+          <form class="nav nav-sidebar navbar-form">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
