@@ -1,4 +1,15 @@
+import yaml
 from taskw import TaskWarrior
+
+
+def get_options():
+    """Returns the contents of the twango.data file"""
+
+    file = open('twango.config', 'r')
+    options = yaml.load(file)
+
+    return options
+
 
 def get_task_count():
     """Returns a dictionary of the number of tasks in each view."""

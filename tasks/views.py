@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
 from tasks.forms import AddTaskForm, EditTaskForm
-from tasks.utils import get_task_count
+from tasks.utils import get_options, get_task_count
 from taskw import TaskWarrior
 
 
@@ -73,9 +73,17 @@ def list_tasks(request, view):
 
     task_count = get_task_count()
 
+    options = get_options()
+    projects = options['projects']
+    contexts = options['contexts']
+
+    # import pdb; pdb.set_trace()
+
     return render(request, 'list_tasks.html', {
                            'task_list': task_list,
                            'task_count': task_count,
+                           'projects': projects,
+                           'contexts': contexts,
                            'view': view,
                            })
 

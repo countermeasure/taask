@@ -1,5 +1,7 @@
 # Ignore the following types of files
-
 *.sqlite3
 *.pyc
 *.swp
+
+# Ignore Twango's config file
+twango.config

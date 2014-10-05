@@ -57,10 +57,9 @@
             <input type="text" class="form-control" placeholder="Search...">
           </form>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Context A</a></li>
-            <li><a href="#">Context B</a></li>
-            <li><a href="#">Context C</a></li>
-            <li><a href="#">Context D</a></li>
+            {% for context in contexts %}
+              <li><a href="#">{{ context }}</a></li>
+            {% endfor %}
           </ul>
         </div>
       </div>
@@ -80,10 +79,9 @@
             <li id="someday"><a href="#">Someday</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li><a href="#">Project A</a></li>
-            <li><a href="#">Project B</a></li>
-            <li><a href="#">Project C</a></li>
-            <li><a href="#">Project D</a></li>
+            {% for project in projects %}
+              <li><a href="#">{{ project }}</a></li>
+            {% endfor %}
           </ul>
           <ul class="nav nav-sidebar">
             <li id="completed"><a href="{% url 'list-tasks' 'completed' %}">Completed</a></li>
