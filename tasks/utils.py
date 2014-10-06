@@ -59,3 +59,23 @@ def get_task_count():
     task_count['rubbish'] = rubbish_count
 
     return task_count
+
+def manage_configuration(data, data_type):
+
+    with open('twango.config', 'r') as f:
+        config = yaml.load(f)
+
+    action = data['action']
+    tag = data['tag']
+
+    if action == 'create':
+        if data_type == 'context':
+            config['contexts'].append(tag)
+        elif data_type == 'project':
+            config['projects'].append(tag)
+
+    config['contexts'].sort()
+    config['projects'].sort()
+
+    with file('twango.config', 'w') as f:
+        yaml.dump(config, f)

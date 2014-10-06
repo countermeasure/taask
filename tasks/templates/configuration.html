@@ -18,6 +18,62 @@
       </ul>
     </div><!-- /.panel-body -->
   </div><!-- /.panel -->
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <i class="fa fa-align-justify fa-fw fa-lg"></i>&nbsp;
+      Contexts
+    </div><!-- panel-heading -->
+    <div class="panel-body">
+      <ul>
+        {% for context in options.contexts %}
+          <li>{{ context }}</li>
+        {% endfor %}
+      </ul>
+      <form role="form" id="contextform" action="" method="POST">
+        {% csrf_token %}
+        {% for field in context_form %}
+          <div class="form-group">
+            {{ field.label_tag }}
+            {{ field }}
+            {{field.errors}}
+          </div>
+        {%endfor%}
+        <div>
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-check-circle fa-lg"></i>&nbsp;Save
+          </button>
+        </div>
+      </form>
+    </div><!-- /.panel-body -->
+  </div><!-- /.panel -->
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <i class="fa fa-align-justify fa-fw fa-lg"></i>&nbsp;
+      Projects
+    </div><!-- panel-heading -->
+    <div class="panel-body">
+      <ul>
+        {% for project in options.projects %}
+          <li>{{ project }}</li>
+        {% endfor %}
+      </ul>
+      <form role="form" id="projectform" action="" method="POST">
+        {% csrf_token %}
+        {% for field in project_form %}
+          <div class="form-group">
+            {{ field.label_tag }}
+            {{ field }}
+            {{field.errors}}
+          </div>
+        {%endfor%}
+        <div>
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-check-circle fa-lg"></i>&nbsp;Save
+          </button>
+        </div>
+      </form>
+    </div><!-- /.panel-body -->
+  </div><!-- /.panel -->
 </div><!-- /.col -->
 
 {% endblock content %}

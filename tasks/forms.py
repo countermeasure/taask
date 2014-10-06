@@ -209,3 +209,31 @@ class EditTaskForm(BaseTaskForm):
 
     def __init__(self, *args, **kwargs):
         super(EditTaskForm, self).__init__(*args, **kwargs)
+
+
+class BaseConfigurationForm(forms.Form):
+
+    ACTION_CHOICES = (
+        ('create', 'Create'),
+        ('update', 'Update'),
+        ('delete', 'Delete'),
+        )
+    # Required is False for both fields because the context and project forms
+    # are rendered on the same page, and validation errors are thrown if when
+    # any field is left blank otherwise.
+    action = forms.ChoiceField(choices=ACTION_CHOICES, required=False)
+
+    tag = forms.CharField(max_length=30, required=False)
+    #TODO validate that the tag is alphanumeric only with no spaces
+    #TODO validate that the tag is unique
+
+class ContextForm(BaseConfigurationForm):
+
+    def __init__(self, *args, **kwargs):
+        super(ContextForm, self).__init__(*args, **kwargs)
+
+
+class ProjectForm(BaseConfigurationForm):
+
+    def __init__(self, *args, **kwargs):
+        super(ProjectForm, self).__init__(*args, **kwargs)

@@ -15,7 +15,7 @@
           <li> {{ tw_error }}</li>
         </ul>
       {% endif %}
-    <form role="form" id="addtaskform" action="" method="POST">
+    <form role="form" id="edittaskform" action="" method="POST">
         {% csrf_token %}
         {% for field in form %}
           <div class="form-group">

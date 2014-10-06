@@ -2,9 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
-from tasks.forms import AddTaskForm, EditTaskForm
-from tasks.utils import get_options, \
-                        get_task_count
+from tasks.forms import (AddTaskForm,
+                        ContextForm,
+                        EditTaskForm,
+                        ProjectForm)
+from tasks.utils import (get_options,
+                         get_task_count,
+                         manage_configuration)
 from taskw import TaskWarrior
 from taskw.exceptions import TaskwarriorError
 
@@ -201,4 +205,29 @@ def documentation(request):
 def configuration(request):
     """Shows configuration page."""
 
-    return render(request, 'configuration.html')
+    if request.method == "POST":
+
+        context_form = ContextForm(request.POST, prefix='context',
+                                   label_suffix='')
+        if context_form.is_valid():
+            data = context_form.cleaned_data
+            manage_configuration(data, 'context')
+
+        project_form = ProjectForm(request.POST, prefix='project',
+                                   label_suffix='')
+        if project_form.is_valid():
+            data = project_form.cleaned_data
+            manage_configuration(data, 'project')
+
+    else:
+        context_form = ContextForm(prefix='context')
+        project_form = ProjectForm(prefix='project')
+
+    options = get_options()
+
+    return render(request, 'configuration.html', {
+                           'options': options,
+                           'context_form': context_form,
+                           'project_form': project_form,
+                           })
+
