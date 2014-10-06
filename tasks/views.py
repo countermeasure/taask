@@ -61,11 +61,11 @@ def add_task(request):
     else:
         form = AddTaskForm()
 
-    task_count = get_task_count()
-
     options = get_options()
     projects = options['projects']
     contexts = options['contexts']
+
+    task_count = get_task_count(projects)
 
     return render(request, 'add_task.html', {
                            'task_count': task_count,
@@ -81,6 +81,10 @@ def list_tasks(request, view):
 
        filter_tasks() returns a list which contains one dictionary per task."""
 
+    options = get_options()
+    projects = options['projects']
+    contexts = options['contexts']
+
     if view in ['inbox', 'today', 'next', 'someday', 'rubbish']:
         task_list = w.filter_tasks({'status': 'pending', 'view': view,})
 
@@ -93,15 +97,16 @@ def list_tasks(request, view):
     elif view == 'completed':
         task_list = w.filter_tasks({'status': 'completed',})
 
+    else:
+        for project in projects:
+            if view == project.lower():
+                task_list = w.filter_tasks({'project': project,})
+
     # Examples of sorting
     # task_list.sort(key = lambda task : task['description'].lower())
     # task_list.sort(key = lambda task : task['tags'][2])
 
-    task_count = get_task_count()
-
-    options = get_options()
-    projects = options['projects']
-    contexts = options['contexts']
+    task_count = get_task_count(projects)
 
     # import pdb; pdb.set_trace()
 
@@ -167,11 +172,11 @@ def edit_task(request, task_id):
         # tags
         form = EditTaskForm(task)
 
-    task_count = get_task_count()
-
     options = get_options()
     projects = options['projects']
     contexts = options['contexts']
+
+    task_count = get_task_count(projects)
 
     return render(request, 'edit_task.html', {
                            'task_count': task_count,

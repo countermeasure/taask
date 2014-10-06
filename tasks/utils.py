@@ -24,41 +24,32 @@ def get_choices(attribute):
     return choices
 
 
-def get_task_count():
+def get_task_count(projects):
     """Returns a dictionary of the number of tasks in each view."""
 
     w = TaskWarrior()
 
-    inbox_tasks = w.filter_tasks({'status': 'pending', 'view': 'inbox',})
-    inbox_count = len(inbox_tasks)
-    task_count = {'inbox': inbox_count}
+    views_to_count = [
+        ('inbox', 'pending'),
+        ('today', 'pending'),
+        ('next', 'pending'),
+        ('scheduled', 'wait'),
+        ('recurring', 'recurring'),
+        ('someday', 'pending'),
+        ('rubbish', 'pending'),
+        ]
 
-    today_tasks = w.filter_tasks({'status': 'pending', 'view': 'today',})
-    today_count = len(today_tasks)
-    task_count['today'] = today_count
+    for project in projects:
+        views_to_count.append((project, 'all'))
 
-    next_tasks = w.filter_tasks({'status': 'pending', 'view': 'next',})
-    next_count = len(next_tasks)
-    task_count['next'] = next_count
-
-    scheduled_tasks = w.filter_tasks({'status': 'wait', 'view': 'scheduled',})
-    scheduled_count = len(scheduled_tasks)
-    task_count['scheduled'] =scheduled_count
-
-    recurring_tasks = w.filter_tasks({'status': 'recurring',
-                                      'view': 'recurring',})
-    recurring_count = len(recurring_tasks)
-    task_count['recurring'] = recurring_count
-
-    someday_tasks = w.filter_tasks({'status': 'pending', 'view': 'someday',})
-    someday_count = len(someday_tasks)
-    task_count['someday'] = someday_count
-
-    rubbish_tasks = w.filter_tasks({'status': 'pending', 'view': 'rubbish',})
-    rubbish_count = len(rubbish_tasks)
-    task_count['rubbish'] = rubbish_count
+    task_count = {}
+    for view in views_to_count:
+        tasks = w.filter_tasks({'view': view[0], 'status': view[1]})
+        count = len(tasks)
+        task_count[view[0]] = count
 
     return task_count
+
 
 def manage_configuration(data, data_type):
 
