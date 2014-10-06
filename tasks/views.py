@@ -68,11 +68,14 @@ def list_tasks(request, view):
 
        filter_tasks() returns a list which contains one dictionary per task."""
 
-    if view in ['inbox', 'today', 'next', 'rubbish']:
+    if view in ['inbox', 'today', 'next', 'someday', 'rubbish']:
         task_list = w.filter_tasks({'status': 'pending', 'view': view,})
 
     elif view == 'scheduled':
         task_list = w.filter_tasks({'status': 'waiting',})
+
+    elif view == 'recurring':
+        task_list = w.filter_tasks({'status': 'recurring',})
 
     elif view == 'completed':
         task_list = w.filter_tasks({'status': 'completed',})

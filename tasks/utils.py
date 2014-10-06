@@ -41,6 +41,19 @@ def get_task_count():
     next_count = len(next_tasks)
     task_count['next'] = next_count
 
+    scheduled_tasks = w.filter_tasks({'status': 'wait', 'view': 'scheduled',})
+    scheduled_count = len(scheduled_tasks)
+    task_count['scheduled'] =scheduled_count
+
+    recurring_tasks = w.filter_tasks({'status': 'recurring',
+                                      'view': 'recurring',})
+    recurring_count = len(recurring_tasks)
+    task_count['recurring'] = recurring_count
+
+    someday_tasks = w.filter_tasks({'status': 'pending', 'view': 'someday',})
+    someday_count = len(someday_tasks)
+    task_count['someday'] = someday_count
+
     rubbish_tasks = w.filter_tasks({'status': 'pending', 'view': 'rubbish',})
     rubbish_count = len(rubbish_tasks)
     task_count['rubbish'] = rubbish_count

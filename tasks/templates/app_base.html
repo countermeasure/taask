@@ -70,8 +70,9 @@
             <li id="inbox"><a href="{% url 'list-tasks' 'inbox' %}">Inbox: {{ task_count.inbox }}</a></li>
             <li id="today"><a href="{% url 'list-tasks' 'today' %}">Today: {{ task_count.today }}</a></li>
             <li id="next"><a href="{% url 'list-tasks' 'next' %}">Next: {{ task_count.next }}</a></li>
-            <li id="scheduled"><a href="{% url 'list-tasks' 'scheduled' %}">Scheduled</a></li>
-            <li id="someday"><a href="#">Someday</a></li>
+            <li id="scheduled"><a href="{% url 'list-tasks' 'scheduled' %}">Scheduled: {{ task_count.scheduled }}</a></li>
+            <li id="recurring"><a href="{% url 'list-tasks' 'recurring' %}">Recurring: {{ task_count.recurring }}</a></li>
+            <li id="someday"><a href="{% url 'list-tasks' 'someday' %}">Someday: {{ task_count.someday }}</a></li>
           </ul>
           <ul class="nav nav-sidebar">
             {% for project in projects %}
