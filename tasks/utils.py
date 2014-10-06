@@ -33,7 +33,7 @@ def get_task_count(projects):
         ('inbox', 'pending'),
         ('today', 'pending'),
         ('next', 'pending'),
-        ('scheduled', 'wait'),
+        ('scheduled', 'waiting'),
         ('recurring', 'recurring'),
         ('someday', 'pending'),
         ('rubbish', 'pending'),
