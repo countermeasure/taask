@@ -3,7 +3,7 @@ from django import forms
 from utils import get_choices, get_options
 
 
-class AddTaskForm(forms.Form):
+class BaseTaskForm(forms.Form):
 
     options = get_options()
 
@@ -16,25 +16,39 @@ class AddTaskForm(forms.Form):
         ('today', 'Today'),
         ('next', 'Next'),
         ('scheduled', 'Scheduled'),
+        ('recurring', 'Recurring'),
         ('someday', 'Someday'),
+        ('rubbish', 'Rubbish'),
         )
     view = forms.ChoiceField(choices=VIEW_CHOICES, label='View')
 
     # 'priority' is a string which contains 'H', 'M' or 'L'
-    # Either 'priority' or 'tag_importance' will be used longer term. 'priority'
-    # should be preferred as it is the built-in option.
     PRIORITY_CHOICES = (
-        (None, ''),
+    #    (None, ''),
         ('H', 'High'),
         ('M', 'Medium'),
         ('L', 'Low'),
         )
+    # If required is not set to False for priority, the form raises an error if
+    # the task wasn't given a priority value on creation.
     priority = forms.ChoiceField(choices=PRIORITY_CHOICES, required=False)
+
+    # 'order', a Taskwarrior UDA, is a string which defines the order of
+    # tasks in the tables
+    ORDER_CHOICES = (
+        (None, ''),
+        (1, '1st'),
+        (2, '2nd'),
+        (3, '3rd'),
+        (4, '4th'),
+        (5, '5th'),
+        )
+    order = forms.ChoiceField(choices=ORDER_CHOICES,
+                              label='Order', required=False)
 
     # 'time', a Taskwarrior UDA, is a string which defines the estimated time
     # for a task
     TIME_CHOICES = (
-        (None, ''),
         (5, '5mins'),
         (15, '15mins'),
         (30, '30mins'),
@@ -87,7 +101,7 @@ class AddTaskForm(forms.Form):
 
 
     def clean(self):
-        cleaned_data = super(AddTaskForm, self).clean()
+        cleaned_data = super(BaseTaskForm, self).clean()
 
         # If the task is bypassing the inbox, it must have a priority and time
         if not cleaned_data.get('view') == 'inbox':
@@ -172,8 +186,6 @@ class AddTaskForm(forms.Form):
                 msg = u"Due date must be before the task's expiry date."
                 self.add_error('due', msg)
 
-
-
         # A recurring task can't be scheduled for later
         if cleaned_data.get('until'):
             if cleaned_data.get('wait'):
@@ -187,97 +199,13 @@ class AddTaskForm(forms.Form):
                 self.add_error('view', msg)
 
 
-class EditTaskForm(forms.Form):
+class AddTaskForm(BaseTaskForm):
 
-    options = get_options()
+    def __init__(self, *args, **kwargs):
+        super(AddTaskForm, self).__init__(*args, **kwargs)
 
-    # 'description' is a string which describes the task
-    description = forms.CharField(max_length=200)
 
-    # 'view', a Taskwarrior UDA, is a string which defines the view
-    VIEW_CHOICES = (
-        ('inbox', 'Inbox'),
-        ('today', 'Today'),
-        ('next', 'Next'),
-    # Take someday out of the list until it's clear what to do with it
-    #   ('someday', 'Someday'),
-        ('rubbish', 'Rubbish'),
-        )
-    view = forms.ChoiceField(choices=VIEW_CHOICES, label='View')
+class EditTaskForm(BaseTaskForm):
 
-    # 'priority' is a string which contains 'H', 'M' or 'L'
-    PRIORITY_CHOICES = (
-    #    (None, ''),
-        ('H', 'High'),
-        ('M', 'Medium'),
-        ('L', 'Low'),
-        )
-    # If required is not set to False for priority, the form raises an error if
-    # the task wasn't given a priority value on creation.
-    priority = forms.ChoiceField(choices=PRIORITY_CHOICES, required=False)
-
-    # 'order', a Taskwarrior UDA, is a string which defines the order of
-    # tasks in the tables
-    ORDER_CHOICES = (
-        (None, ''),
-        (1, '1st'),
-        (2, '2nd'),
-        (3, '3rd'),
-        (4, '4th'),
-        (5, '5th'),
-        )
-    order = forms.ChoiceField(choices=ORDER_CHOICES,
-                              label='Order', required=False)
-
-    # 'time', a Taskwarrior UDA, is a string which defines the estimated time
-    # for a task
-    TIME_CHOICES = (
-        (5, '5mins'),
-        (15, '15mins'),
-        (30, '30mins'),
-        (60, '1hr'),
-        (120, '2hrs'),
-        (300, '5hrs'),
-        )
-    time = forms.ChoiceField(choices=TIME_CHOICES, label='Time',
-                             required=False)
-
-    # 'project' is a string which gives the name of the project.
-    projects = options['projects']
-    PROJECT_CHOICES = get_choices(projects)
-    project = forms.ChoiceField(choices=PROJECT_CHOICES, required=False)
-
-    # 'due' is a date on which the task should be finished
-    due = forms.DateTimeField(required=False, label='Due date',
-        widget=forms.TextInput(attrs={'class':'datepicker'})
-        )
-
-    # 'recur' is a string which represents the interval between recurring tasks,
-    # such as '3wks'
-    recur = forms.CharField(max_length=200, required=False, label='Frequency')
-
-    # 'until' is a date on which a task is automatically deleted. It is used to
-    # set the date on which a recurring task will cease to recur
-    until = forms.DateTimeField(required=False, label='Recurs until',
-        widget=forms.TextInput(attrs={'class':'datepicker'})
-        )
-
-    # 'wait' is a date on which a task with status 'waiting' will have it's
-    # status changed to 'pending'
-    wait = forms.DateTimeField(required=False, label='Schedule for',
-        widget=forms.TextInput(attrs={'class':'datepicker'})
-        )
-
-    # 'tags' is a list of strings, where each string is a single word containing
-    # no spaces. For example:
-    # ["home","garden"]
-    # We'll collect several tags then merge them to create the tags list
-    # The three 'context's will be stored in 'tags'
-    contexts = options['contexts']
-    CONTEXT_CHOICES = get_choices(contexts)
-    context_1 = forms.ChoiceField(choices=CONTEXT_CHOICES, required=False,
-                                label='Context 1')
-    context_2 = forms.ChoiceField(choices=CONTEXT_CHOICES, required=False,
-                                label='Context 2')
-    context_3 = forms.ChoiceField(choices=CONTEXT_CHOICES, required=False,
-                                label='Context 3')
+    def __init__(self, *args, **kwargs):
+        super(EditTaskForm, self).__init__(*args, **kwargs)
