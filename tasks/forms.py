@@ -15,6 +15,7 @@ class AddTaskForm(forms.Form):
         ('inbox', 'Inbox'),
         ('today', 'Today'),
         ('next', 'Next'),
+        ('scheduled', 'Scheduled'),
         ('someday', 'Someday'),
         )
     view = forms.ChoiceField(choices=VIEW_CHOICES, label='View')
@@ -58,7 +59,8 @@ class AddTaskForm(forms.Form):
     # such as '3wks'
     recur = forms.CharField(max_length=200, required=False, label='Frequency')
 
-    # 'until' is a date on which a recurring task will cease to recur
+    # 'until' is a date on which a task is automatically deleted. It is used to
+    # set the date on which a recurring task will cease to recur
     until = forms.DateTimeField(required=False, label='Recurs until',
         widget=forms.TextInput(attrs={'class':'datepicker'})
         )
@@ -82,6 +84,108 @@ class AddTaskForm(forms.Form):
                                 label='Context 2')
     context_3 = forms.ChoiceField(choices=CONTEXT_CHOICES, required=False,
                                 label='Context 3')
+
+
+    def clean(self):
+        cleaned_data = super(AddTaskForm, self).clean()
+
+        # If the task is bypassing the inbox, it must have a priority and time
+        if not cleaned_data.get('view') == 'inbox':
+            if not cleaned_data.get('priority'):
+                msg = u"This task must have a priority if it isn't going to" + \
+                       " the inbox."
+                self.add_error('priority', msg)
+            if not cleaned_data.get('time'):
+                msg = u"This task must have a time if it isn't going to the" + \
+                       " inbox."
+                self.add_error('time', msg)
+
+        # If a wait date is set, the task must go in the scheduled view
+        if cleaned_data.get('wait'):
+            if cleaned_data.get('view') != 'scheduled':
+                msg = u"This task's view must be 'scheduled'."
+                self.add_error('view', msg)
+
+        # If no wait date is set and the task is not a recurring one, the task
+        # must not go in the scheduled view
+        if not cleaned_data.get('wait') and not cleaned_data.get('until'):
+            if cleaned_data.get('view') == 'scheduled':
+                msg = u"This task's view must not be 'scheduled'."
+                self.add_error('view', msg)
+
+        # Contexts must not be duplicated
+        if cleaned_data.get('context_1'):
+            if cleaned_data.get('context_2') == cleaned_data.get('context_1'):
+                msg = u"Context 2 must be different from Context 1."
+                self.add_error('context_2', msg)
+            if cleaned_data.get('context_3') == cleaned_data.get('context_1'):
+                msg = u"Context 3 must be different from Context 1."
+                self.add_error('context_3', msg)
+        if cleaned_data.get('context_2'):
+            if cleaned_data.get('context_3') == cleaned_data.get('context_2'):
+                msg = u"Context 3 must be different from Context 2."
+                self.add_error('context_3', msg)
+
+        # There must be no blank context before another context
+        if cleaned_data.get('context_2'):
+            if not cleaned_data.get('context_1'):
+                msg = u"Context 1 can't be empty if you set Context 2."
+                self.add_error('context_1', msg)
+        if cleaned_data.get('context_3'):
+            if not cleaned_data.get('context_1'):
+                msg = u"Context 1 can't be empty if you set Context 3."
+                self.add_error('context_1', msg)
+            if not cleaned_data.get('context_2'):
+                msg = u"Context 2 can't be empty if you set Context 3."
+                self.add_error('context_2', msg)
+
+        # A scheduled task can't be due before it's scheduled date
+        if cleaned_data.get('wait') and cleaned_data.get('due'):
+            if cleaned_data.get('wait') > cleaned_data.get('due'):
+                msg = u"Due date must be on or after the task's scheduled date."
+                self.add_error('due', msg)
+
+        # A recurring task mustn't have any information missing
+        if cleaned_data.get('until'):
+            if not cleaned_data.get('recur'):
+                msg = u"A recurring task must have a frequency."
+                self.add_error('recur', msg)
+            if not cleaned_data.get('due'):
+                msg = u"A recurring task must have a due date."
+                self.add_error('due', msg)
+        if cleaned_data.get('recur'):
+            if not cleaned_data.get('until'):
+                msg = u"A recurring task must have an end date."
+                self.add_error('until', msg)
+        if cleaned_data.get('due') and cleaned_data.get('recur'):
+            if not cleaned_data.get('until'):
+                msg = u"A recurring task must have an initial due date."
+                self.add_error('due', msg)
+        if cleaned_data.get('due') and cleaned_data.get('until'):
+            if not cleaned_data.get('due'):
+                msg = u"A recurring task must have a frequency (check)."
+                self.add_error('recur', msg)
+
+        # A recurring task's due date must be before its until (deletion) date
+        if cleaned_data.get('due') and cleaned_data.get('until'):
+            if cleaned_data.get('due') >= cleaned_data.get('until'):
+                msg = u"Due date must be before the task's expiry date."
+                self.add_error('due', msg)
+
+
+
+        # A recurring task can't be scheduled for later
+        if cleaned_data.get('until'):
+            if cleaned_data.get('wait'):
+                msg = u"A recurring task can't have a scheduled date set."
+                self.add_error('wait', msg)
+
+        # A recurring task must go in the scheduled view
+        if cleaned_data.get('until'):
+            if cleaned_data.get('view') != 'scheduled':
+                msg = u"A recurring task's view must be 'scheduled'."
+                self.add_error('view', msg)
+
 
 class EditTaskForm(forms.Form):
 
@@ -152,7 +256,8 @@ class EditTaskForm(forms.Form):
     # such as '3wks'
     recur = forms.CharField(max_length=200, required=False, label='Frequency')
 
-    # 'until' is a date on which a recurring task will cease to recur
+    # 'until' is a date on which a task is automatically deleted. It is used to
+    # set the date on which a recurring task will cease to recur
     until = forms.DateTimeField(required=False, label='Recurs until',
         widget=forms.TextInput(attrs={'class':'datepicker'})
         )
