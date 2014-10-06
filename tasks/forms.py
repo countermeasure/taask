@@ -192,10 +192,10 @@ class BaseTaskForm(forms.Form):
                 msg = u"A recurring task can't have a scheduled date set."
                 self.add_error('wait', msg)
 
-        # A recurring task must go in the scheduled view
+        # A recurring task must go in the recurring view
         if cleaned_data.get('until'):
-            if cleaned_data.get('view') != 'scheduled':
-                msg = u"A recurring task's view must be 'scheduled'."
+            if cleaned_data.get('view') != 'recurring':
+                msg = u"A recurring task's view must be 'recurring'."
                 self.add_error('view', msg)
 
 
