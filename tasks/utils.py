@@ -74,6 +74,12 @@ def manage_configuration(data, data_type):
         elif data_type == 'project':
             config['projects'].append(tag)
 
+    if action == 'delete':
+        if data_type == 'context':
+            config['contexts'].remove(tag)
+        elif data_type == 'project':
+            config['projects'].remove(tag)
+
     config['contexts'].sort()
     config['projects'].sort()
 

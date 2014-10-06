@@ -215,25 +215,52 @@ class BaseConfigurationForm(forms.Form):
 
     ACTION_CHOICES = (
         ('create', 'Create'),
-        ('update', 'Update'),
         ('delete', 'Delete'),
         )
     # Required is False for both fields because the context and project forms
-    # are rendered on the same page, and validation errors are thrown if when
+    # are rendered on the same page, and validation errors are thrown if
     # any field is left blank otherwise.
     action = forms.ChoiceField(choices=ACTION_CHOICES, required=False)
 
-    tag = forms.CharField(max_length=30, required=False)
-    #TODO validate that the tag is alphanumeric only with no spaces
-    #TODO validate that the tag is unique
+    tag = forms.RegexField(regex=r'^[a-zA-Z0-9]+$', max_length=30,
+                           required=True, error_messages={
+                           'invalid': 'Must be letters and numbers only.'
+                           })
+
 
 class ContextForm(BaseConfigurationForm):
 
-    def __init__(self, *args, **kwargs):
-        super(ContextForm, self).__init__(*args, **kwargs)
+    def clean_tag(self):
+        data = self.cleaned_data['tag']
+        action = self.cleaned_data['action']
+        # First, work out whether the tag currently exists
+        options = get_options()
+        tag_exists = data in options['contexts']
+        # Creating a new tag
+        if action == 'create' and tag_exists:
+            raise forms.ValidationError('This context already exists',
+                                            code='invalid')
+        # Deleting an existing tag
+        if action == 'delete' and not tag_exists:
+            raise forms.ValidationError('This context doesn\'t exist',
+                                            code='invalid')
+        return data
 
 
 class ProjectForm(BaseConfigurationForm):
 
-    def __init__(self, *args, **kwargs):
-        super(ProjectForm, self).__init__(*args, **kwargs)
+    def clean_tag(self):
+        data = self.cleaned_data['tag']
+        action = self.cleaned_data['action']
+        # First, work out whether the tag currently exists
+        options = get_options()
+        tag_exists = data in options['projects']
+        # Creating a new tag
+        if action == 'create' and tag_exists:
+            raise forms.ValidationError('This project already exists',
+                                            code='invalid')
+        # Deleting an existing tag
+        if action == 'delete' and not tag_exists:
+            raise forms.ValidationError('This project doesn\'t exist',
+                                            code='invalid')
+        return data

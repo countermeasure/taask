@@ -13,8 +13,6 @@
       <ul>
         <li>Specify the location of the .taskrc file and .task/ directory</li>
         <li>Colour scheme selection</li>
-        <li>Set the list of projects</li>
-        <li>Set the list of context tags</li>
       </ul>
     </div><!-- /.panel-body -->
   </div><!-- /.panel -->
@@ -24,6 +22,11 @@
       Contexts
     </div><!-- panel-heading -->
     <div class="panel-body">
+      <p><strong>Contexts in use:</strong></p>
+      {% if not options.contexts %}
+        <p>There are no contexts currently in use. Define some using this
+          panel.</p>
+      {% endif %}
       <ul>
         {% for context in options.contexts %}
           <li>{{ context }}</li>
@@ -52,6 +55,10 @@
       Projects
     </div><!-- panel-heading -->
     <div class="panel-body">
+      <p><strong>Current projects:</strong></p>
+      {% if not options.projects %}
+        <p>There are no current projects. Define some using this panel.</p>
+      {% endif %}
       <ul>
         {% for project in options.projects %}
           <li>{{ project }}</li>
