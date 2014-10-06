@@ -73,7 +73,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
@@ -86,3 +86,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
     )
+
+# Dates
+# https://docs.djangoproject.com/en/1.7/ref/settings/#date-format
+
+DATETIME_FORMAT = 'j M Y'
