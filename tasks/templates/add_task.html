@@ -9,6 +9,12 @@
       Add new task
     </div><!-- panel-heading -->
     <div class="panel-body">
+      {% if tw_error %}
+        <p><strong>Taskwarrior error</strong></p>
+        <ul>
+          <li> {{ tw_error }}</li>
+        </ul>
+      {% endif %}
       <form role="form" id="addtaskform" action="" method="POST">
         {% csrf_token %}
         {% for field in form %}

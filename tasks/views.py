@@ -7,6 +7,7 @@ from tasks.utils import check_task, \
                         get_options, \
                         get_task_count
 from taskw import TaskWarrior
+from taskw.exceptions import TaskwarriorError
 
 
 w = TaskWarrior(marshal=True)
@@ -15,6 +16,8 @@ w = TaskWarrior(marshal=True)
 
 def add_task(request):
     """Add a task."""
+
+    tw_error = ''
 
     if request.method == "POST":
         form = AddTaskForm(request.POST, label_suffix='')
@@ -36,21 +39,27 @@ def add_task(request):
             # Construct 'tags' in the format which taskw expects
             tags = [context_1, context_2, context_3]
             # Create the new task
-            w.task_add(description,
-                       view=view,
-                       priority=priority,
-                       time=time,
-                       project=project,
-                       due=due,
-                       recur=recur,
-                       until=until,
-                       wait=wait,
-                       tags=tags)
-            return HttpResponseRedirect(reverse('list-tasks', args=['inbox']))
+            try:
+                w.task_add(description,
+                           view=view,
+                           priority=priority,
+                           time=time,
+                           project=project,
+                           due=due,
+                           recur=recur,
+                           until=until,
+                           wait=wait,
+                           tags=tags)
+                return HttpResponseRedirect(reverse('list-tasks', args=['inbox']))
+            except TaskwarriorError, e:
+                tw_error = str(e).rpartition('stderr:')[2].\
+                           partition('; stdout')[0]
+
     else:
         form = AddTaskForm()
 
     return render(request, 'add_task.html', {
+                           'tw_error': tw_error,
                            'form': form,
                            })
 
