@@ -3,8 +3,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
 from tasks.forms import AddTaskForm, EditTaskForm
-from tasks.utils import check_task, \
-                        get_options, \
+from tasks.utils import get_options, \
                         get_task_count
 from taskw import TaskWarrior
 from taskw.exceptions import TaskwarriorError
@@ -138,9 +137,6 @@ def edit_task(request, task_id):
                 value = form.cleaned_data[attribute]
                 tags.append(value)
             task['tags'] = tags
-            # Check that the modifications to the task make sense, and fix any
-            # that don't
-            task = check_task(task)
             # Update the task
             w.task_update(task)
             return HttpResponseRedirect(reverse('list-tasks', args=['inbox']))

@@ -46,13 +46,3 @@ def get_task_count():
     task_count['rubbish'] = rubbish_count
 
     return task_count
-
-
-def check_task(task):
-    """Checks the task makes sense, and fixes it if it contains internal
-    inconsistencies."""
-
-    if task['wait']:
-        task['view'] = 'scheduled'
-
-    return task
