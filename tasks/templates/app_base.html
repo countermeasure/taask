@@ -74,7 +74,7 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li><a href="{% url 'add-task' %}">New task</a></li>
+            <li id="new_task"><a href="{% url 'add-task' %}">New task</a></li>
           </ul>
           <ul class="nav nav-sidebar">
             <li id="inbox"><a href="{% url 'list-tasks' 'inbox' %}">Inbox: {{ task_count.inbox }}</a></li>
@@ -86,7 +86,7 @@
           </ul>
           <ul class="nav nav-sidebar">
             {% for project in projects %}
-              <li id="{{ project }}"><a href="{% url 'list-tasks' project|lower %}">
+              <li id="{{ project|lower }}"><a href="{% url 'list-tasks' project|lower %}">
               {{ project }}: (counter)</a></li>
             {% endfor %}
           </ul>

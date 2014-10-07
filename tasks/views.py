@@ -21,6 +21,7 @@ def add_task(request):
     """Add a task."""
 
     tw_error = ''
+    view = 'new_task'
 
     if request.method == "POST":
         form = AddTaskForm(request.POST, label_suffix='')
@@ -68,6 +69,7 @@ def add_task(request):
     task_count = get_task_count(projects)
 
     return render(request, 'add_task.html', {
+                           'view': view,
                            'task_count': task_count,
                            'projects': projects,
                            'contexts': contexts,
