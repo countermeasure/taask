@@ -54,7 +54,7 @@ def add_task(request):
                            until=until,
                            wait=wait,
                            tags=tags)
-                return HttpResponseRedirect(reverse('list-tasks', args=['inbox']))
+                return HttpResponseRedirect(reverse('list-tasks', args=['today']))
             except TaskwarriorError, e:
                 tw_error = str(e).rpartition('stderr:')[2].\
                            partition('; stdout')[0]
@@ -162,7 +162,7 @@ def edit_task(request, task_id):
             task['tags'] = tags
             # Update the task
             w.task_update(task)
-            return HttpResponseRedirect(reverse('list-tasks', args=['inbox']))
+            return HttpResponseRedirect(reverse('list-tasks', args=['today']))
     else:
         # Add each individual tag item to the task object so that they are
         # displayed in the form
@@ -201,7 +201,7 @@ def complete_task(request, task_id):
         w.task_update(task)
         w.task_done(id=task_id)
 
-    return HttpResponseRedirect(reverse('list-tasks', args=['inbox']))
+    return HttpResponseRedirect(reverse('list-tasks', args=['today']))
 
 
 def delete_task(request, task_id):
@@ -212,7 +212,7 @@ def delete_task(request, task_id):
     if task['view'] == 'rubbish':
         w.task_delete(id=task_id)
 
-    return HttpResponseRedirect(reverse('list-tasks', args=['inbox']))
+    return HttpResponseRedirect(reverse('list-tasks', args=['today']))
 
 
 def documentation(request):
