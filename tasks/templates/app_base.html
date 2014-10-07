@@ -44,8 +44,8 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><button type="button" class="btn btn-primary"
-              id="filter-reset">All</button></li>
+            <li><button type="button" class="btn btn-primary reset-filter">
+              All</button></li>
             {% for context in contexts %}
               <li>
                 <button type="button" class="btn btn-default"
@@ -94,8 +94,13 @@
             <li id="completed"><a href="{% url 'list-tasks' 'completed' %}">Completed</a></li>
             <li id="rubbish"><a href="{% url 'list-tasks' 'rubbish' %}">Rubbish: {{ task_count.rubbish }}</a></li>
           </ul>
-          <form class="nav nav-sidebar navbar-form">
-            <input type="text" class="form-control" placeholder="Search...">
+          <form role="form" class="nav nav-sidebar navbar-form">
+            <input type="text" class="search form-control" data-column="0"
+            type="search" id="search-box" placeholder="Search in {{ view }}...">
+            <button type="button" class="btn btn-primary reset-filter hidden"
+              id="clear-search">
+              Clear search
+            </button>
           </form>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -127,6 +132,17 @@
     <!-- Set the active view on the sidebar -->
     <script>
       $( "#{{ view }}" ).addClass( "active" );
+    </script>
+
+    <!-- Manage the search field and the 'Clear search' button -->
+    <script>
+      $( "#search-box" ).focus(function () {
+        $( "#clear-search" ).removeClass( "hidden" );
+      });
+      $( "#clear-search" ).click(function () {
+        $( "#search-box" ).html();
+        $( "#clear-search" ).addClass( "hidden" );
+      });
     </script>
 
     {% block extra-js %}

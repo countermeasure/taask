@@ -59,7 +59,9 @@ $(function(){
     widgets: ["filter"],
     widgetOptions : {
       filter_columnFilters : false,
-      filter_reset: '#filter-reset',
+      filter_defaultFilter: { 0 : '~{query}' },
+      filter_external : '.search',
+      filter_reset: '.reset-filter',
     }
   });
   $('button[data-filter-column]').click(function(){
