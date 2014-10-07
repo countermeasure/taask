@@ -203,6 +203,32 @@ class AddTaskForm(BaseTaskForm):
 
     def __init__(self, *args, **kwargs):
         super(AddTaskForm, self).__init__(*args, **kwargs)
+        self.PRIORITY_CHOICES = (
+            (None, ''),
+            ('H', 'High'),
+            ('M', 'Medium'),
+            ('L', 'Low'),
+            )
+        self.fields['priority'].choices = self.PRIORITY_CHOICES
+        self.VIEW_CHOICES = (
+            ('inbox', 'Inbox'),
+            ('today', 'Today'),
+            ('next', 'Next'),
+            ('scheduled', 'Scheduled'),
+            ('recurring', 'Recurring'),
+            ('someday', 'Someday'),
+            )
+        self.fields['view'].choices = self.VIEW_CHOICES
+        self.TIME_CHOICES = (
+            (None, ''),
+            (5, '5mins'),
+            (15, '15mins'),
+            (30, '30mins'),
+            (60, '1hr'),
+            (120, '2hrs'),
+            (300, '5hrs'),
+            )
+        self.fields['time'].choices = self.TIME_CHOICES
 
 
 class EditTaskForm(BaseTaskForm):
