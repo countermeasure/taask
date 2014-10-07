@@ -41,6 +41,7 @@
             <td>{{ task.wait }}</td>
             <td>{{ task.view }}</td>
             <td>{{ task.id }}</td>
+            <td class="hidden">{{ task.tags }}</td>
           </tr>
         {% endfor %}
       </tbody>
@@ -56,6 +57,18 @@
 $(function(){
   $("#tasktable").tablesorter({
     widgets: ["filter"],
+    widgetOptions : {
+      filter_columnFilters : false,
+      filter_reset: '#filter-reset',
+    }
+  });
+  $('button[data-filter-column]').click(function(){
+    $t = $(this);
+    column = $t.data('filter-column');
+    context = $t.data('filter-text');
+    var columns = [];
+    columns[column] = context;
+    $('table').trigger('search', [ columns ]);
   });
 });
 </script>
