@@ -197,6 +197,8 @@ def complete_task(request, task_id):
     id, task = w.get_task(id=task_id)
     # Only complete tasks from certain views
     if task['view'] in ['inbox', 'today', 'next', 'someday']:
+        task['view'] = 'completed'
+        w.task_update(task)
         w.task_done(id=task_id)
 
     return HttpResponseRedirect(reverse('list-tasks', args=['inbox']))
