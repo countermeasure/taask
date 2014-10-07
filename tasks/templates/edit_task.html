@@ -29,8 +29,13 @@
           <i class="fa fa-minus-circle fa-lg"></i>&nbsp;Delete task
         </a>
         <div class="pull-right">
-          <a href={% url 'list-tasks' 'inbox' %} type="button" class="btn btn-default">
+          <a href={% url 'list-tasks' 'inbox' %} type="button"
+            class="btn btn-default">
             <i class="fa fa-minus-circle fa-lg"></i>&nbsp;Cancel
+          </a>
+          <a href={% url 'complete-task' task_id %} type="button"
+            class="btn btn-primary">
+            <i class="fa fa-minus-circle fa-lg"></i>&nbsp;Complete
           </a>
           <button type="submit" class="btn btn-primary">
             <i class="fa fa-check-circle fa-lg"></i>&nbsp;Save task

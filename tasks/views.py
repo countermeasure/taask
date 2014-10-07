@@ -191,6 +191,16 @@ def edit_task(request, task_id):
 # Add a view which annotates and denotates tasks, as this can't be done by the
 # task_update() method
 
+def complete_task(request, task_id):
+    """Completes a task."""
+
+    id, task = w.get_task(id=task_id)
+    # Only complete tasks from certain views
+    if task['view'] in ['inbox', 'today', 'next', 'someday']:
+        w.task_done(id=task_id)
+
+    return HttpResponseRedirect(reverse('list-tasks', args=['inbox']))
+
 
 def delete_task(request, task_id):
     """Deletes a task."""
