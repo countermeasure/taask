@@ -44,16 +44,6 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li id="all"><button type="button" class="btn btn-primary btn-context reset-filter">
-              All</button></li>
-            {% for context in contexts %}
-              <li id="{{ context }}">
-                <button type="button" class="btn btn-default btn-context"
-                  data-filter-column="14" data-filter-text="{{ context }}">
-                  {{ context }}
-                </button>
-              </li>
-            {% endfor %}
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="fa fa-cog fa-lg"></i>
@@ -66,6 +56,19 @@
               </ul>
             </li>
           </ul>
+          <div class="navbar-form navbar-right">
+            <button type="button" id="{{ context }}"
+              class="btn btn-primary btn-context reset-filter">
+              All
+            </button>
+            {% for context in contexts %}
+              <button type="button" id="{{ context }}"
+                class="btn btn-default btn-context"
+                data-filter-column="14" data-filter-text="{{ context }}">
+                {{ context }}
+              </button>
+            {% endfor %}
+          </div>
         </div>
       </div>
     </div>
