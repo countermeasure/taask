@@ -2,77 +2,74 @@
 
 {% block content %}
 
-<div class="col-sm-10 col-md-8 col-lg-6">
-
-    <table class="table table-hover tablesorter" id="tasktable">
-      <thead>
-        <tr>
-          <th>Description</th>
-          <th>Project</th>
-          <th>Context 3</th>
-          <th>Context 2</th>
-          <th>Context 1</th>
-          <th>Time</th>
-          <th>Priority</th>
-          <th>Order</th>
-          <th>Due</th>
-          <th>Recur</th>
-          <th>Until</th>
-          <th>Wait</th>
-          <th>View</th>
-          <th>ID</th>
+  <table class="table table-hover tablesorter" id="tasktable">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Project</th>
+        <th>Context 3</th>
+        <th>Context 2</th>
+        <th>Context 1</th>
+        <th>Time</th>
+        <th>Priority</th>
+        <th>Order</th>
+        <th>Due</th>
+        <th>Recur</th>
+        <th>Until</th>
+        <th>Wait</th>
+        <th>View</th>
+        <th>ID</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in task_list %}
+        <tr id={{ task.id }}
+          onclick="document.location='{% url 'edit-task' task.id %}';">
+          <td>{{ task.description }}</td>
+          <td>{{ task.project|default_if_none:'' }}</td>
+          {% for tag in task.tags reversed %}
+            <td>{{ tag|default_if_none:'' }}</td>
+          {% endfor %}
+          <td>{{ task.time|default_if_none:'' }}</td>
+          <td>{{ task.priority|default_if_none:'' }}</td>
+          <td>{{ task.order|default_if_none:'' }}</td>
+          <td>{{ task.due|default_if_none:'' }}</td>
+          <td>{{ task.recur|default_if_none:'' }}</td>
+          <td>{{ task.until|default_if_none:'' }}</td>
+          <td>{{ task.wait|default_if_none:'' }}</td>
+          <td>{{ task.view|default_if_none:'' }}</td>
+          <td>{{ task.id }}</td>
+          <td class="hidden">{{ task.tags }}</td>
         </tr>
-      </thead>
-      <tbody>
-        {% for task in task_list %}
-          <tr id={{ task.id }}
-            onclick="document.location='{% url 'edit-task' task.id %}';">
-            <td>{{ task.description }}</td>
-            <td>{{ task.project|default_if_none:'' }}</td>
-            {% for tag in task.tags reversed %}
-              <td>{{ tag|default_if_none:'' }}</td>
-            {% endfor %}
-            <td>{{ task.time|default_if_none:'' }}</td>
-            <td>{{ task.priority|default_if_none:'' }}</td>
-            <td>{{ task.order|default_if_none:'' }}</td>
-            <td>{{ task.due|default_if_none:'' }}</td>
-            <td>{{ task.recur|default_if_none:'' }}</td>
-            <td>{{ task.until|default_if_none:'' }}</td>
-            <td>{{ task.wait|default_if_none:'' }}</td>
-            <td>{{ task.view|default_if_none:'' }}</td>
-            <td>{{ task.id }}</td>
-            <td class="hidden">{{ task.tags }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
-</div><!-- /.col -->
+      {% endfor %}
+    </tbody>
+  </table>
 
 {% endblock content %}
 
 {% block extra-js %}
 
-<script>
-$(function(){
-  $("#tasktable").tablesorter({
-    widgets: ["filter"],
-    widgetOptions : {
-      filter_columnFilters : false,
-      filter_defaultFilter: { 0 : '~{query}' },
-      filter_external : '.search',
-      filter_reset: '.reset-filter',
-    }
-  });
-  $('button[data-filter-column]').click(function(){
-    $t = $(this);
-    column = $t.data('filter-column');
-    context = $t.data('filter-text');
-    var columns = [];
-    columns[column] = context;
-    $('table').trigger('search', [ columns ]);
-  });
-});
-</script>
+  <!-- Activate Tablesorter filter and search -->
+  <script>
+    $(function(){
+      $("#tasktable").tablesorter({
+        widgets: ["filter"],
+        widgetOptions : {
+          filter_columnFilters : false,
+          filter_defaultFilter: { 0 : '~{query}' },
+          filter_external : '.search',
+          filter_reset: '.reset-filter',
+        }
+      });
+      $('button[data-filter-column]').click(function(){
+        $t = $(this);
+        column = $t.data('filter-column');
+        context = $t.data('filter-text');
+        var columns = [];
+        columns[column] = context;
+        $('table').trigger('search', [ columns ]);
+      });
+    });
+  </script>
 
 {% endblock extra-js %}
