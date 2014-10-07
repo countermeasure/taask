@@ -44,11 +44,11 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><button type="button" class="btn btn-primary reset-filter">
+            <li id="all"><button type="button" class="btn btn-primary btn-context reset-filter">
               All</button></li>
             {% for context in contexts %}
-              <li>
-                <button type="button" class="btn btn-default"
+              <li id="{{ context }}">
+                <button type="button" class="btn btn-default btn-context"
                   data-filter-column="14" data-filter-text="{{ context }}">
                   {{ context }}
                 </button>
@@ -142,6 +142,16 @@
       $( "#clear-search" ).click(function () {
         $( "#search-box" ).html();
         $( "#clear-search" ).addClass( "hidden" );
+      });
+    </script>
+
+    <!-- Make context buttons indicate current context -->
+    <script>
+      $( ".btn-context" ).click(function () {
+        $( ".btn-context" ).filter( ".btn-primary" ).toggleClass(
+          "btn-primary btn-default"
+        );
+        $( this ).toggleClass( "btn-default btn-primary" )
       });
     </script>
 
