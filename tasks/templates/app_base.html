@@ -57,14 +57,14 @@
             </li>
           </ul>
           <div class="navbar-form navbar-right">
-            <button type="button" id="{{ context }}"
+            <button type="button" id="all"
               class="btn btn-primary btn-context reset-filter">
               All
             </button>
             {% for context in contexts %}
-              <button type="button" id="{{ context }}"
+              <button type="button" id="{{ context|lower }}"
                 class="btn btn-default btn-context"
-                data-filter-column="14" data-filter-text="{{ context }}">
+                data-filter-column="14" data-filter-text="{{ context|lower }}">
                 {{ context }}
               </button>
             {% endfor %}

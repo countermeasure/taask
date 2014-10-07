@@ -64,6 +64,8 @@
       $('button[data-filter-column]').click(function(){
         $t = $(this);
         column = $t.data('filter-column');
+        // The contents of 'context' need to be lower case for the search to
+        // work, even if the term being searched for is upper case.
         context = $t.data('filter-text');
         var columns = [];
         columns[column] = context;
