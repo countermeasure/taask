@@ -7,40 +7,40 @@
     <table class="table table-hover tablesorter" id="tasktable">
       <thead>
         <tr>
-          <th>ID</th>
           <th>Description</th>
-          <th>Priority</th>
-          <th>Time</th>
           <th>Project</th>
+          <th>Context 3</th>
+          <th>Context 2</th>
+          <th>Context 1</th>
+          <th>Time</th>
+          <th>Priority</th>
+          <th>Order</th>
           <th>Due</th>
           <th>Recur</th>
           <th>Until</th>
           <th>Wait</th>
           <th>View</th>
-          <th>Order</th>
-          <th>Context 1</th>
-          <th>Context 2</th>
-          <th>Context 3</th>
+          <th>ID</th>
         </tr>
       </thead>
       <tbody>
         {% for task in task_list %}
           <tr id={{ task.id }}
             onclick="document.location='{% url 'edit-task' task.id %}';">
-            <td>{{ task.id }}</td>
             <td>{{ task.description }}</td>
-            <td>{{ task.priority }}</td>
-            <td>{{ task.time }}</td>
             <td>{{ task.project }}</td>
+            {% for tag in task.tags reversed %}
+              <td>{{ tag }}</td>
+            {% endfor %}
+            <td>{{ task.time }}</td>
+            <td>{{ task.priority }}</td>
+            <td>{{ task.order }}</td>
             <td>{{ task.due }}</td>
             <td>{{ task.recur }}</td>
             <td>{{ task.until }}</td>
             <td>{{ task.wait }}</td>
             <td>{{ task.view }}</td>
-            <td>{{ task.order }}</td>
-            {% for tag in task.tags %}
-              <td>{{ tag }}</td>
-            {% endfor %}
+            <td>{{ task.id }}</td>
           </tr>
         {% endfor %}
       </tbody>
