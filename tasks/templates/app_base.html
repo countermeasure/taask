@@ -79,33 +79,41 @@
           <ul class="nav nav-sidebar">
             <li id="new_task"><a href="{% url 'add-task' %}">New task</a></li>
             <li id="inbox"><a href="{% url 'list-tasks' 'inbox' %}">
-              Inbox: {{ task_count.inbox }}</a></li>
+              Inbox<span class="badge pull-right">{{ task_count.inbox }}</span></a></li>
           </ul>
           <ul class="nav nav-sidebar">
             <li id="today"><a href="{% url 'list-tasks' 'today' %}">
-              Today: {{ task_count.today }}</a></li>
+              Today<span class="badge pull-right">{{ task_count.today }}
+              </span></a></li>
             <li id="next"><a href="{% url 'list-tasks' 'next' %}">
-              Next: {{ task_count.next }}</a></li>
+              Next<span class="badge pull-right">{{ task_count.next }}
+              </span></a></li>
             <li id="scheduled"><a href="{% url 'list-tasks' 'scheduled' %}">
-              Scheduled: {{ task_count.scheduled }}</a></li>
+              Scheduled<span class="badge pull-right">
+              {{ task_count.scheduled }}
+              </span></a></li>
             <li id="recurring"><a href="{% url 'list-tasks' 'recurring' %}">
-              Recurring: {{ task_count.recurring }}</a></li>
+              Recurring<span class="badge pull-right">
+              {{ task_count.recurring }}
+              </span></a></li>
             <li id="someday"><a href="{% url 'list-tasks' 'someday' %}">
-              Someday: {{ task_count.someday }}</a></li>
+              Someday<span class="badge pull-right">{{ task_count.someday }}
+              </span></a></li>
           </ul>
           <ul class="nav nav-sidebar">
             {% for project in projects %}
               <li id="{{ project|lower }}">
                 <a href="{% url 'list-tasks' project|lower %}">
-                {{ project }}: (counter)</a>
-              </li>
+                {{ project }}<span class="badge pull-right">counter
+                </span></a></li>
             {% endfor %}
           </ul>
           <ul class="nav nav-sidebar">
             <li id="completed"><a href="{% url 'list-tasks' 'completed' %}">
               Completed</a></li>
             <li id="rubbish"><a href="{% url 'list-tasks' 'rubbish' %}">
-              Rubbish: {{ task_count.rubbish }}</a></li>
+              Rubbish<span class="badge pull-right">{{ task_count.rubbish }}
+              </span></a></li>
           </ul>
           <form role="form" class="nav nav-sidebar navbar-form">
             <input type="text" class="search form-control" data-column="0"
