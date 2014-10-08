@@ -1,8 +1,10 @@
 {% extends "app_base.html" %}
 
+{% load customtags %}
+
 {% block content %}
 
-<div class="col-sm-10 col-md-8 col-lg-6">
+<div class="col-sm-12 col-md-10 col-lg-8">
   <div class="panel panel-default">
     <div class="panel-heading">
       <i class="fa fa-plus-circle fa-fw fa-lg"></i>&nbsp;
@@ -15,13 +17,15 @@
           <li> {{ tw_error }}</li>
         </ul>
       {% endif %}
-      <form role="form" id="addtaskform" action="" method="POST">
+      <form role="form" class="form-horizontal" id="addtaskform" action="" method="POST">
         {% csrf_token %}
         {% for field in form %}
           <div class="form-group">
-            {{ field.label_tag }}
-            {{ field }}
-            {{field.errors}}
+            {{ field.label_tag|labelclass:"col-sm-2 control-label" }}
+            <div class="col-sm-10">
+              {{ field|inputclass:"form-control" }}
+              {{field.errors}}
+            </div>
           </div>
         {%endfor%}
         <div class="pull-right">

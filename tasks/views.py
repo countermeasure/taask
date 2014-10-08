@@ -60,7 +60,7 @@ def add_task(request):
                            partition('; stdout')[0]
 
     else:
-        form = AddTaskForm()
+        form = AddTaskForm(label_suffix='')
 
     options = get_options()
     projects = options['projects']
