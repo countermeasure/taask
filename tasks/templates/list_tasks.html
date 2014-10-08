@@ -68,6 +68,8 @@
       $("#tasktable").tablesorter({
         widgets: ["filter"],
         headers: { 6: { sorter: 'priority' } },
+        // Sort by 'priority', then 'order', then 'time'
+        sortList: [[6,1],[7,0],[5,0]],
         widgetOptions : {
           filter_columnFilters : false,
           filter_defaultFilter: { 0 : '~{query}' },
