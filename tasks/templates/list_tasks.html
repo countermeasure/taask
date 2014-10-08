@@ -51,9 +51,23 @@
 
   <!-- Activate Tablesorter filter and search -->
   <script>
+    $.tablesorter.addParser({
+      id: 'priority',
+      is: function(s, table, cell) {
+        return false;
+      },
+      format: function(s, table, cell, cellIndex) {
+        return s.toLowerCase()
+          .replace(/h/,2)
+          .replace(/m/,1)
+          .replace(/l/,0);
+      },
+      type: 'numeric'
+    });
     $(function(){
       $("#tasktable").tablesorter({
         widgets: ["filter"],
+        headers: { 6: { sorter: 'priority' } },
         widgetOptions : {
           filter_columnFilters : false,
           filter_defaultFilter: { 0 : '~{query}' },
