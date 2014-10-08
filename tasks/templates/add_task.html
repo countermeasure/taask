@@ -23,7 +23,11 @@
           <div class="form-group">
             {{ field.label_tag|labelclass:"col-sm-2 control-label" }}
             <div class="col-sm-10">
-              {{ field|inputclass:"form-control" }}
+              {% ifequal field.name 'description' %}
+                {{ field|inputclass:"form-control"|autofocus }}
+              {% else %}
+                {{ field|inputclass:"form-control" }}
+              {% endifequal %}
               {{field.errors}}
             </div>
           </div>

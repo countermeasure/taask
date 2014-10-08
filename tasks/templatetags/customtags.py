@@ -32,3 +32,12 @@ def labelclass(field, class_to_add):
         return mark_safe(field_string.replace('>',
             ' class="%s">' % class_to_add, 1))
     return value
+
+
+@register.filter(name='autofocus')
+def autofocus(field):
+    """Sets autofocus for a form input element."""
+
+    field_string = unicode(field)
+
+    return mark_safe(field_string.replace('>', ' autofocus>', 1))
