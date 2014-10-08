@@ -26,13 +26,14 @@
         <tr id={{ task.id }}
           onclick="document.location='{% url 'edit-task' task.id %}';">
           <td>{{ task.description }}</td>
-          <td>{{ task.project|default_if_none:'' }}</td>
+          <td><span class="label label-default">{{ task.project|default_if_none:'' }}</span>
+          </td>
           {% for tag in task.tags reversed %}
-            <td>{{ tag|default_if_none:'' }}</td>
+            <td><span class="label label-primary">{{ tag|default_if_none:'' }}</span></td>
           {% endfor %}
-          <td>{{ task.time|default_if_none:'' }}</td>
-          <td>{{ task.priority|default_if_none:'' }}</td>
-          <td>{{ task.order|default_if_none:'' }}</td>
+          <td><span class="label label-primary">{{ task.time|default_if_none:'' }}</span></td>
+          <td><span class="label label-primary">{{ task.priority|default_if_none:'' }}</span></td>
+          <td><span class="label label-danger">{{ task.order|default_if_none:'' }}</span></td>
           <td>{{ task.due|default_if_none:'' }}</td>
           <td>{{ task.recur|default_if_none:'' }}</td>
           <td>{{ task.until|default_if_none:'' }}</td>
