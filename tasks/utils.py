@@ -2,6 +2,20 @@ import yaml
 from taskw import TaskWarrior
 
 
+w = TaskWarrior()
+
+def check_task_data():
+    """Checks over the Taskwarrior data file to make sure it is up to date."""
+
+    tasks = w.filter_tasks({'status': 'pending', 'view': None})
+
+    # Move tasks which have status 'pending' but have no view data, which means
+    # that the just stopped being scheduled, into the today view.
+    for task in tasks:
+        task['view'] = 'today'
+        w.task_update(task)
+
+
 def get_options():
     """Returns the contents of the twango.data file"""
 
@@ -26,8 +40,6 @@ def get_choices(attribute):
 
 def get_task_count(projects):
     """Returns a dictionary of the number of tasks in each view."""
-
-    w = TaskWarrior()
 
     views_to_count = [
         ('inbox', 'pending'),

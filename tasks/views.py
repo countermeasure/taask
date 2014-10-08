@@ -6,7 +6,8 @@ from tasks.forms import (AddTaskForm,
                         ContextForm,
                         EditTaskForm,
                         ProjectForm)
-from tasks.utils import (get_options,
+from tasks.utils import (check_task_data,
+                         get_options,
                          get_task_count,
                          manage_configuration)
 from taskw import TaskWarrior
@@ -86,6 +87,8 @@ def list_tasks(request, view):
     options = get_options()
     projects = options['projects']
     contexts = options['contexts']
+
+    check_task_data()
 
     if view in ['inbox', 'today', 'next', 'someday', 'rubbish']:
         task_list = w.filter_tasks({'status': 'pending', 'view': view,})
