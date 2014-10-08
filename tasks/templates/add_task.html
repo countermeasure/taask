@@ -23,11 +23,13 @@
           <div class="form-group">
             {{ field.label_tag|labelclass:"col-sm-2 control-label" }}
             <div class="col-sm-10">
-              {% ifequal field.name 'description' %}
+              {% if field.name == 'description' %}
                 {{ field|inputclass:"form-control"|autofocus }}
+              {% elif field.name == 'due' or field.name == 'until' or field.name == 'wait' %}
+                {{ field|inputclass:"form-control datepicker" }}
               {% else %}
                 {{ field|inputclass:"form-control" }}
-              {% endifequal %}
+              {% endif %}
               {{field.errors}}
             </div>
           </div>
