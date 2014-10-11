@@ -145,15 +145,13 @@ def edit_task(request, task_id):
                               'wait']
             for attribute in non_tag_fields:
                 value = form.cleaned_data[attribute]
-                # The time and order variables must be integers to be saved into
-                # the task dictionary
                 if value == '':
                     value = None
+                # If their value isn't None, the time and order variables
+                # must be integers to be saved into the task dictionary
                 if attribute in ['time', 'order']:
                     if value:
                         value = int(value)
-                    else:
-                        value = 0
                 task[attribute] = value
             # Create the tag attribute in the format which taskw expects and
             # write it to the task
