@@ -147,6 +147,8 @@ def edit_task(request, task_id):
                 value = form.cleaned_data[attribute]
                 # The time and order variables must be integers to be saved into
                 # the task dictionary
+                if value == '':
+                    value = None
                 if attribute in ['time', 'order']:
                     if value:
                         value = int(value)
