@@ -163,8 +163,17 @@ def edit_task(request, task_id):
                 value = form.cleaned_data[attribute]
                 tags.append(value)
             task['tags'] = tags
-            # Update the task
-            w.task_update(task)
+            # Update the task while being aware that Taskwarrior may
+            # ask a question as a result of the task update
+            try:
+                w.task_update(task)
+            except Exception, e:
+                question_received = e[11:83]
+                expected_question = 'This is a recurring task.  Do you ' + \
+                                    'want to modify all pending recurrences'
+                if question_received == expected_question:
+                    w.answer_question(answer='yes')
+
             return HttpResponseRedirect(reverse('list-tasks', args=['today']))
     else:
         # Add each individual tag item to the task object so that they are
