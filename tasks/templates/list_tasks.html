@@ -30,9 +30,9 @@
           {% for tag in task.tags reversed %}
             <td><span class="label label-primary">{{ tag|default_if_none:'' }}</span></td>
           {% endfor %}
-          <td><span class="label label-primary">{{ task.time|default_if_none:'' }}</span></td>
-          <td><span class="label label-primary">{{ task.priority|default_if_none:'' }}</span></td>
-          <td><span class="label label-danger">{{ task.order|default_if_none:'' }}</span></td>
+          <td><span class="label label-primary label-time">{{ task.time|default_if_none:'' }}</span></td>
+          <td><span class="label label-primary label-priority">{{ task.priority|default_if_none:'' }}</span></td>
+          <td><span class="label label-danger label-order">{{ task.order|default_if_none:'' }}</span></td>
           <td>{{ task.due|default_if_none:'' }}</td>
           <td>{{ task.recur|default_if_none:'' }}</td>
           <td>{{ task.until|default_if_none:'' }}</td>
@@ -80,9 +80,9 @@
       },
       format: function(s, table, cell, cellIndex) {
         return s.toLowerCase()
-          .replace(/h/,2)
-          .replace(/m/,1)
-          .replace(/l/,0);
+          .replace(/high/,2)
+          .replace(/medium/,1)
+          .replace(/low/,0);
       },
       type: 'numeric'
     });
@@ -170,5 +170,24 @@
       });
     });
   </script>
-
+  
+    <!-- Add 'mins' to the end of the text of all time labels -->
+  <script>
+    $( ".label-time" ).each(function() {
+      var time = $( this ).html();
+      if ( time ) {
+        $( this ).append(" mins");
+      };
+    });
+    $( ".label-priority" ).each(function() {
+      var priority_code = $( this ).html();
+      if ( priority_code == "L") {
+        $( this ).html ( "Low" );
+      } else if ( priority_code == "M" ) {
+        $( this ).html ( "Medium" );
+      } else if ( priority_code == "H" ) {
+        $( this ).html ( "High" );
+      };
+    });
+  </script>
 {% endblock extra-js %}
