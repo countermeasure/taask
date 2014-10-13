@@ -51,7 +51,6 @@
 
 {% block extra-js %}
 
-
   <!-- Get CSRF token -->
   <script>
   function getCookie(name) {
@@ -142,6 +141,7 @@
         },
         complete: function() {
           ReactivateForm();
+          ActivateDatepicker();
         },
       });
     });
@@ -190,4 +190,5 @@
       };
     });
   </script>
+
 {% endblock extra-js %}

@@ -145,9 +145,11 @@
     <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
 
     <script>
-      $( ".datepicker" ).datepicker({
-        inline: true
-      });
+      function ActivateDatepicker() {
+        $( ".datepicker" ).datepicker({
+          inline: true
+        });
+      };
     </script>
 
     <!-- Set the active view on the sidebar -->
