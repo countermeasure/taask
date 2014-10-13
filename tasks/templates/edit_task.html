@@ -1,4 +1,4 @@
-  <div class="panel panel-default">
+  <div class="panel panel-default" id="task-edit-panel">
     <div class="panel-heading">
       <i class="fa fa-plus-circle fa-fw fa-lg"></i>&nbsp;
       Edit task {{ task_id }}
@@ -34,7 +34,8 @@
             class="btn btn-default">
             <i class="fa fa-minus-circle fa-lg"></i>&nbsp;Cancel
           </a>
-          <button type="submit" class="btn btn-primary">
+          <button type="button" class="btn btn-primary btn-save"
+            id="save-task-{{ task_id }}">
             <i class="fa fa-check-circle fa-lg"></i>&nbsp;Save task
           </button>
         </div>

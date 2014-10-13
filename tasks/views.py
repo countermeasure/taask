@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import (HttpResponse,
+                         HttpResponseRedirect)
 from django.core.urlresolvers import reverse
 
 from tasks.forms import (AddTaskForm,
@@ -166,7 +167,7 @@ def edit_task(request, task_id):
             # Update the task while being aware that Taskwarrior may
             # ask a question as a result of the task update
             try:
-                w.task_update(task)
+                id, task = w.task_update(task)
             except Exception, e:
                 question_received = e[11:83]
                 expected_question = 'This is a recurring task.  Do you ' + \
@@ -174,7 +175,7 @@ def edit_task(request, task_id):
                 if question_received == expected_question:
                     w.answer_question(answer='yes')
 
-            return HttpResponseRedirect(reverse('list-tasks', args=['today']))
+            return render(request, 'single_task.html', {'task': task})
     else:
         # Add each individual tag item to the task object so that they are
         # displayed in the form

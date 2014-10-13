@@ -51,6 +51,26 @@
 
 {% block extra-js %}
 
+
+  <!-- Get CSRF token -->
+  <script>
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = jQuery.trim(cookies[i]);
+        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  };
+  var csrftoken = getCookie('csrftoken');
+  </script>
+
   <!-- Activate Tablesorter filter and search -->
   <script>
     $.tablesorter.addParser({
@@ -122,6 +142,30 @@
         },
         complete: function() {
           ReactivateForm();
+        },
+      });
+    });
+  </script>
+
+  <!-- Submit AJAX task edit form -->
+  <script>
+    $(document).on("click", ".btn-save", function(){
+      var task_id = $( this ).attr("id");
+      var task_no = task_id.slice(10);
+      var form_data = $("#edittaskform").serialize();
+      // See note about dummy_url in EditTask function
+      var dummy_url = "{% url 'edit-task' 1 %}";
+      var real_url = dummy_url.replace(/1/, task_no);
+      var row_id = "#task-" + task_no
+      $.ajax({
+        url: real_url,
+        type: "POST",
+        data: form_data + '\&csrfmiddlewaretoken=' + csrftoken,
+        dataType : "html",
+        success: function( resp ) {
+          $( row_id ).html ( resp );
+          $( "#task-edit-panel" ).remove();
+          $("#tasktable").trigger('update');
         },
       });
     });
