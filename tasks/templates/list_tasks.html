@@ -23,8 +23,7 @@
     </thead>
     <tbody>
       {% for task in task_list %}
-        <tr id={{ task.id }}
-          onclick="document.location='{% url 'edit-task' task.id %}';">
+        <tr class="task-row" id="task-{{ task.id }}">
           <td>{{ task.description }}</td>
           <td><span class="label label-default">{{ task.project|default_if_none:'' }}</span>
           </td>
@@ -41,6 +40,8 @@
           <td>{{ task.view|default_if_none:'' }}</td>
           <td>{{ task.id }}</td>
           <td class="hidden">{{ task.tags }}</td>
+        </tr>
+        <tr class="tablesorter-childRow" id="edit-task-{{ task.id }}">
         </tr>
       {% endfor %}
     </tbody>
@@ -87,6 +88,41 @@
         var columns = [];
         columns[column] = context;
         $('table').trigger('search', [ columns ]);
+      });
+    });
+  </script>
+
+  <!-- Override TableSorter's insistance on deactivating a form which is
+  in a child row by moving the contents of the form out of the <form> tags.
+  This function is called when the AJAX completes. -->
+  <script>
+    function ReactivateForm() {
+      $('#form-contents').appendTo($('#edittaskform'));
+    };
+  </script>
+
+  <!-- Show AJAX task edit form -->
+  <script>
+    $( ".task-row" ).click(function( EditTask ){
+      var task_id = $( this ).attr("id");
+      var task_no = task_id.slice(5);
+      var target = "#edit-" + task_id;
+      // Django will convert the url template expression into html when the
+      // page is first rendered, which is before the url is actually known.
+      // Provide a dummy url which can be modified into the real url after
+      // it is known.
+      var dummy_url = "{% url 'edit-task' 1 %}";
+      var real_url = dummy_url.replace(/1/, task_no);
+      $.ajax({
+        url: real_url,
+        type: "GET",
+        dataType : "html",
+        success: function( resp ) {
+          $( target ).html( resp );
+        },
+        complete: function() {
+          ReactivateForm();
+        },
       });
     });
   </script>

@@ -186,16 +186,7 @@ def edit_task(request, task_id):
         # tags
         form = EditTaskForm(task)
 
-    options = get_options()
-    projects = options['projects']
-    contexts = options['contexts']
-
-    task_count = get_task_count(projects)
-
     return render(request, 'edit_task.html', {
-                           'task_count': task_count,
-                           'projects': projects,
-                           'contexts': contexts,
                            'task_id': task_id,
                            'form': form,
                            })
