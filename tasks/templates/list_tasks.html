@@ -23,7 +23,7 @@
     </thead>
     <tbody>
       {% for task in task_list %}
-        <tr class="task-row" id="task-{{ task.id }}">
+        <tr class="task-row" id="task-{{ task.id }}" url="{% url 'edit-task' task.id %}">
           <td>{{ task.description }}</td>
           <td><span class="label label-default">{{ task.project|default_if_none:'' }}</span>
           </td>
@@ -51,144 +51,16 @@
 
 {% block extra-js %}
 
-  <!-- Get CSRF token -->
   <script>
-  function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-      var cookies = document.cookie.split(';');
-      for (var i = 0; i < cookies.length; i++) {
-        var cookie = jQuery.trim(cookies[i]);
-        if (cookie.substring(0, name.length + 1) == (name + '=')) {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
-        }
-      }
-    }
-    return cookieValue;
-  };
-  var csrftoken = getCookie('csrftoken');
-  </script>
-
-  <!-- Activate Tablesorter filter and search -->
-  <script>
-    $.tablesorter.addParser({
-      id: 'priority',
-      is: function(s, table, cell) {
-        return false;
-      },
-      format: function(s, table, cell, cellIndex) {
-        return s.toLowerCase()
-          .replace(/high/,2)
-          .replace(/medium/,1)
-          .replace(/low/,0);
-      },
-      type: 'numeric'
-    });
-    $(function(){
-      $("#tasktable").tablesorter({
-        widgets: ["filter"],
-        headers: { 6: { sorter: 'priority' } },
-        // Sort by 'priority', then 'order', then 'time'
-        sortList: [[6,1],[7,0],[5,0]],
-        widgetOptions : {
-          filter_columnFilters : false,
-          filter_defaultFilter: { 0 : '~{query}' },
-          filter_external : '.search',
-          filter_reset: '.reset-filter',
-        }
-      });
-      $('button[data-filter-column]').click(function(){
-        $t = $(this);
-        column = $t.data('filter-column');
-        // The contents of 'context' need to be lower case for the search to
-        // work, even if the term being searched for is upper case.
-        context = $t.data('filter-text');
-        var columns = [];
-        columns[column] = context;
-        $('table').trigger('search', [ columns ]);
-      });
+    $(function() {
+      ActivateDatepicker();
+      ExpandLabels();
+      // Table must not be sorted until labels have been expanded
+      ActivateTablesorter();
+      EnableAjaxForm();
     });
   </script>
 
-  <!-- Override TableSorter's insistance on deactivating a form which is
-  in a child row by moving the contents of the form out of the <form> tags.
-  This function is called when the AJAX completes. -->
-  <script>
-    function ReactivateForm() {
-      $('#form-contents').appendTo($('#edittaskform'));
-    };
-  </script>
 
-  <!-- Show AJAX task edit form -->
-  <script>
-    $( ".task-row" ).click(function( EditTask ){
-      var task_id = $( this ).attr("id");
-      var task_no = task_id.slice(5);
-      var target = "#edit-" + task_id;
-      // Django will convert the url template expression into html when the
-      // page is first rendered, which is before the url is actually known.
-      // Provide a dummy url which can be modified into the real url after
-      // it is known.
-      var dummy_url = "{% url 'edit-task' 1 %}";
-      var real_url = dummy_url.replace(/1/, task_no);
-      $.ajax({
-        url: real_url,
-        type: "GET",
-        dataType : "html",
-        success: function( resp ) {
-          $( target ).html( resp );
-        },
-        complete: function() {
-          ReactivateForm();
-          ActivateDatepicker();
-        },
-      });
-    });
-  </script>
-
-  <!-- Submit AJAX task edit form -->
-  <script>
-    $(document).on("click", ".btn-save", function(){
-      var task_id = $( this ).attr("id");
-      var task_no = task_id.slice(10);
-      var form_data = $("#edittaskform").serialize();
-      // See note about dummy_url in EditTask function
-      var dummy_url = "{% url 'edit-task' 1 %}";
-      var real_url = dummy_url.replace(/1/, task_no);
-      var row_id = "#task-" + task_no
-      $.ajax({
-        url: real_url,
-        type: "POST",
-        data: form_data + '\&csrfmiddlewaretoken=' + csrftoken,
-        dataType : "html",
-        success: function( resp ) {
-          $( row_id ).html ( resp );
-          $( "#task-edit-panel" ).remove();
-          $("#tasktable").trigger('update');
-        },
-      });
-    });
-  </script>
-  
-    <!-- Add 'mins' to the end of the text of all time labels -->
-  <script>
-    $( ".label-time" ).each(function() {
-      var time = $( this ).html();
-      if ( time ) {
-        $( this ).append(" mins");
-      };
-    });
-    $( ".label-priority" ).each(function() {
-      var priority_code = $( this ).html();
-      if ( priority_code == "L") {
-        $( this ).html ( "Low" );
-      } else if ( priority_code == "M" ) {
-        $( this ).html ( "Medium" );
-      } else if ( priority_code == "H" ) {
-        $( this ).html ( "High" );
-      };
-    });
-  </script>
 
 {% endblock extra-js %}

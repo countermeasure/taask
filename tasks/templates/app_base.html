@@ -143,39 +143,11 @@
     <script src="{% static 'js/jquery-tablesorter.widgets.min.js' %}"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
-
-    <script>
-      function ActivateDatepicker() {
-        $( ".datepicker" ).datepicker({
-          inline: true
-        });
-      };
-    </script>
-
+    <script src="{% static 'js/twango.js' %}"></script>
+    
     <!-- Set the active view on the sidebar -->
     <script>
       $( "#{{ view }}" ).addClass( "active" );
-    </script>
-
-    <!-- Manage the search field and the 'Clear search' button -->
-    <script>
-      $( "#search-box" ).focus(function () {
-        $( "#clear-search" ).removeClass( "hidden" );
-      });
-      $( "#clear-search" ).click(function () {
-        $( "#search-box" ).html();
-        $( "#clear-search" ).addClass( "hidden" );
-      });
-    </script>
-
-    <!-- Make context buttons indicate current context -->
-    <script>
-      $( ".btn-context" ).click(function () {
-        $( ".btn-context" ).filter( ".btn-primary" ).toggleClass(
-          "btn-primary btn-default"
-        );
-        $( this ).toggleClass( "btn-default btn-primary" )
-      });
     </script>
 
     {% block extra-js %}
