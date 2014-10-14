@@ -149,11 +149,16 @@ function ExpandLabels() {
     var tomorrow_raw = new Date();
     tomorrow_raw.setTime(today_raw.getTime() + (24*60*60*1000));
     tomorrow = $.datepicker.formatDate( "dd M yy", tomorrow_raw);
+    var yesterday_raw = new Date();
+    yesterday_raw.setTime(today_raw.getTime() - (24*60*60*1000));
+    yesterday = $.datepicker.formatDate( "dd M yy", yesterday_raw);
     var due_date = $( this ).html();
     if ( due_date == today ) {
       $( this ).html ( "Today" );
     } else if ( due_date == tomorrow ) {
       $( this ).html ( "Tomorrow" );
+    } else if ( due_date == yesterday ) {
+      $( this ).html ( "Yesterday" );
     };
   });
 };
