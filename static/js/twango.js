@@ -174,11 +174,13 @@ function EnableAjaxForm() {
     var task_no = task_id.slice(5);
     var target = "#edit-" + task_id;
     var target_url = $( this ).attr("url");
+    var task_id_verbatim = "#" + task_id
     $.ajax({
       url: target_url,
       type: "GET",
       dataType : "html",
       success: function( resp ) {
+        $( task_id_verbatim ).hide();
         $( target ).html( resp );
       },
       complete: function() {
@@ -204,6 +206,7 @@ function EnableAjaxForm() {
           // Do this if the response starts with <td>, which indicates
           // that the task was successfully updated.
           $( row_id ).html ( resp );
+          $( row_id ).show();
           $( "#task-edit-cell" ).remove();
           ExpandLabels();
           $("#tasktable").trigger('update');
