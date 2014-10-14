@@ -7,7 +7,7 @@
 <td><span class="label label-primary label-time">{{ task.time|default_if_none:'' }}</span></td>
 <td><span class="label label-primary label-priority">{{ task.priority|default_if_none:'' }}</span></td>
 <td><span class="label label-danger">{{ task.order|default_if_none:'' }}</span></td>
-<td>{{ task.due|default_if_none:'' }}</td>
+<td><span class="label label-danger label-due">{{ task.due|default_if_none:'' }}</span></td>
 <td>{{ task.recur|default_if_none:'' }}</td>
 <td>{{ task.until|default_if_none:'' }}</td>
 <td>{{ task.wait|default_if_none:'' }}</td>

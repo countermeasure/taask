@@ -123,6 +123,19 @@ function ExpandLabels() {
       $( this ).html ( "High" );
     };
   });
+  $( ".label-due" ).each(function() {
+    var today_raw = new Date();
+    today = $.datepicker.formatDate( "dd M yy", today_raw);
+    var tomorrow_raw = new Date();
+    tomorrow_raw.setTime(today_raw.getTime() + (24*60*60*1000));
+    tomorrow = $.datepicker.formatDate( "dd M yy", tomorrow_raw);
+    var due_date = $( this ).html();
+    if ( due_date == today ) {
+      $( this ).html ( "Today" );
+    } else if ( due_date == tomorrow ) {
+      $( this ).html ( "Tomorrow" );
+    };
+  });
 };
 
 
