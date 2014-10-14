@@ -143,7 +143,7 @@ function ExpandLabels() {
       $( this ).html ( "High" );
     };
   });
-  $( ".label-due" ).each(function() {
+  $( ".label-date" ).each(function() {
     var today_raw = new Date();
     today = $.datepicker.formatDate( "dd M yy", today_raw);
     var tomorrow_raw = new Date();
