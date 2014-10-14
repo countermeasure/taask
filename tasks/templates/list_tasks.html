@@ -2,8 +2,8 @@
 
 {% block content %}
 
-  <table class="table table-hover tablesorter" id="tasktable">
-    <thead>
+  <table class="table tablesorter" id="tasktable">
+    <thead class="hidden">
       <tr>
         <th>Description</th>
         <th>Project</th>
@@ -60,7 +60,5 @@
       EnableAjaxForm();
     });
   </script>
-
-
 
 {% endblock extra-js %}
