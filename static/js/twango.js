@@ -58,18 +58,38 @@ function ActivateTablesorter() {
     },
     type: 'numeric'
   });
+  $.tablesorter.addParser({
+    id: 'view',
+    is: function(s, table, cell) {
+      return false;
+    },
+    format: function(s, table, cell, cellIndex) {
+      return s.toLowerCase()
+        .replace(/inbox/,7)
+        .replace(/today/,6)
+        .replace(/next/,5)
+        .replace(/scheduled/,4)
+        .replace(/recurring/,3)
+        .replace(/someday/,2)
+        .replace(/completed/,1)
+        .replace(/rubbish/,0);
+    },
+    type: 'numeric'
+  });
   $(function(){
     $("#tasktable").tablesorter({
       widgets: ["filter"],
-      headers: { 6: { sorter: 'priority' } },
-      // Sort by 'priority', then 'order', then 'time'
-      sortList: [[6,1],[7,0],[5,0]],
+      headers: { 6: { sorter: 'priority' },
+                 12: { sorter: 'view' },
+               },
+      // Sort by 'priority', then 'order', then 'time', then 'view'
+      sortList: [[12,1],[6,1],[7,0],[5,0]],
       widgetOptions : {
         filter_columnFilters : false,
         filter_defaultFilter: { 0 : '~{query}' },
         filter_external : '.search',
         filter_reset: '.reset-filter',
-      }
+      },
     });
     $('button[data-filter-column]').click(function(){
       $t = $(this);
