@@ -34,8 +34,7 @@ body {
     padding: 20px;
     overflow-x: hidden;
     overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-    background-color: #f5f5f5;
-    border-right: 1px solid #eee;
+    background-color: #e0e0e0;
   }
 }
 
@@ -52,7 +51,7 @@ body {
 .nav-sidebar > .active > a,
 .nav-sidebar > .active > a:hover,
 .nav-sidebar > .active > a:focus {
-  color: #fff;
+  color: #ffffff;
   background-color: #428bca;
 }
 
@@ -62,12 +61,12 @@ body {
  */
 
 .main {
-  padding: 20px;
+  padding: 30px;
 }
 @media (min-width: 768px) {
   .main {
-    padding-right: 40px;
-    padding-left: 40px;
+    padding-right: 35px;
+    padding-left: 35px;
   }
 }
 
@@ -86,7 +85,7 @@ body {
   .form-inline .panel-heading {
     padding-top: 6px;
     padding-bottom: 6px;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #dddddd;
   }
 }
 
@@ -104,4 +103,54 @@ body {
 
 .width-100 {
   width: 100%;
+}
+
+
+/*
+ * Table
+ */
+
+#tasktable tbody tr {
+  border-top: 5px solid #ffffff;
+  border-bottom: 5px solid #ffffff;
+  background-color: #e0e0e0;
+}
+
+#tasktable tbody tr td {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+#tasktable tbody tr:hover {
+  cursor: pointer;
+  background-color: #bcd1e3;
+}
+
+
+/*
+ * Panel
+ */
+
+.panel {
+  margin-bottom: 0px;
+  border: 0px;
+}
+
+.panel .panel-heading {
+  color: #ffffff;
+  background-color: #428bca;
+  border: 0px;
+  border-radius: 0px;
+}
+
+.panel .panel-body,
+.panel .panel-footer {
+  background-color: #e0e0e0;
+  border: 0px;
+  border-radius: 0px;
+}
+
+#task-edit-cell {
+  padding: 0 0 0 0 !important;
+  border: 0px !important;
 }
