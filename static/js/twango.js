@@ -183,7 +183,7 @@ function EnableAjaxForm() {
     });
   });
   // Save the edited task
-  $(document).one("click", ".btn-save", function( SaveTask ){
+  $(document).on("click", ".btn-save", function( SaveTask ){
     var task_id = $( this ).attr("id");
     var task_no = task_id.slice(10);
     var form_data = $( "#edittaskform" ).serialize();
@@ -199,14 +199,14 @@ function EnableAjaxForm() {
           // Do this if the response starts with <td>, which indicates
           // that the task was successfully updated.
           $( row_id ).html ( resp );
-          $( "#task-edit-panel" ).remove();
+          $( "#task-edit-cell" ).remove();
           ExpandLabels();
           $("#tasktable").trigger('update');
           EnableAjaxForm();
         } else {
           // Otherwise, the response contains the form with validation
           // error messages, so render that.
-          $( row_id ).html ( resp );
+          $( "#task-edit-cell" ).html ( resp );
           ReactivateForm();
           ActivateDatepicker();
         };

@@ -65,9 +65,7 @@ class BaseTaskForm(forms.Form):
     project = forms.ChoiceField(choices=PROJECT_CHOICES, required=False)
 
     # 'due' is a date on which the task should be finished
-    due = forms.DateTimeField(required=False, label='Due date',
-        widget=forms.TextInput(attrs={'class':'datepicker'})
-        )
+    due = forms.DateTimeField(required=False, label='Due date')
 
     # 'recur' is a string which represents the interval between recurring tasks,
     # such as '3wks'
@@ -75,15 +73,11 @@ class BaseTaskForm(forms.Form):
 
     # 'until' is a date on which a task is automatically deleted. It is used to
     # set the date on which a recurring task will cease to recur
-    until = forms.DateTimeField(required=False, label='Recurs until',
-        widget=forms.TextInput(attrs={'class':'datepicker'})
-        )
+    until = forms.DateTimeField(required=False, label='Recurs until')
 
     # 'wait' is a date on which a task with status 'waiting' will have it's
     # status changed to 'pending'
-    wait = forms.DateTimeField(required=False, label='Schedule for',
-        widget=forms.TextInput(attrs={'class':'datepicker'})
-        )
+    wait = forms.DateTimeField(required=False, label='Schedule for')
 
     # 'tags' is a list of strings, where each string is a single word containing
     # no spaces. For example:

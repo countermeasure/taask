@@ -185,7 +185,7 @@ def edit_task(request, task_id):
         task['context_3'] = tags[2]
         # Instantiate the form with the task dictionary containing the seperate
         # tags
-        form = EditTaskForm(task)
+        form = EditTaskForm(task, label_suffix='')
 
     return render(request, 'edit_task.html', {
                            'task_id': task_id,
