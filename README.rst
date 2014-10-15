@@ -1,5 +1,5 @@
-Twango
-======
+Taask
+=====
 
 This is a `Django <https://www.djangoproject.com>`_ front-end for `Taskwarrior
 <http://taskwarrior.org>`_.

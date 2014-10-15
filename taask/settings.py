@@ -1,5 +1,5 @@
 """
-Django settings for twango project.
+Django settings for taask project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.7/topics/settings/
@@ -17,10 +17,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # Get the environment (development/demonstration/production)
-ENVIRONMENT= os.environ['TWANGO_ENVIRONMENT']
+ENVIRONMENT= os.environ['TAASK_ENVIRONMENT']
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['TWANGO_SECRET_KEY']
+SECRET_KEY = os.environ['TAASK_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if ENVIRONMENT == 'development':
@@ -60,9 +60,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'twango.urls'
+ROOT_URLCONF = 'taask.urls'
 
-WSGI_APPLICATION = 'twango.wsgi.application'
+WSGI_APPLICATION = 'taask.wsgi.application'
 
 
 # Database

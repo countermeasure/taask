@@ -3,5 +3,5 @@
 *.pyc
 *.swp
 
-# Ignore Twango's config file
-twango.config
+# Ignore Taask's config file
+taask.config

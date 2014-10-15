@@ -17,9 +17,9 @@ def check_task_data():
 
 
 def get_options():
-    """Returns the contents of the twango.data file"""
+    """Returns the contents of the taask.data file"""
 
-    file = open('twango.config', 'r')
+    file = open('taask.config', 'r')
     options = yaml.load(file)
 
     return options
@@ -65,7 +65,7 @@ def get_task_count(projects):
 
 def manage_configuration(data, data_type):
 
-    with open('twango.config', 'r') as f:
+    with open('taask.config', 'r') as f:
         config = yaml.load(f)
 
     action = data['action']
@@ -86,5 +86,5 @@ def manage_configuration(data, data_type):
     config['contexts'].sort()
     config['projects'].sort()
 
-    with file('twango.config', 'w') as f:
+    with file('taask.config', 'w') as f:
         yaml.dump(config, f)
