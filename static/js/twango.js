@@ -110,7 +110,7 @@ function ActivateTablesorter() {
 
 function ActivateDatepicker() {
   $( ".datepicker" ).datepicker({
-    inline: true
+    dateFormat: 'dd M yy',
   });
 };
 

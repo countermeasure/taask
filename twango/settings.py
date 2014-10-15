@@ -91,3 +91,6 @@ STATICFILES_DIRS = (
 # https://docs.djangoproject.com/en/1.7/ref/settings/#date-format
 
 DATETIME_FORMAT = 'j M Y'
+DATETIME_INPUT_FORMATS = (
+    '%d %b %Y',
+    )
