@@ -16,16 +16,27 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
+# Get the environment (development/demonstration/production)
+ENVIRONMENT= os.environ['TWANGO_ENVIRONMENT']
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'xbx-g)x5%%72=m4iw03c6(3wo#udjze9tj0ho&lx0e7+#rnb&j'
+SECRET_KEY = os.environ['TWANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-TEMPLATE_DEBUG = True
-
-ALLOWED_HOSTS = []
-
+if ENVIRONMENT == 'development':
+    DEBUG = True
+    TEMPLATE_DEBUG = True
+    ALLOWED_HOSTS = []
+elif ENVIRONMENT == 'demonstration':
+    DEBUG = False
+    TEMPLATE_DEBUG = False
+    ALLOWED_HOSTS = [
+        '.taask.org',
+    ]
+else:
+    DEBUG = False
+    TEMPLATE_DEBUG = False
+    ALLOWED_HOSTS = []
 
 # Application definition
 
