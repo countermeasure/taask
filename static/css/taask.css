@@ -110,13 +110,23 @@ body {
  * Table
  */
 
-#tasktable tbody tr {
+#tasktable tbody tr,
+#tasktable thead tr {
   border-top: 5px solid #ffffff;
   border-bottom: 5px solid #ffffff;
   background-color: #e0e0e0;
 }
 
-#tasktable tbody tr td {
+#tasktable thead tr th {
+  border-right: 5px solid #ffffff;
+  text-align: center;
+  font-weight: normal;
+  color: #ffffff;
+  background-color: #428bca;
+}
+
+#tasktable tbody tr td,
+#tasktable thead tr th {
   padding-top: 15px;
   padding-bottom: 15px;
 }
@@ -124,6 +134,10 @@ body {
 #tasktable tbody tr:hover {
   cursor: pointer;
   background-color: #bcd1e3;
+}
+
+#tasktable thead tr:hover {
+  cursor: pointer;
 }
 
 
@@ -145,7 +159,7 @@ body {
 
 .panel .panel-body,
 .panel .panel-footer {
-  background-color: #e0e0e0;
+  background-color: #aac9e3;
   border: 0px;
   border-radius: 0px;
 }
