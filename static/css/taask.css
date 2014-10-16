@@ -129,6 +129,12 @@ body {
 #tasktable thead tr th {
   padding-top: 15px;
   padding-bottom: 15px;
+  text-align: center;
+}
+
+#tasktable tbody tr td:first-child {
+  text-align: left;
+  padding-left: 20px;
 }
 
 #tasktable tbody tr:hover {
