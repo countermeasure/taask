@@ -12,9 +12,15 @@
         <th>Priority</th>
         <th>Order</th>
         <th>Due</th>
-        <th>Recur</th>
-        <th>Until</th>
-        <th>Wait</th>
+        {% if view == 'today' %}
+          <th class="hidden">Recur</th>
+          <th class="hidden">Until</th>
+          <th class="hidden">Wait</th>
+        {% else %}
+          <th>Recur</th>
+          <th>Until</th>
+          <th>Wait</th>
+        {% endif %}
       </tr>
     </thead>
     <tbody>
@@ -30,9 +36,15 @@
           <td><span class="label label-primary label-priority">{{ task.priority|default_if_none:'' }}</span></td>
           <td><span class="label label-danger label-order">{{ task.order|default_if_none:'' }}</span></td>
           <td><span class="label label-danger label-date">{{ task.due|default_if_none:'' }}</span></td>
-          <td>{{ task.recur|default_if_none:'' }}</td>
-          <td><span class="label label-danger label-date">{{ task.until|default_if_none:'' }}</span></td>
-          <td><span class="label label-danger label-date">{{ task.wait|default_if_none:'' }}</span></td>
+          {% if view == 'today' %}
+            <td class="hidden">{{ task.recur|default_if_none:'' }}</td>
+            <td class="hidden"><span class="label label-danger label-date">{{ task.until|default_if_none:'' }}</span></td>
+            <td class="hidden"><span class="label label-danger label-date">{{ task.wait|default_if_none:'' }}</span></td>
+          {% else %}
+            <td>{{ task.recur|default_if_none:'' }}</td>
+            <td><span class="label label-danger label-date">{{ task.until|default_if_none:'' }}</span></td>
+            <td><span class="label label-danger label-date">{{ task.wait|default_if_none:'' }}</span></td>
+          {% endif %}
           <td class="hidden">{{ task.tags }}</td>
         </tr>
         <tr class="tablesorter-childRow" id="edit-task-{{ task.id }}">
