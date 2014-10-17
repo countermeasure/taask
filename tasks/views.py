@@ -1,7 +1,4 @@
-from django.shortcuts import render
-from django.http import (HttpResponse,
-                         HttpResponseRedirect)
-from django.core.urlresolvers import reverse
+from django.shortcuts import render, redirect
 
 from tasks.forms import (AddTaskForm,
                         ContextForm,
@@ -56,7 +53,7 @@ def add_task(request):
                            until=until,
                            wait=wait,
                            tags=tags)
-                return HttpResponseRedirect(reverse('list-tasks', args=['today']))
+                return redirect('list-tasks', 'today')
             except TaskwarriorError, e:
                 tw_error = str(e).rpartition('stderr:')[2].\
                            partition('; stdout')[0]
@@ -207,7 +204,7 @@ def complete_task(request, task_id):
         w.task_update(task)
         w.task_done(id=task_id)
 
-    return HttpResponseRedirect(reverse('list-tasks', args=['today']))
+    return redirect('list-tasks', 'today')
 
 
 def delete_task(request, task_id):
@@ -221,7 +218,7 @@ def delete_task(request, task_id):
         task['priority'] = None
         w.task_delete(id=task_id)
 
-    return HttpResponseRedirect(reverse('list-tasks', args=['today']))
+    return redirect('list-tasks', 'today')
 
 
 def documentation(request):
