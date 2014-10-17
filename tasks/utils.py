@@ -1,8 +1,11 @@
+import os
 import yaml
 from taskw import TaskWarrior
 
 
 w = TaskWarrior()
+config_file_path = os.environ['HOME'] + '/.task/taask.config'
+
 
 def check_task_data():
     """Checks over the Taskwarrior data file to make sure it is up to date."""
@@ -19,7 +22,7 @@ def check_task_data():
 def get_options():
     """Returns the contents of the taask.data file"""
 
-    file = open('taask.config', 'r')
+    file = open(config_file_path, 'r')
     options = yaml.load(file)
 
     return options
@@ -65,7 +68,7 @@ def get_task_count(projects):
 
 def manage_configuration(data, data_type):
 
-    with open('taask.config', 'r') as f:
+    with open(config_file_path, 'r') as f:
         config = yaml.load(f)
 
     action = data['action']
@@ -86,5 +89,5 @@ def manage_configuration(data, data_type):
     config['contexts'].sort()
     config['projects'].sort()
 
-    with file('taask.config', 'w') as f:
+    with file(config_file_path, 'w') as f:
         yaml.dump(config, f)
