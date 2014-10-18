@@ -1,16 +1,9 @@
-from django.shortcuts import render
-from django.http import (HttpResponse,
-                         HttpResponseRedirect)
-from django.core.urlresolvers import reverse
+from django.shortcuts import render, redirect
 
-from tasks.forms import (AddTaskForm,
-                        ContextForm,
-                        EditTaskForm,
-                        ProjectForm)
-from tasks.utils import (check_task_data,
-                         get_options,
-                         get_task_count,
-                         manage_configuration)
+from tasks.forms import AddTaskForm, ContextForm, EditTaskForm, ProjectForm
+from tasks.utils import (
+    check_task_data, get_options, get_task_count, manage_configuration
+)
 from taskw import TaskWarrior
 from taskw.exceptions import TaskwarriorError
 
@@ -56,7 +49,7 @@ def add_task(request):
                            until=until,
                            wait=wait,
                            tags=tags)
-                return HttpResponseRedirect(reverse('list-tasks', args=['today']))
+                return redirect('list-tasks', 'today')
             except TaskwarriorError, e:
                 tw_error = str(e).rpartition('stderr:')[2].\
                            partition('; stdout')[0]
@@ -71,13 +64,13 @@ def add_task(request):
     task_count = get_task_count(projects)
 
     return render(request, 'add_task.html', {
-                           'view': view,
-                           'task_count': task_count,
-                           'projects': projects,
-                           'contexts': contexts,
-                           'tw_error': tw_error,
-                           'form': form,
-                           })
+        'view': view,
+        'task_count': task_count,
+        'projects': projects,
+        'contexts': contexts,
+        'tw_error': tw_error,
+        'form': form,
+    })
 
 
 def list_tasks(request, view):
@@ -92,21 +85,21 @@ def list_tasks(request, view):
     check_task_data()
 
     if view in ['inbox', 'today', 'next', 'someday', 'rubbish']:
-        task_list = w.filter_tasks({'status': 'pending', 'view': view,})
+        task_list = w.filter_tasks({'status': 'pending', 'view': view})
 
     elif view == 'scheduled':
-        task_list = w.filter_tasks({'status': 'waiting',})
+        task_list = w.filter_tasks({'status': 'waiting'})
 
     elif view == 'recurring':
-        task_list = w.filter_tasks({'status': 'recurring',})
+        task_list = w.filter_tasks({'status': 'recurring'})
 
     elif view == 'completed':
-        task_list = w.filter_tasks({'status': 'completed',})
+        task_list = w.filter_tasks({'status': 'completed'})
 
     else:
         for project in projects:
             if view == project.lower():
-                task_list = w.filter_tasks({'project': project,})
+                task_list = w.filter_tasks({'project': project})
 
     # Examples of sorting
     # task_list.sort(key = lambda task : task['description'].lower())
@@ -117,12 +110,12 @@ def list_tasks(request, view):
     # import pdb; pdb.set_trace()
 
     return render(request, 'list_tasks.html', {
-                           'task_list': task_list,
-                           'task_count': task_count,
-                           'projects': projects,
-                           'contexts': contexts,
-                           'view': view,
-                           })
+        'task_list': task_list,
+        'task_count': task_count,
+        'projects': projects,
+        'contexts': contexts,
+        'view': view,
+    })
 
 
 def edit_task(request, task_id):
@@ -134,16 +127,18 @@ def edit_task(request, task_id):
         form = EditTaskForm(request.POST, label_suffix='')
         if form.is_valid():
             # Write non-tag attributes to the task
-            non_tag_fields = ['description',
-                              'view',
-                              'priority',
-                              'order',
-                              'time',
-                              'project',
-                              'due',
-                              'recur',
-                              'until',
-                              'wait']
+            non_tag_fields = [
+                'description',
+                'view',
+                'priority',
+                'order',
+                'time',
+                'project',
+                'due',
+                'recur',
+                'until',
+                'wait'
+            ]
             for attribute in non_tag_fields:
                 value = form.cleaned_data[attribute]
                 if value == '':
@@ -188,12 +183,13 @@ def edit_task(request, task_id):
         form = EditTaskForm(task, label_suffix='')
 
     return render(request, 'edit_task.html', {
-                           'task_id': task_id,
-                           'form': form,
-                           })
+        'task_id': task_id,
+        'form': form,
+    })
 
 # Add a view which annotates and denotates tasks, as this can't be done by the
 # task_update() method
+
 
 def complete_task(request, task_id):
     """Completes a task."""
@@ -207,7 +203,7 @@ def complete_task(request, task_id):
         w.task_update(task)
         w.task_done(id=task_id)
 
-    return HttpResponseRedirect(reverse('list-tasks', args=['today']))
+    return redirect('list-tasks', 'today')
 
 
 def delete_task(request, task_id):
@@ -221,7 +217,7 @@ def delete_task(request, task_id):
         task['priority'] = None
         w.task_delete(id=task_id)
 
-    return HttpResponseRedirect(reverse('list-tasks', args=['today']))
+    return redirect('list-tasks', 'today')
 
 
 def documentation(request):
@@ -254,8 +250,7 @@ def configuration(request):
     options = get_options()
 
     return render(request, 'configuration.html', {
-                           'options': options,
-                           'context_form': context_form,
-                           'project_form': project_form,
-                           })
-
+        'options': options,
+        'context_form': context_form,
+        'project_form': project_form,
+    })

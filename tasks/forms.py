@@ -24,11 +24,11 @@ class BaseTaskForm(forms.Form):
 
     # 'priority' is a string which contains 'H', 'M' or 'L'
     PRIORITY_CHOICES = (
-    #    (None, ''),
+        # (None, ''),
         ('H', 'High'),
         ('M', 'Medium'),
         ('L', 'Low'),
-        )
+    )
     # If required is not set to False for priority, the form raises an error if
     # the task wasn't given a priority value on creation.
     priority = forms.ChoiceField(choices=PRIORITY_CHOICES, required=False)
@@ -42,7 +42,7 @@ class BaseTaskForm(forms.Form):
         (3, '3rd'),
         (4, '4th'),
         (5, '5th'),
-        )
+    )
     order = forms.ChoiceField(choices=ORDER_CHOICES,
                               label='Order', required=False)
 
@@ -55,7 +55,7 @@ class BaseTaskForm(forms.Form):
         (60, '1hr'),
         (120, '2hrs'),
         (300, '5hrs'),
-        )
+    )
     time = forms.ChoiceField(choices=TIME_CHOICES, label='Time',
                              required=False)
 
@@ -67,8 +67,8 @@ class BaseTaskForm(forms.Form):
     # 'due' is a date on which the task should be finished
     due = forms.DateTimeField(required=False, label='Due date')
 
-    # 'recur' is a string which represents the interval between recurring tasks,
-    # such as '3wks'
+    # 'recur' is a string which represents the interval between recurring
+    # tasks, such as '3wks'
     recur = forms.CharField(max_length=200, required=False, label='Frequency')
 
     # 'until' is a date on which a task is automatically deleted. It is used to
@@ -79,20 +79,19 @@ class BaseTaskForm(forms.Form):
     # status changed to 'pending'
     wait = forms.DateTimeField(required=False, label='Schedule for')
 
-    # 'tags' is a list of strings, where each string is a single word containing
-    # no spaces. For example:
+    # 'tags' is a list of strings, where each string is a single word
+    # containing no spaces. For example:
     # ["home","garden"]
     # We'll collect several tags then merge them to create the tags list
     # The three 'context's will be stored in 'tags'
     contexts = options['contexts']
     CONTEXT_CHOICES = get_choices(contexts)
     context_1 = forms.ChoiceField(choices=CONTEXT_CHOICES, required=False,
-                                label='Context 1')
+                                  label='Context 1')
     context_2 = forms.ChoiceField(choices=CONTEXT_CHOICES, required=False,
-                                label='Context 2')
+                                  label='Context 2')
     context_3 = forms.ChoiceField(choices=CONTEXT_CHOICES, required=False,
-                                label='Context 3')
-
+                                  label='Context 3')
 
     def clean(self):
         cleaned_data = super(BaseTaskForm, self).clean()
@@ -100,19 +99,16 @@ class BaseTaskForm(forms.Form):
         # If the task is bypassing the inbox, it must have a priority and time
         if not cleaned_data.get('view') == 'inbox':
             if not cleaned_data.get('priority'):
-                msg = u"This task must have a priority if it isn't going to" + \
-                       " the inbox."
-                self.add_error('priority', msg)
+                self.add_error('priority', u"This task must have a priority if"
+                                           u" it isn't going to the inbox.")
             if not cleaned_data.get('time'):
-                msg = u"This task must have a time if it isn't going to the" + \
-                       " inbox."
-                self.add_error('time', msg)
+                self.add_error('time', u"This task must have a time if it "
+                                       u"isn't going to the inbox.")
 
         # If a wait date is set, the task must go in the scheduled view
         if cleaned_data.get('wait'):
             if cleaned_data.get('view') != 'scheduled':
-                msg = u"This task's view must be 'scheduled'."
-                self.add_error('view', msg)
+                self.add_error('view', u"This task's view must be scheduled.")
 
         # If no wait date is set and the task is not a recurring one, the task
         # must not go in the scheduled view
@@ -150,8 +146,8 @@ class BaseTaskForm(forms.Form):
         # A scheduled task can't be due before it's scheduled date
         if cleaned_data.get('wait') and cleaned_data.get('due'):
             if cleaned_data.get('wait') > cleaned_data.get('due'):
-                msg = u"Due date must be on or after the task's scheduled date."
-                self.add_error('due', msg)
+                self.add_error('due', u"Due date must be on or after the "
+                                      u"task's scheduled date.")
 
         # A recurring task mustn't have any information missing
         if cleaned_data.get('until'):
@@ -242,10 +238,14 @@ class BaseConfigurationForm(forms.Form):
     # any field is left blank otherwise.
     action = forms.ChoiceField(choices=ACTION_CHOICES, required=False)
 
-    tag = forms.RegexField(regex=r'^[a-zA-Z0-9]+$', max_length=30,
-                           required=True, error_messages={
-                           'invalid': 'Must be letters and numbers only.'
-                           })
+    tag = forms.RegexField(
+        regex=r'^[a-zA-Z0-9]+$',
+        max_length=30,
+        required=True,
+        error_messages={
+            'invalid': 'Must be letters and numbers only.'
+        }
+    )
 
 
 class ContextForm(BaseConfigurationForm):
@@ -259,11 +259,11 @@ class ContextForm(BaseConfigurationForm):
         # Creating a new tag
         if action == 'create' and tag_exists:
             raise forms.ValidationError('This context already exists',
-                                            code='invalid')
+                                        code='invalid')
         # Deleting an existing tag
         if action == 'delete' and not tag_exists:
-            raise forms.ValidationError('This context doesn\'t exist',
-                                            code='invalid')
+            raise forms.ValidationError("This context doesn't exist",
+                                        code='invalid')
         return data
 
 
@@ -278,9 +278,9 @@ class ProjectForm(BaseConfigurationForm):
         # Creating a new tag
         if action == 'create' and tag_exists:
             raise forms.ValidationError('This project already exists',
-                                            code='invalid')
+                                        code='invalid')
         # Deleting an existing tag
         if action == 'delete' and not tag_exists:
-            raise forms.ValidationError('This project doesn\'t exist',
-                                            code='invalid')
+            raise forms.ValidationError("This project doesn't exist",
+                                        code='invalid')
         return data

@@ -2,5 +2,4 @@ Django==1.7
 PyYAML==3.11
 python-dateutil==2.2
 pytz==2014.7
-six==1.8.0
 taskw==0.8.6

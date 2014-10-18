@@ -4,13 +4,16 @@ from taskw import TaskWarrior
 
 
 w = TaskWarrior()
-config_file_path = os.environ['HOME'] + '/.task/taask.config'
+config_file_path = os.path.join(os.environ['HOME'], '.task/taask.config')
 
 
 def check_task_data():
     """Checks over the Taskwarrior data file to make sure it is up to date."""
 
-    tasks = w.filter_tasks({'status': 'pending', 'view': None})
+    tasks = w.filter_tasks({
+        'status': 'pending',
+        'view': None
+    })
 
     # Move tasks which have status 'pending' but have no view data, which means
     # that the just stopped being scheduled, into the today view.
@@ -22,8 +25,8 @@ def check_task_data():
 def get_options():
     """Returns the contents of the taask.data file"""
 
-    file = open(config_file_path, 'r')
-    options = yaml.load(file)
+    with open(config_file_path, 'r') as fin:
+        options = yaml.load(fin)
 
     return options
 
@@ -31,12 +34,13 @@ def get_options():
 def get_choices(attribute):
     """Returns a tuple of choices for a form field"""
 
-    # Start the list of choices with a None option, otherwise there is no option
-    # to leave the field blank
-    choices = [(None, '')]
-    for choice in attribute:
-        choice_tuple = choice, choice
-        choices.append(choice_tuple)
+    choices = [
+        (choice, choice)
+        for choice in attribute
+    ]
+    # Start the list of choices with a None option, otherwise there is no
+    # option to leave the field blank
+    choices.insert(0, (None, ''))
 
     return choices
 
@@ -52,24 +56,26 @@ def get_task_count(projects):
         ('recurring', 'recurring'),
         ('someday', 'pending'),
         ('rubbish', 'pending'),
-        ]
+    ]
 
     for project in projects:
         views_to_count.append((project, 'all'))
 
     task_count = {}
-    for view in views_to_count:
-        tasks = w.filter_tasks({'view': view[0], 'status': view[1]})
+    for view, status in views_to_count:
+        tasks = w.filter_tasks({
+            'view': view,
+            'status': status,
+        })
         count = len(tasks)
-        task_count[view[0]] = count
+        task_count[view] = count
 
     return task_count
 
 
 def manage_configuration(data, data_type):
 
-    with open(config_file_path, 'r') as f:
-        config = yaml.load(f)
+    config = get_options()
 
     action = data['action']
     tag = data['tag']
@@ -80,7 +86,7 @@ def manage_configuration(data, data_type):
         elif data_type == 'project':
             config['projects'].append(tag)
 
-    if action == 'delete':
+    elif action == 'delete':
         if data_type == 'context':
             config['contexts'].remove(tag)
         elif data_type == 'project':
