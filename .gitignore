@@ -2,6 +2,3 @@
 *.sqlite3
 *.pyc
 *.swp
-
-# Ignore Taask's config file
-taask.config
