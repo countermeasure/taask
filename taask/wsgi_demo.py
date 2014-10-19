@@ -28,5 +28,5 @@ sys.path.append(workspace)
 sys.path = [project_path + '/taask', project_path + '/any_otherPaths?',
             project_path] + sys.path
 
-from django.core.handlers.wsgi import WSGIHandler
-application = WSGIHandler()
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
