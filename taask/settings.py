@@ -93,6 +93,8 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
     )
 
+STATIC_ROOT = os.environ['TAASK_STATIC_ROOT']
+
 # Dates
 # https://docs.djangoproject.com/en/1.7/ref/settings/#date-format
 
