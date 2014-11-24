@@ -128,7 +128,7 @@ there's a demo at `taask.org <http://taask.org>`_ that you can test-drive!
 
 ::
 
-    sudo apt-get install task
+    $ sudo apt-get install task
 
 4.2 Install pip, virtualenv and virtualenvwrapper
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -137,8 +137,8 @@ You may already have these installed. If so, skip this step.
 
 ::
 
-    sudo apt-get install python-pip
-    sudo pip install virtualenv virtualenvwrapper
+    $ sudo apt-get install python-pip
+    $ sudo pip install virtualenv virtualenvwrapper
 
 Add these lines to the end of your ``~/.bashrc`` file:
 
@@ -152,14 +152,14 @@ Reload ``~/.bashrc``:
 
 ::
 
-    source ~/.bashrc
+    $ source ~/.bashrc
 
 4.3 Set up a virtualenv
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 ::
 
-    mkvirtualenv taask
+    $ mkvirtualenv taask
 
 Add these lines to the end of ``~/.virtualenvs/taask/bin/postactivate``:
 
@@ -173,8 +173,8 @@ Restart the virtualenv so that these setting take effect:
 
 ::
 
-    deactivate
-    workon taask
+    $ deactivate
+    $ workon taask
 
 4.4 Clone the repo
 ^^^^^^^^^^^^^^^^^^
@@ -184,32 +184,32 @@ it anywhere you like.
 
 ::
 
-    mkdir ~/Projects
-    cd ~/Projects
-    git clone https://github.com/countermeasure/taask.git
+    $ mkdir ~/Projects
+    $ cd ~/Projects
+    $ git clone https://github.com/countermeasure/taask.git
 
 4.5 Install dependencies
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 ::
 
-    cd ~/Projects/taask
-    pip install -r requirements.txt
+    $ cd ~/Projects/taask
+    $ pip install -r requirements.txt
 
 4.6 Configure
 ^^^^^^^^^^^^^
 
 ::
 
-    cp ~/Projects/taask/configuration/.taskrc ~
-    cp -r ~/Projects/taask/fixtures/.task ~
+    $ cp ~/Projects/taask/configuration/.taskrc ~
+    $ cp -r ~/Projects/taask/fixtures/.task ~
 
 4.7 Start the server
 ^^^^^^^^^^^^^^^^^^^^
 
 ::
 
-    python manage.py runserver
+    $ python manage.py runserver
 
 4.8 Open Taask
 ^^^^^^^^^^^^^^
