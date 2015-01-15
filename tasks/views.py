@@ -1,256 +1,256 @@
 from django.shortcuts import render, redirect
 
-from tasks.forms import AddTaskForm, ContextForm, EditTaskForm, ProjectForm
-from tasks.utils import (
-    check_task_data, get_options, get_task_count, manage_configuration
+from forms import (
+    ContextForm,
+    PriorityForm,
+    ProjectForm,
+    TaskForm,
 )
-from taskw import TaskWarrior
-from taskw.exceptions import TaskwarriorError
+from models import (
+    Context,
+    Priority,
+    Project,
+    Task,
+)
+from utils import get_task_count
 
 
-w = TaskWarrior(marshal=True)
-# w = TaskWarrior(config_filename="/path/to/.taskrc")
+def home(request):
+    "Redirectss requests to the root domain to the 'Today' view."""
+
+    return redirect('list-tasks', 'view', 'today')
 
 
 def add_task(request):
-    """Add a task."""
-
-    tw_error = ''
-    view = 'new_task'
+    """Adds a task."""
 
     if request.method == "POST":
-        form = AddTaskForm(request.POST, label_suffix='')
+        form = TaskForm(request.POST)
         if form.is_valid():
-            # Assign each cleaned data item to its own variable
-            description = form.cleaned_data['description']
-            view = form.cleaned_data['view']
-            priority = form.cleaned_data['priority']
-            time = form.cleaned_data['time']
-            project = form.cleaned_data['project']
-            due = form.cleaned_data['due']
-            recur = form.cleaned_data['recur']
-            until = form.cleaned_data['until']
-            wait = form.cleaned_data['wait']
-            context_1 = form.cleaned_data['context_1']
-            context_2 = form.cleaned_data['context_2']
-            context_3 = form.cleaned_data['context_3']
-            # Context data is held in Taskwarrior's 'tags' field
-            # Construct 'tags' in the format which taskw expects
-            tags = [context_1, context_2, context_3]
-            # Create the new task
-            try:
-                w.task_add(description,
-                           view=view,
-                           priority=priority,
-                           time=time,
-                           project=project,
-                           due=due,
-                           recur=recur,
-                           until=until,
-                           wait=wait,
-                           tags=tags)
-                return redirect('list-tasks', 'today')
-            except TaskwarriorError, e:
-                tw_error = str(e).rpartition('stderr:')[2].\
-                           partition('; stdout')[0]
-
+            form.save()
+            return redirect('list-tasks', 'view', 'today')
     else:
-        form = AddTaskForm(label_suffix='')
-
-    options = get_options()
-    projects = options['projects']
-    contexts = options['contexts']
-
-    task_count = get_task_count(projects)
+        form = TaskForm()
 
     return render(request, 'add_task.html', {
-        'view': view,
-        'task_count': task_count,
-        'projects': projects,
-        'contexts': contexts,
-        'tw_error': tw_error,
+        'contexts': Context.objects.all(),
         'form': form,
+        'menu': 'new_task',
+        'projects': Project.objects.all(),
+        'task_count': get_task_count(),
     })
 
 
-def list_tasks(request, view):
-    """Shows a filtered list of tasks.
+def list_tasks(request, selector_type, selector):
+    """Shows the list of tasks for the specified view or
+    project.
+    """
 
-       filter_tasks() returns a list which contains one dictionary per task."""
-
-    options = get_options()
-    projects = options['projects']
-    contexts = options['contexts']
-
-    check_task_data()
-
-    if view in ['inbox', 'today', 'next', 'someday', 'rubbish']:
-        task_list = w.filter_tasks({'status': 'pending', 'view': view})
-
-    elif view == 'scheduled':
-        task_list = w.filter_tasks({'status': 'waiting'})
-
-    elif view == 'recurring':
-        task_list = w.filter_tasks({'status': 'recurring'})
-
-    elif view == 'completed':
-        task_list = w.filter_tasks({'status': 'completed'})
-
-    else:
-        for project in projects:
-            if view == project.lower():
-                task_list = w.filter_tasks({'project': project})
-
-    # Examples of sorting
-    # task_list.sort(key = lambda task : task['description'].lower())
-    # task_list.sort(key = lambda task : task['tags'][2])
-
-    task_count = get_task_count(projects)
-
-    # import pdb; pdb.set_trace()
+    if selector_type == 'view':
+        task_list = Task.objects.filter(view=selector)
+    elif selector_type == 'project':
+        task_list = Task.objects.filter(project=selector)
 
     return render(request, 'list_tasks.html', {
+        'contexts': Context.objects.all(),
+        'menu': selector,
+        'projects': Project.objects.all(),
+        'task_count': get_task_count(),
         'task_list': task_list,
-        'task_count': task_count,
-        'projects': projects,
-        'contexts': contexts,
-        'view': view,
     })
 
 
 def edit_task(request, task_id):
-    """Opens a task for viewing or editing."""
+    """Opens a task for editing. This is done with an AJAX
+    call.
+    """
 
-    id, task = w.get_task(id=task_id)
+    task = Task.objects.get(pk=task_id)
 
     if request.method == "POST":
-        form = EditTaskForm(request.POST, label_suffix='')
+        form = TaskForm(request.POST, instance=task)
         if form.is_valid():
-            # Write non-tag attributes to the task
-            non_tag_fields = [
-                'description',
-                'view',
-                'priority',
-                'order',
-                'time',
-                'project',
-                'due',
-                'recur',
-                'until',
-                'wait'
-            ]
-            for attribute in non_tag_fields:
-                value = form.cleaned_data[attribute]
-                if value == '':
-                    value = None
-                # If their value isn't None, the time and order variables
-                # must be integers to be saved into the task dictionary
-                if attribute in ['time', 'order']:
-                    if value:
-                        value = int(value)
-                task[attribute] = value
-            # Create the tag attribute in the format which taskw expects and
-            # write it to the task
-            tag_fields = ['context_1',
-                          'context_2',
-                          'context_3']
-            tags = []
-            for attribute in tag_fields:
-                value = form.cleaned_data[attribute]
-                tags.append(value)
-            task['tags'] = tags
-            # Update the task while being aware that Taskwarrior may
-            # ask a question as a result of the task update
-            try:
-                id, task = w.task_update(task)
-            except Exception, e:
-                question_received = e[11:83]
-                expected_question = 'This is a recurring task.  Do you ' + \
-                                    'want to modify all pending recurrences'
-                if question_received == expected_question:
-                    w.answer_question(answer='yes')
-
+            # TODO: process form eg. if completed task is being shifted to
+            # another view, its status must be changed to 'active', etc...
+            # processed_form = process_edited_task_form(form)
+            # processed_form.save()
+            form.save()
             return render(request, 'single_task.html', {'task': task})
     else:
-        # Add each individual tag item to the task object so that they are
-        # displayed in the form
-        tags = task['tags']
-        task['context_1'] = tags[0]
-        task['context_2'] = tags[1]
-        task['context_3'] = tags[2]
-        # Instantiate the form with the task dictionary containing the seperate
-        # tags
-        form = EditTaskForm(task, label_suffix='')
+        form = TaskForm(instance=task)
 
     return render(request, 'edit_task.html', {
-        'task_id': task_id,
         'form': form,
+        'task_id': task_id,
     })
-
-# Add a view which annotates and denotates tasks, as this can't be done by the
-# task_update() method
 
 
 def complete_task(request, task_id):
     """Completes a task."""
 
-    id, task = w.get_task(id=task_id)
-    # Only complete tasks from certain views
-    if task['view'] in ['inbox', 'today', 'next', 'someday']:
-        task['view'] = 'completed'
-        task['order'] = None
-        task['priority'] = None
-        w.task_update(task)
-        w.task_done(id=task_id)
+    task = Task.objects.get(pk=task_id)
+    # Only tasks from certain views are able to be completed
+    if task.view in ['inbox', 'today', 'next', 'someday']:
+        task.status = 'completed'
+        task.view = 'completed'
+        # Remove unnecessary data
+        task.scheduled = None
+        task.priority = None
+        task.underway = False
+        task.save()
 
-    return redirect('list-tasks', 'today')
+    return redirect('list-tasks', 'view', 'today')
 
 
-def delete_task(request, task_id):
-    """Deletes a task."""
+def rubbish_task(request, task_id):
+    """Moves a task to the rubbish view."""
 
-    # Check that the tasks is in the 'rubbish' view before deleting it
-    id, task = w.get_task(id=task_id)
-    if task['view'] == 'rubbish':
-        task['view'] = None
-        task['order'] = None
-        task['priority'] = None
-        w.task_delete(id=task_id)
+    task = Task.objects.get(pk=task_id)
+    task.view = 'rubbish'
+    task.save()
 
-    return redirect('list-tasks', 'today')
+    return redirect('list-tasks', 'view', 'rubbish')
+
+
+def empty_rubbish(request):
+    """Empties the rubbish."""
+
+    tasks = Task.objects.filter(view='rubbish')
+    for task in tasks:
+      task.delete()
+
+    return redirect('list-tasks', 'view', 'rubbish')
 
 
 def documentation(request):
     """Shows documentation."""
 
-    return render(request, 'documentation.html')
+    return render(request, 'documentation.html', {
+        'contexts': Context.objects.all(),
+        'projects': Project.objects.all(),
+        'task_count': get_task_count(),
+    })
 
 
-def configuration(request):
-    """Shows configuration page."""
+def attribute_add_edit(request, attribute_type=None, attribute_id=None):
+    """Adds or edits the specified attribute."""
+
+    if attribute_id:
+        mode = 'edit'
+        title = 'Edit %s' % attribute_type
+        if attribute_type == 'context':
+            current_name = context = Context.objects.get(pk=attribute_id)
+        elif attribute_type == 'priority':
+            current_name = priority = Priority.objects.get(pk=attribute_id)
+        elif attribute_type == 'project':
+            current_name = project = Project.objects.get(pk=attribute_id)
+    else:
+        mode = 'add'
+        title = 'Add a %s' % attribute_type
+        current_name = None
 
     if request.method == "POST":
-
-        context_form = ContextForm(request.POST, prefix='context',
-                                   label_suffix='')
-        if context_form.is_valid():
-            data = context_form.cleaned_data
-            manage_configuration(data, 'context')
-
-        project_form = ProjectForm(request.POST, prefix='project',
-                                   label_suffix='')
-        if project_form.is_valid():
-            data = project_form.cleaned_data
-            manage_configuration(data, 'project')
-
+        if attribute_id:
+            if attribute_type == 'context':
+                form = ContextForm(request.POST, instance=context)
+            elif attribute_type == 'priority':
+                form = PriorityForm(request.POST, instance=priority)
+            elif attribute_type == 'project':
+                form = ProjectForm(request.POST, instance=project)
+        else:
+            if attribute_type == 'context':
+                form = ContextForm(request.POST)
+            elif attribute_type == 'priority':
+                form = PriorityForm(request.POST)
+            elif attribute_type == 'project':
+                form = ProjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('attribute-list', attribute_type)
     else:
-        context_form = ContextForm(prefix='context')
-        project_form = ProjectForm(prefix='project')
+        if attribute_id:
+            if attribute_type == 'context':
+                form = ContextForm(instance=context)
+            elif attribute_type == 'priority':
+                form = PriorityForm(instance=priority)
+            elif attribute_type == 'project':
+                form = ProjectForm(instance=project)
+        else:
+            if attribute_type == 'context':
+                form = ContextForm()
+            elif attribute_type == 'priority':
+                form = PriorityForm()
+            elif attribute_type == 'project':
+                form = ProjectForm()
 
-    options = get_options()
+    return render(
+        request,
+        'add_edit_attribute.html',
+        {
+            'attribute_type': attribute_type,
+            'contexts': Context.objects.all(),
+            'current_name': current_name,
+            'form': form,
+            'mode': mode,
+            'projects': Project.objects.all(),
+            'task_count': get_task_count(),
+            'title': title,
+        },
+    )
 
-    return render(request, 'configuration.html', {
-        'options': options,
-        'context_form': context_form,
-        'project_form': project_form,
+
+def attribute_list(request, attribute_type):
+    """Shows the list of the specified type of attribute."""
+
+    if attribute_type == 'context':
+        attributes = Context.objects.all()
+    elif attribute_type == 'priority':
+        attributes = Priority.objects.all()
+    elif attribute_type == 'project':
+        attributes = Project.objects.all()
+
+    return render(request, 'list_attributes.html', {
+        'attribute_type': attribute_type,
+        'attributes': attributes,
+        'contexts': Context.objects.all(),
+        'projects': Project.objects.all(),
+        'task_count': get_task_count(),
+    })
+
+
+def attribute_delete(request, attribute_type, attribute_id):
+    """Deletes the specified attribute if it is not attached
+    to any tasks.
+
+    Shows a notification message and does not delete the
+    attribute if it is attached to any tasks.
+    """
+
+    if attribute_type == 'context':
+        attribute = Context.objects.get(pk=attribute_id)
+    elif attribute_type == 'priority':
+        attribute = Priority.objects.get(pk=attribute_id)
+    elif attribute_type == 'project':
+        attribute = Project.objects.get(pk=attribute_id)
+
+    if request.method == 'POST':
+        # The template shouldn't allow a POST request if
+        # there are any tasks with this attribute, but
+        # test again just to be sure before deleting
+        if not attribute.task_set.all().exists():
+            attribute.delete()
+            return redirect('attribute-list', attribute_type)
+
+    if attribute.task_set.all().exists():
+        mode = 'notify'
+    else:
+        mode = 'delete'
+
+    return render(request, 'delete_attribute.html', {
+        'attribute': attribute,
+        'attribute_type': attribute_type,
+        'contexts': Context.objects.all(),
+        'mode': mode,
+        'projects': Project.objects.all(),
+        'task_count': get_task_count(),
     })

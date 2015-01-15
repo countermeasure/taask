@@ -14,43 +14,89 @@ class TimeStampedModel(models.Model):
 
 
 class Task(TimeStampedModel):
+
+    VIEW_CHOICES = (
+        ('inbox', 'Inbox'),
+        ('today', 'Today'),
+        ('next', 'Next'),
+        ('scheduled', 'Scheduled'),
+        ('recurring', 'Recurring'),
+        ('someday', 'Someday'),
+        ('completed', 'Completed'),
+        ('rubbish', 'Rubbish'),
+    )
+
+    STATUS_CHOICES = (
+        ('active', 'active'),
+        ('completed', 'completed'),
+    )
+
     description = models.CharField(
         max_length=200,
-        null=False,
-    )
-    notes = models.TextField(null=True)
-    view = models.CharField(
-        max_length=50,
-        null=False,
-    )
-    time = models.PositiveIntegerField(null=True)
-    priority = models.ForeignKey(
-        'Priority',
-        null=True,
-    )
-    due = models.DateTimeField(null=True)
-    project = models.ForeignKey(
-        'Project',
-        null=True,
-    )
-    context = models.ForeignKey(
-        'Context',
-        null=True,
-    )
-    scheduled = models.DateTimeField(null=True)
-    status = models.CharField(
-        max_length=20,
-        null=False,
-    )
-    active = models.BooleanField(default=False)
-    frequency = models.CharField(
-        max_length=50,
-        null=True,
         blank=False,
     )
-    ends = models.DateTimeField(null=True)
+    deadline = models.DateTimeField(
+        blank=True,
+        null=True,
+    )
+    ends = models.DateTimeField(
+        verbose_name='Recurs until',
+        blank=True,
+        null=True,
+    )
+    frequency = models.CharField(
+        max_length=100,
+        blank=True,
+        null=False,
+    )
+    notes = models.TextField(
+        blank=True,
+        null=False,
+    )
+    scheduled = models.DateTimeField(
+        verbose_name='Postpone until',
+        blank=True,
+        null=True,
+    )
+    starts = models.DateTimeField(
+        verbose_name='First occurance',
+        blank=True,
+        null=True,
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='active',
+        blank = False,
+    )
+    time = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+    )
+    underway = models.BooleanField(default=False)
+    view = models.CharField(
+        max_length=50,
+        choices=VIEW_CHOICES,
+        blank=False,
+    )
+    context = models.ManyToManyField(
+        'Context',
+        blank=True,
+        null=True,
+    )
+    priority = models.ForeignKey(
+        'Priority',
+        blank=True,
+        null=True,
+    )
+    project = models.ForeignKey(
+        'Project',
+        blank=True,
+        null=True,
+    )
     task = models.ForeignKey(
-        'Task',
+        'self',
+        blank=True,
         null=True,
         related_name='child_tasks',
     )
@@ -62,28 +108,44 @@ class Task(TimeStampedModel):
 class Context(TimeStampedModel):
     context = models.CharField(
         max_length=50,
-        null=True,
+        unique = True,
+        blank=False,
     )
 
     def __unicode__(self):
         return self.context
 
+    class Meta:
+        ordering = ['context']
+
 
 class Project(TimeStampedModel):
     project = models.CharField(
         max_length=100,
-        null=True,
+        unique = True,
+        blank=False,
     )
 
     def __unicode__(self):
         return self.project
 
+    class Meta:
+        ordering = ['project']
+
 
 class Priority(TimeStampedModel):
+    order = models.PositiveIntegerField(
+        unique = True,
+        blank = False,
+    )
     priority = models.CharField(
         max_length=20,
-        null=True,
+        unique = True,
+        blank=False,
     )
 
     def __unicode__(self):
         return self.priority
+
+    class Meta:
+        ordering = ['order']

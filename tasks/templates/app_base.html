@@ -50,9 +50,11 @@
                 &nbsp;<span class="caret"></span>
               </a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="{% url 'documentation' %}">Documentation</a></li>
+                <li><a href="{% url 'attribute-list' 'context' %}">Contexts</a></li>
+                <li><a href="{% url 'attribute-list' 'priority' %}">Priorities</a></li>
+                <li><a href="{% url 'attribute-list' 'project' %}">Projects</a></li>
                 <li class="divider"></li>
-                <li><a href="{% url 'configuration' %}">Configuration</a></li>
+                <li><a href="{% url 'documentation' %}">Documentation</a></li>
               </ul>
             </li>
           </ul>
@@ -64,7 +66,7 @@
             {% for context in contexts %}
               <button type="button" id="{{ context|lower }}"
                 class="btn btn-default btn-context"
-                data-filter-column="12" data-filter-text="{{ context|lower }}">
+                data-filter-column="10" data-filter-text="{{ context|lower }}">
                 {{ context }}
               </button>
             {% endfor %}
@@ -78,45 +80,45 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li id="new_task"><a href="{% url 'add-task' %}">New task</a></li>
-            <li id="inbox"><a href="{% url 'list-tasks' 'inbox' %}">
+            <li id="inbox"><a href="{% url 'list-tasks' 'view' 'inbox' %}">
               Inbox<span class="badge pull-right">{{ task_count.inbox }}</span></a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li id="today"><a href="{% url 'list-tasks' 'today' %}">
+            <li id="today"><a href="{% url 'list-tasks' 'view' 'today' %}">
               Today<span class="badge pull-right">{{ task_count.today }}
               </span></a></li>
-            <li id="next"><a href="{% url 'list-tasks' 'next' %}">
+            <li id="next"><a href="{% url 'list-tasks' 'view' 'next' %}">
               Next<span class="badge pull-right">{{ task_count.next }}
               </span></a></li>
-            <li id="scheduled"><a href="{% url 'list-tasks' 'scheduled' %}">
+            <li id="scheduled"><a href="{% url 'list-tasks' 'view' 'scheduled' %}">
               Scheduled<span class="badge pull-right">
               {{ task_count.scheduled }}
               </span></a></li>
-            <li id="recurring"><a href="{% url 'list-tasks' 'recurring' %}">
+            <li id="recurring"><a href="{% url 'list-tasks' 'view' 'recurring' %}">
               Recurring<span class="badge pull-right">
               {{ task_count.recurring }}
               </span></a></li>
-            <li id="someday"><a href="{% url 'list-tasks' 'someday' %}">
+            <li id="someday"><a href="{% url 'list-tasks' 'view' 'someday' %}">
               Someday<span class="badge pull-right">{{ task_count.someday }}
               </span></a></li>
           </ul>
           <ul class="nav nav-sidebar">
             {% for project in projects %}
               <li id="{{ project|lower }}">
-                <a href="{% url 'list-tasks' project|lower %}">
+                <a href="{% url 'list-tasks' 'project' project.id %}">
                 {{ project }}</a></li>
             {% endfor %}
           </ul>
           <ul class="nav nav-sidebar">
-            <li id="completed"><a href="{% url 'list-tasks' 'completed' %}">
+            <li id="completed"><a href="{% url 'list-tasks' 'view' 'completed' %}">
               Completed</a></li>
-            <li id="rubbish"><a href="{% url 'list-tasks' 'rubbish' %}">
+            <li id="rubbish"><a href="{% url 'list-tasks' 'view' 'rubbish' %}">
               Rubbish<span class="badge pull-right">{{ task_count.rubbish }}
               </span></a></li>
           </ul>
           <form role="form" class="nav nav-sidebar navbar-form">
             <input type="text" class="search form-control" data-column="0"
-            type="search" id="search-box" placeholder="Search in {{ view }}...">
+            type="search" id="search-box" placeholder="Search in {{ menu }}...">
             <button type="button" class="btn btn-primary reset-filter hidden"
               id="clear-search">
               Clear search
@@ -132,21 +134,18 @@
       </div><!-- ./row -->
     </div><!-- ./container-fluid -->
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- JavaScript -->
     <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/jquery-ui.js' %}"></script>
     <script src="{% static 'js/jquery-tablesorter.min.js' %}"></script>
     <script src="{% static 'js/jquery-tablesorter.widgets.min.js' %}"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
     <script src="{% static 'js/taask.js' %}"></script>
     
-    <!-- Set the active view on the sidebar -->
+    <!-- Set the active menu option on the sidebar -->
     <script>
-      $( "#{{ view }}" ).addClass( "active" );
+      $( "#{{ menu }}" ).addClass( "active" );
     </script>
 
     {% block extra-js %}

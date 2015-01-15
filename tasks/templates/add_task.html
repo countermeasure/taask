@@ -11,12 +11,6 @@
       Add new task
     </div><!-- panel-heading -->
     <div class="panel-body">
-      {% if tw_error %}
-        <p><strong>Taskwarrior error</strong></p>
-        <ul>
-          <li> {{ tw_error }}</li>
-        </ul>
-      {% endif %}
       <form role="form" class="form-horizontal" id="addtaskform" action="" method="POST">
         {% csrf_token %}
         {% for field in form %}
@@ -25,7 +19,7 @@
             <div class="col-sm-10">
               {% if field.name == 'description' %}
                 {{ field|inputclass:"form-control"|autofocus }}
-              {% elif field.name == 'due' or field.name == 'until' or field.name == 'wait' %}
+              {% elif field.name == 'deadline' or field.name == 'scheduled' or field.name == 'starts' or field.name == 'ends' %}
                 {{ field|inputclass:"form-control datepicker" }}
               {% else %}
                 {{ field|inputclass:"form-control" }}
@@ -35,7 +29,7 @@
           </div>
         {%endfor%}
         <div class="pull-right">
-          <a href="{% url 'list-tasks' 'today' %}" type="button" class="btn btn-default">
+          <a href="{% url 'list-tasks' 'view' 'today' %}" type="button" class="btn btn-default">
             <i class="fa fa-minus-circle fa-lg"></i>&nbsp;Cancel
           </a>
           <button type="submit" class="btn btn-primary">
@@ -56,7 +50,5 @@
       ActivateDatepicker();
     });
   </script>
-
-
 
 {% endblock extra-js %}

@@ -3,20 +3,29 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'taask.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
 
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^add-task/', 'tasks.views.add_task', name='add-task'),
-    url(r'^list-tasks/(\w+)/', 'tasks.views.list_tasks', name='list-tasks'),
-    url(r'^edit-task/(\d{1,6})/', 'tasks.views.edit_task', name='edit-task'),
-    url(r'^complete-task/(\d{1,6})/', 'tasks.views.complete_task',
+    url(r'^$', 'tasks.views.home'),
+    url(r'^(view|project)/(\w+)/tasks/$', 'tasks.views.list_tasks',
+        name='list-tasks'),
+    url(r'^task/add/$', 'tasks.views.add_task', name='add-task'),
+    url(r'^task/edit/(\d{1,6})/$', 'tasks.views.edit_task', name='edit-task'),
+    url(r'^task/complete/(\d{1,6})/$', 'tasks.views.complete_task',
         name='complete-task'),
-    url(r'^delete-task/(\d{1,6})/', 'tasks.views.delete_task',
-        name='delete-task'),
-    url(r'^configuration/', 'tasks.views.configuration', name='configuration'),
-    url(r'^documentation/', 'tasks.views.documentation', name='documentation'),
+    url(r'^task/rubbish/empty/$', 'tasks.views.empty_rubbish',
+        name='empty-rubbish'),
+    url(r'^task/rubbish/(\d{1,6})/$', 'tasks.views.rubbish_task',
+        name='rubbish-task'),
+    url(r'^(context|priority|project)/list/$', 'tasks.views.attribute_list',
+        name='attribute-list'),
+    url(r'^(context|priority|project)/add/$', 'tasks.views.attribute_add_edit',
+        name='attribute-add'),
+    url(r'^(context|priority|project)/edit/(\d{1,6})$',
+        'tasks.views.attribute_add_edit',
+        name='attribute-edit'),
+    url(r'^(context|priority|project)/delete/(\d{1,6})$',
+        'tasks.views.attribute_delete',
+        name='attribute-delete'),
+    url(r'^documentation/$', 'tasks.views.documentation', name='documentation'),
 )
 
 if settings.DEBUG:

@@ -1,205 +1,23 @@
 from django import forms
 
-from utils import get_choices, get_options
+from models import (
+    Context,
+    Priority,
+    Project,
+    Task,
+)
 
 
-class BaseTaskForm(forms.Form):
-
-    options = get_options()
-
-    # 'description' is a string which describes the task
-    description = forms.CharField(max_length=200)
-
-    # 'view', a Taskwarrior UDA, is a string which defines the view
-    VIEW_CHOICES = (
-        ('inbox', 'Inbox'),
-        ('today', 'Today'),
-        ('next', 'Next'),
-        ('scheduled', 'Scheduled'),
-        ('recurring', 'Recurring'),
-        ('someday', 'Someday'),
-        ('rubbish', 'Rubbish'),
-        )
-    view = forms.ChoiceField(choices=VIEW_CHOICES, label='View')
-
-    # 'priority' is a string which contains 'H', 'M' or 'L'
-    PRIORITY_CHOICES = (
-        # (None, ''),
-        ('H', 'High'),
-        ('M', 'Medium'),
-        ('L', 'Low'),
-    )
-    # If required is not set to False for priority, the form raises an error if
-    # the task wasn't given a priority value on creation.
-    priority = forms.ChoiceField(choices=PRIORITY_CHOICES, required=False)
-
-    # 'order', a Taskwarrior UDA, is a string which defines the order of
-    # tasks in the tables
-    ORDER_CHOICES = (
-        (None, ''),
-        (1, '1st'),
-        (2, '2nd'),
-        (3, '3rd'),
-        (4, '4th'),
-        (5, '5th'),
-    )
-    order = forms.ChoiceField(choices=ORDER_CHOICES,
-                              label='Order', required=False)
-
-    # 'time', a Taskwarrior UDA, is a string which defines the estimated time
-    # for a task
-    TIME_CHOICES = (
-        (5, '5mins'),
-        (15, '15mins'),
-        (30, '30mins'),
-        (60, '1hr'),
-        (120, '2hrs'),
-        (300, '5hrs'),
-    )
-    time = forms.ChoiceField(choices=TIME_CHOICES, label='Time',
-                             required=False)
-
-    # 'project' is a string which gives the name of the project.
-    projects = options['projects']
-    PROJECT_CHOICES = get_choices(projects)
-    project = forms.ChoiceField(choices=PROJECT_CHOICES, required=False)
-
-    # 'due' is a date on which the task should be finished
-    due = forms.DateTimeField(required=False, label='Due date')
-
-    # 'recur' is a string which represents the interval between recurring
-    # tasks, such as '3wks'
-    recur = forms.CharField(max_length=200, required=False, label='Frequency')
-
-    # 'until' is a date on which a task is automatically deleted. It is used to
-    # set the date on which a recurring task will cease to recur
-    until = forms.DateTimeField(required=False, label='Recurs until')
-
-    # 'wait' is a date on which a task with status 'waiting' will have it's
-    # status changed to 'pending'
-    wait = forms.DateTimeField(required=False, label='Schedule for')
-
-    # 'tags' is a list of strings, where each string is a single word
-    # containing no spaces. For example:
-    # ["home","garden"]
-    # We'll collect several tags then merge them to create the tags list
-    # The three 'context's will be stored in 'tags'
-    contexts = options['contexts']
-    CONTEXT_CHOICES = get_choices(contexts)
-    context_1 = forms.ChoiceField(choices=CONTEXT_CHOICES, required=False,
-                                  label='Context 1')
-    context_2 = forms.ChoiceField(choices=CONTEXT_CHOICES, required=False,
-                                  label='Context 2')
-    context_3 = forms.ChoiceField(choices=CONTEXT_CHOICES, required=False,
-                                  label='Context 3')
-
-    def clean(self):
-        cleaned_data = super(BaseTaskForm, self).clean()
-
-        # If the task is bypassing the inbox, it must have a priority and time
-        if not cleaned_data.get('view') == 'inbox':
-            if not cleaned_data.get('priority'):
-                self.add_error('priority', u"This task must have a priority if"
-                                           u" it isn't going to the inbox.")
-            if not cleaned_data.get('time'):
-                self.add_error('time', u"This task must have a time if it "
-                                       u"isn't going to the inbox.")
-
-        # If a wait date is set, the task must go in the scheduled view
-        if cleaned_data.get('wait'):
-            if cleaned_data.get('view') != 'scheduled':
-                self.add_error('view', u"This task's view must be scheduled.")
-
-        # If no wait date is set and the task is not a recurring one, the task
-        # must not go in the scheduled view
-        if not cleaned_data.get('wait') and not cleaned_data.get('until'):
-            if cleaned_data.get('view') == 'scheduled':
-                msg = u"This task's view must not be 'scheduled'."
-                self.add_error('view', msg)
-
-        # Contexts must not be duplicated
-        if cleaned_data.get('context_1'):
-            if cleaned_data.get('context_2') == cleaned_data.get('context_1'):
-                msg = u"Context 2 must be different from Context 1."
-                self.add_error('context_2', msg)
-            if cleaned_data.get('context_3') == cleaned_data.get('context_1'):
-                msg = u"Context 3 must be different from Context 1."
-                self.add_error('context_3', msg)
-        if cleaned_data.get('context_2'):
-            if cleaned_data.get('context_3') == cleaned_data.get('context_2'):
-                msg = u"Context 3 must be different from Context 2."
-                self.add_error('context_3', msg)
-
-        # There must be no blank context before another context
-        if cleaned_data.get('context_2'):
-            if not cleaned_data.get('context_1'):
-                msg = u"Context 1 can't be empty if you set Context 2."
-                self.add_error('context_1', msg)
-        if cleaned_data.get('context_3'):
-            if not cleaned_data.get('context_1'):
-                msg = u"Context 1 can't be empty if you set Context 3."
-                self.add_error('context_1', msg)
-            if not cleaned_data.get('context_2'):
-                msg = u"Context 2 can't be empty if you set Context 3."
-                self.add_error('context_2', msg)
-
-        # A scheduled task can't be due before it's scheduled date
-        if cleaned_data.get('wait') and cleaned_data.get('due'):
-            if cleaned_data.get('wait') > cleaned_data.get('due'):
-                self.add_error('due', u"Due date must be on or after the "
-                                      u"task's scheduled date.")
-
-        # A recurring task mustn't have any information missing
-        if cleaned_data.get('until'):
-            if not cleaned_data.get('recur'):
-                msg = u"A recurring task must have a frequency."
-                self.add_error('recur', msg)
-            if not cleaned_data.get('due'):
-                msg = u"A recurring task must have a due date."
-                self.add_error('due', msg)
-        if cleaned_data.get('recur'):
-            if not cleaned_data.get('until'):
-                msg = u"A recurring task must have an end date."
-                self.add_error('until', msg)
-        if cleaned_data.get('due') and cleaned_data.get('recur'):
-            if not cleaned_data.get('until'):
-                msg = u"A recurring task must have an initial due date."
-                self.add_error('due', msg)
-        if cleaned_data.get('due') and cleaned_data.get('until'):
-            if not cleaned_data.get('due'):
-                msg = u"A recurring task must have a frequency (check)."
-                self.add_error('recur', msg)
-
-        # A recurring task's due date must be before its until (deletion) date
-        if cleaned_data.get('due') and cleaned_data.get('until'):
-            if cleaned_data.get('due') >= cleaned_data.get('until'):
-                msg = u"Due date must be before the task's expiry date."
-                self.add_error('due', msg)
-
-        # A recurring task can't be scheduled for later
-        if cleaned_data.get('until'):
-            if cleaned_data.get('wait'):
-                msg = u"A recurring task can't have a scheduled date set."
-                self.add_error('wait', msg)
-
-        # A recurring task must go in the recurring view
-        if cleaned_data.get('until'):
-            if cleaned_data.get('view') != 'recurring':
-                msg = u"A recurring task's view must be 'recurring'."
-                self.add_error('view', msg)
+class TaaskModelForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("label_suffix", "")
+        super(TaaskModelForm, self).__init__(*args, **kwargs)
 
 
-class AddTaskForm(BaseTaskForm):
+class TaskForm(TaaskModelForm):
 
     def __init__(self, *args, **kwargs):
-        super(AddTaskForm, self).__init__(*args, **kwargs)
-        self.PRIORITY_CHOICES = (
-            (None, ''),
-            ('H', 'High'),
-            ('M', 'Medium'),
-            ('L', 'Low'),
-            )
-        self.fields['priority'].choices = self.PRIORITY_CHOICES
+        super(TaskForm, self).__init__(*args, **kwargs)
         self.VIEW_CHOICES = (
             ('inbox', 'Inbox'),
             ('today', 'Today'),
@@ -209,78 +27,115 @@ class AddTaskForm(BaseTaskForm):
             ('someday', 'Someday'),
             )
         self.fields['view'].choices = self.VIEW_CHOICES
-        self.TIME_CHOICES = (
-            (None, ''),
-            (5, '5mins'),
-            (15, '15mins'),
-            (30, '30mins'),
-            (60, '1hr'),
-            (120, '2hrs'),
-            (300, '5hrs'),
-            )
-        self.fields['time'].choices = self.TIME_CHOICES
+
+    class Meta:
+        model = Task
+        fields = [
+            'context',
+            'deadline',
+            'description',
+            'ends',
+            'frequency',
+            'notes',
+            'priority',
+            'project',
+            'scheduled',
+            'starts',
+            'time',
+            'underway',
+            'view',
+        ]
+
+    def clean(self):
+        cleaned_data = super(TaskForm, self).clean()
+
+        # If the task is not going to inbox, it must have a priority and time
+        if not cleaned_data.get('view') == 'inbox':
+            if not cleaned_data.get('priority'):
+                self.add_error('priority', u"This task must have a priority if"
+                                           u" it isn't going to 'Inbox'.")
+            if not cleaned_data.get('time'):
+                self.add_error('time', u"This task must have a time if it "
+                                       u"isn't going to 'Inbox'.")
+
+        # If a scheduled date is set, the task must go in the scheduled view
+        if cleaned_data.get('scheduled'):
+            if cleaned_data.get('view') != 'scheduled':
+                self.add_error('view', u"This task's view must be 'Scheduled'.")
+
+        # If no scheduled date is set, the task must not go in the scheduled
+        # view
+        if not cleaned_data.get('scheduled'):
+            if cleaned_data.get('view') == 'scheduled':
+                msg = u"This task's view must not be 'Scheduled'."
+                self.add_error('view', msg)
+
+        # A scheduled task's deadline can't be before it's scheduled date
+        if cleaned_data.get('scheduled') and cleaned_data.get('deadline'):
+            if cleaned_data.get('scheduled') > cleaned_data.get('deadline'):
+                self.add_error('deadline', u"Deadline must be on or after the "
+                                      u"task's 'Postpone until' date.")
+
+        # A recurring task mustn't have any information missing
+        if cleaned_data.get('starts'):
+            if not cleaned_data.get('frequency'):
+                msg = u"A recurring task must have a frequency."
+                self.add_error('frequency', msg)
+            if not cleaned_data.get('ends'):
+                msg = u"A recurring task must have an end date."
+                self.add_error('ends', msg)
+        if cleaned_data.get('frequency'):
+            if not cleaned_data.get('ends'):
+                msg = u"A recurring task must have an end date."
+                self.add_error('ends', msg)
+            if not cleaned_data.get('starts'):
+                msg = u"A recurring task must have a start date."
+                self.add_error('starts', msg)
+        if cleaned_data.get('ends'):
+            if not cleaned_data.get('frequency'):
+                msg = u"A recurring task must have a frequency."
+                self.add_error('frequency', msg)
+            if not cleaned_data.get('starts'):
+                msg = u"A recurring task must have a start date."
+                self.add_error('starts', msg)
+
+        # A recurring task can't have a deadline
+        # TODO: Allow recurring tasks to have deadlines
+        if cleaned_data.get('deadline') and cleaned_data.get('ends'):
+            msg = u"At the moment, recurring tasks can't have deadlines."
+            self.add_error('deadline', msg)
+
+        # A recurring task can't be scheduled for later
+        if cleaned_data.get('ends'):
+            if cleaned_data.get('scheduled'):
+                msg = u"A recurring task can't have a 'Postpone until' date set."
+                self.add_error('scheduled', msg)
+
+        # A recurring task must go in the recurring view
+        if cleaned_data.get('ends'):
+            if cleaned_data.get('view') != 'recurring':
+                msg = u"A recurring task's view must be set to 'Recurring'."
+                self.add_error('view', msg)
 
 
-class EditTaskForm(BaseTaskForm):
+class ContextForm(TaaskModelForm):
 
-    def __init__(self, *args, **kwargs):
-        super(EditTaskForm, self).__init__(*args, **kwargs)
-
-
-class BaseConfigurationForm(forms.Form):
-
-    ACTION_CHOICES = (
-        ('create', 'Create'),
-        ('delete', 'Delete'),
-        )
-    # Required is False for both fields because the context and project forms
-    # are rendered on the same page, and validation errors are thrown if
-    # any field is left blank otherwise.
-    action = forms.ChoiceField(choices=ACTION_CHOICES, required=False)
-
-    tag = forms.RegexField(
-        regex=r'^[a-zA-Z0-9]+$',
-        max_length=30,
-        required=True,
-        error_messages={
-            'invalid': 'Must be letters and numbers only.'
-        }
-    )
+    class Meta:
+        model = Context
+        fields = ['context']
 
 
-class ContextForm(BaseConfigurationForm):
+class PriorityForm(TaaskModelForm):
 
-    def clean_tag(self):
-        data = self.cleaned_data['tag']
-        action = self.cleaned_data['action']
-        # First, work out whether the tag currently exists
-        options = get_options()
-        tag_exists = data in options['contexts']
-        # Creating a new tag
-        if action == 'create' and tag_exists:
-            raise forms.ValidationError('This context already exists',
-                                        code='invalid')
-        # Deleting an existing tag
-        if action == 'delete' and not tag_exists:
-            raise forms.ValidationError("This context doesn't exist",
-                                        code='invalid')
-        return data
+    class Meta:
+        model = Priority
+        fields = [
+            'priority',
+            'order',
+        ]
 
+class ProjectForm(TaaskModelForm):
 
-class ProjectForm(BaseConfigurationForm):
-
-    def clean_tag(self):
-        data = self.cleaned_data['tag']
-        action = self.cleaned_data['action']
-        # First, work out whether the tag currently exists
-        options = get_options()
-        tag_exists = data in options['projects']
-        # Creating a new tag
-        if action == 'create' and tag_exists:
-            raise forms.ValidationError('This project already exists',
-                                        code='invalid')
-        # Deleting an existing tag
-        if action == 'delete' and not tag_exists:
-            raise forms.ValidationError("This project doesn't exist",
-                                        code='invalid')
-        return data
+    class Meta:
+        model = Project
+        fields = ['project']

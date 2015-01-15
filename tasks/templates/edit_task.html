@@ -13,13 +13,7 @@
         </div><!-- /.panel-heading -->
 
         <div class="panel-body">
-          {% if tw_error %}
-            <p><strong>Taskwarrior error</strong></p>
-            <ul>
-              <li> {{ tw_error }}</li>
-            </ul>
-          {% endif %}
-        
+
           <div class="form-group width-80">
             {{ form.description.label_tag|labelclass:"sr-only" }}
               <div class="input-group">
@@ -29,6 +23,8 @@
             {{ form.description.errors }}
           </div><!-- /.form-group -->
 
+          <br>
+          
           <div class="form-group">
             {{ form.view.label_tag|labelclass:"sr-only" }}
             <div class="input-group">
@@ -57,24 +53,6 @@
           </div><!-- /.form-group -->
 
           <div class="form-group">
-            {{ form.order.label_tag|labelclass:"sr-only" }}
-            <div class="input-group">
-              <div class="input-group-addon">{{ form.order.label }}</div>
-              {{ form.order|inputclass:"form-control" }}
-            </div><!-- /.input-group -->
-            {{ form.order.errors }}
-          </div><!-- /.form-group -->
-
-          <div class="form-group">
-            {{ form.due.label_tag|labelclass:"sr-only" }}
-            <div class="input-group">
-              <div class="input-group-addon">{{ form.due.label }}</div>
-              {{ form.due|inputclass:"form-control datepicker" }}
-            </div><!-- /.input-group -->
-            {{ form.due.errors }}
-          </div><!-- /.form-group -->
-
-          <div class="form-group">
             {{ form.project.label_tag|labelclass:"sr-only" }}
             <div class="input-group">
               <div class="input-group-addon">{{ form.project.label }}</div>
@@ -83,39 +61,72 @@
             {{ form.project.errors }}
           </div><!-- /.form-group -->
 
+          <div class="checkbox">
+            <label>
+              {{ form.underway }}
+              {{ form.underway.label }}
+              {{ form.underway.errors }}
+            </label>
+          </div><!-- /.checkbox -->
+
         </div><!-- /.panel-body -->
 
         <div class="panel-heading">
-          Context tags
+          Contexts
         </div><!-- /.panel-heading -->
 
         <div class="panel-body">
 
           <div class="form-group">
-            {{ form.context_1.label_tag|labelclass:"sr-only" }}
+            {{ form.context.label_tag|labelclass:"sr-only" }}
             <div class="input-group">
-              <div class="input-group-addon">{{ form.context_1.label }}</div>
-              {{ form.context_1|inputclass:"form-control" }}
+              <div class="input-group-addon">{{ form.context.label }}</div>
+              {{ form.context|inputclass:"form-control" }}
             </div><!-- /.input-group -->
-            {{ form.context_1.errors }}
+            {{ form.context.errors }}
+          </div><!-- /.form-group -->
+
+        </div><!-- /.panel-body -->
+
+        <div class="panel-heading">
+          Notes
+        </div><!-- /.panel-heading -->
+
+        <div class="panel-body">
+
+          <div class="form-group">
+            {{ form.notes.label_tag|labelclass:"sr-only" }}
+            <div class="input-group">
+              <div class="input-group-addon">{{ form.notes.label }}</div>
+              {{ form.notes|inputclass:"form-control" }}
+            </div><!-- /.input-group -->
+            {{ form.notes.errors }}
+          </div><!-- /.form-group -->
+
+        </div><!-- /.panel-body -->
+
+        <div class="panel-heading">
+          Scheduling
+        </div><!-- /.panel-heading -->
+
+        <div class="panel-body">
+
+          <div class="form-group">
+            {{ form.deadline.label_tag|labelclass:"sr-only" }}
+            <div class="input-group">
+              <div class="input-group-addon">{{ form.deadline.label }}</div>
+              {{ form.deadline|inputclass:"form-control datepicker" }}
+            </div><!-- /.input-group -->
+            {{ form.deadline.errors }}
           </div><!-- /.form-group -->
 
           <div class="form-group">
-            {{ form.context_2.label_tag|labelclass:"sr-only" }}
+            {{ form.scheduled.label_tag|labelclass:"sr-only" }}
             <div class="input-group">
-              <div class="input-group-addon">{{ form.context_2.label }}</div>
-              {{ form.context_2|inputclass:"form-control" }}
+              <div class="input-group-addon">{{ form.scheduled.label }}</div>
+              {{ form.scheduled|inputclass:"form-control datepicker" }}
             </div><!-- /.input-group -->
-            {{ form.context_2.errors }}
-          </div><!-- /.form-group -->
-
-          <div class="form-group">
-            {{ form.context_3.label_tag|labelclass:"sr-only" }}
-            <div class="input-group">
-              <div class="input-group-addon">{{ form.context_3.label }}</div>
-              {{ form.context_3|inputclass:"form-control" }}
-            </div><!-- /.input-group -->
-            {{ form.context_3.errors }}
+            {{ form.scheduled.errors }}
           </div><!-- /.form-group -->
 
         </div><!-- /.panel-body -->
@@ -127,46 +138,46 @@
         <div class="panel-body">
 
           <div class="form-group">
-            {{ form.recur.label_tag|labelclass:"sr-only" }}
+            {{ form.frequency.label_tag|labelclass:"sr-only" }}
             <div class="input-group">
-              <div class="input-group-addon">{{ form.recur.label }}</div>
-              {{ form.recur|inputclass:"form-control" }}
+              <div class="input-group-addon">{{ form.frequency.label }}</div>
+              {{ form.frequency|inputclass:"form-control" }}
             </div><!-- /.input-group -->
-            {{ form.recur.errors }}
+            {{ form.frequency.errors }}
           </div><!-- /.form-group -->
 
           <div class="form-group">
-            {{ form.until.label_tag|labelclass:"sr-only" }}
+            {{ form.starts.label_tag|labelclass:"sr-only" }}
             <div class="input-group">
-              <div class="input-group-addon">{{ form.until.label }}</div>
-              {{ form.until|inputclass:"form-control datepicker" }}
+              <div class="input-group-addon">{{ form.starts.label }}</div>
+              {{ form.starts|inputclass:"form-control datepicker" }}
             </div><!-- /.input-group -->
-            {{ form.until.errors }}
+            {{ form.starts.errors }}
           </div><!-- /.form-group -->
 
           <div class="form-group">
-            {{ form.wait.label_tag|labelclass:"sr-only" }}
+            {{ form.ends.label_tag|labelclass:"sr-only" }}
             <div class="input-group">
-              <div class="input-group-addon">{{ form.wait.label }}</div>
-              {{ form.wait|inputclass:"form-control datepicker" }}
+              <div class="input-group-addon">{{ form.ends.label }}</div>
+              {{ form.ends|inputclass:"form-control datepicker" }}
             </div><!-- /.input-group -->
-            {{ form.wait.errors }}
+            {{ form.ends.errors }}
           </div><!-- /.form-group -->
 
         </div><!-- /.panel-body -->
 
         <div class="panel-footer">
-    
-          <a href={% url 'delete-task' task_id %} type="button"
+
+          <a href={% url 'rubbish-task' task_id %} type="button"
             class="btn btn-default">
-            <i class="fa fa-times-circle fa-lg"></i>&nbsp;Delete
+            <i class="fa fa-trash fa-lg"></i>&nbsp;Move to rubbish
           </a>
           <a href={% url 'complete-task' task_id %} type="button"
               class="btn btn-default">
               <i class="fa fa-check-circle fa-lg"></i>&nbsp;Complete
           </a>
           <div class="pull-right">
-            <a href={% url 'list-tasks' 'today' %} type="button"
+            <a href={% url 'list-tasks' 'view' 'today' %} type="button"
               class="btn btn-default">
               <i class="fa fa-minus-circle fa-lg"></i>&nbsp;Cancel
             </a>
@@ -177,7 +188,7 @@
           </div><!-- /.pull-right -->
 
         </div><!-- /.panel-footer -->
-               
+
       </div><!-- /.panel -->
     </div><!-- /.form-contents -->
   </form>
