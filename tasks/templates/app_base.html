@@ -78,11 +78,13 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
+          <small>NEW</small>
           <ul class="nav nav-sidebar">
-            <li id="new_task"><a href="{% url 'add-task' %}">New task</a></li>
+            <li id="new_task"><a href="{% url 'add-task' %}">Add new task</a></li>
             <li id="inbox"><a href="{% url 'list-tasks' 'view' 'inbox' %}">
               Inbox<span class="badge pull-right">{{ task_count.inbox }}</span></a></li>
           </ul>
+          <small>VIEWS</small>
           <ul class="nav nav-sidebar">
             <li id="today"><a href="{% url 'list-tasks' 'view' 'today' %}">
               Today<span class="badge pull-right">{{ task_count.today }}
@@ -102,6 +104,7 @@
               Someday<span class="badge pull-right">{{ task_count.someday }}
               </span></a></li>
           </ul>
+          <small>PROJECTS</small>
           <ul class="nav nav-sidebar">
             {% for project in projects %}
               <li id="{{ project|lower }}">
@@ -109,6 +112,7 @@
                 {{ project }}</a></li>
             {% endfor %}
           </ul>
+          <small>OLD</small>
           <ul class="nav nav-sidebar">
             <li id="completed"><a href="{% url 'list-tasks' 'view' 'completed' %}">
               Completed</a></li>
@@ -116,6 +120,7 @@
               Rubbish<span class="badge pull-right">{{ task_count.rubbish }}
               </span></a></li>
           </ul>
+          <small>SEARCH</small>
           <form role="form" class="nav nav-sidebar navbar-form">
             <input type="text" class="search form-control" data-column="0"
             type="search" id="search-box" placeholder="Search in {{ menu }}...">
