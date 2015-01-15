@@ -35,11 +35,11 @@ class Task(TimeStampedModel):
         max_length=200,
         blank=False,
     )
-    deadline = models.DateTimeField(
+    deadline = models.DateField(
         blank=True,
         null=True,
     )
-    ends = models.DateTimeField(
+    ends = models.DateField(
         verbose_name='Recurs until',
         blank=True,
         null=True,
@@ -53,12 +53,12 @@ class Task(TimeStampedModel):
         blank=True,
         null=False,
     )
-    scheduled = models.DateTimeField(
+    scheduled = models.DateField(
         verbose_name='Postpone until',
         blank=True,
         null=True,
     )
-    starts = models.DateTimeField(
+    starts = models.DateField(
         verbose_name='First occurance',
         blank=True,
         null=True,
