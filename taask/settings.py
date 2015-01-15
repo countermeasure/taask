@@ -106,3 +106,9 @@ DATETIME_FORMAT = 'j M Y'
 DATETIME_INPUT_FORMATS = (
     '%d %b %Y',
     )
+
+# Fixtures
+# https://docs.djangoproject.com/en/1.7/howto/initial-data/
+FIXTURE_DIRS = (
+    os.path.join(BASE_DIR, 'fixtures'),
+)
