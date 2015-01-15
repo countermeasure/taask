@@ -19,6 +19,9 @@
       </tr>
     </thead>
     <tbody>
+      {% if not task_list %}
+        <td colspan=11>There are no tasks in <kbd>{{ menu|title }}</kbd>.</td>
+      {% endif %}
       {% for task in task_list %}
         <tr class="task-row" id="task-{{ task.id }}" url="{% url 'edit-task' task.id %}">
           <td>
