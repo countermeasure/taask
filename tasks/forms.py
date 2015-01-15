@@ -1,3 +1,5 @@
+from datetime import date
+
 from django import forms
 
 from models import (
@@ -116,6 +118,12 @@ class TaskForm(TaaskModelForm):
             if cleaned_data.get('view') != 'recurring':
                 msg = u"A recurring task's view must be set to 'Recurring'."
                 self.add_error('view', msg)
+
+        # A task can't be scheduled on or before today's date
+        if cleaned_data.get('scheduled'):
+            if cleaned_data.get('scheduled') <= date.today():
+                msg = u"A task can only be scheduled for a future date."
+                self.add_error('scheduled', msg)
 
 
 class ContextForm(TaaskModelForm):
