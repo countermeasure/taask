@@ -101,8 +101,12 @@ STATIC_ROOT = os.environ['TAASK_STATIC_ROOT']
 # Dates
 # https://docs.djangoproject.com/en/1.7/ref/settings/#date-format
 
-DATETIME_FORMAT = 'j M Y'
+DATE_FORMAT = 'j M Y'
+DATE_INPUT_FORMATS = (
+    '%d %b %Y',
+    )
 
+DATETIME_FORMAT = 'j M Y'
 DATETIME_INPUT_FORMATS = (
     '%d %b %Y',
     )
