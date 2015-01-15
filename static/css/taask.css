@@ -75,6 +75,10 @@ body {
  * Inline forms
  */
 
+.form-inline {
+  text-align: left;
+}
+
 @media (min-width: 768px) {
   .form-inline .form-group {
     margin: 0 10px 15px 0;
