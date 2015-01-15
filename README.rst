@@ -36,13 +36,12 @@ Contents
 1.1 Escaping from data prison
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Task management software usually likes to store your data in a proprietary
-format in a database. This makes moving from one task management system to
-another difficult if you ever want to.
+Task management software usually likes to store your data in a
+difficult-to-unravel format in a database. This makes moving from one task
+management system to another difficult if you ever want to.
 
-Taask is built on top of the excellent command-line task manager
-`Taskwarrior <http://taskwarrior.org>`_. Taskwarrior stores all your data in
-human-readable YAML-esque text files. No database!
+Taask uses a database, but allows all your data to be exported (and re-imported)
+in easily-human-readable text files.
 
 1.2 Future proofing your data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -50,8 +49,8 @@ human-readable YAML-esque text files. No database!
 Data formats change over time. A proprietary data format that works today may be
 impossible to work with in 20 years time.
 
-With Taask and Taskwarrior, your data will continue to be accessible for as long
-as computers can read text files.
+With Taask, your data will continue to be accessible for as long as computers
+can read text files.
 
 Also, as text files, your data can be version controlled if you're so inclined.
 
@@ -92,14 +91,8 @@ you be that person?
 
 These projects make Taask possible:
 
-`Taskwarrior <http://taskwarrior.org>`_: The command line task management tool
-which is the brains of Taask
-
 `Django <https://www.djangoproject.com>`_: The Python web-app framework which
 Taask's front-end is built with
-
-`Taskw <https://github.com/ralphbean/taskw>`_: A Python API which lets Django
-talk to Taskwarrior
 
 `Tablesorter <https://mottie.github.io/tablesorter>`_: A jQuery library which
 sorts and filters tables
@@ -123,14 +116,7 @@ setting up a development instance.
 Don't forget though, that if you just want to get a quick feel for Taask,
 there's a demo at `taask.org <http://taask.org>`_ that you can test-drive!
 
-4.1 Install Taskwarrior
-^^^^^^^^^^^^^^^^^^^^^^^
-
-::
-
-    $ sudo apt-get install task
-
-4.2 Install pip, virtualenv and virtualenvwrapper
+4.1 Install pip, virtualenv and virtualenvwrapper
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You may already have these installed. If so, skip this step.
@@ -154,7 +140,7 @@ Reload ``~/.bashrc``:
 
     $ source ~/.bashrc
 
-4.3 Set up a virtualenv
+4.2 Set up a virtualenv
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 ::
@@ -176,7 +162,7 @@ Restart the virtualenv so that these setting take effect:
     $ deactivate
     $ workon taask
 
-4.4 Clone the repo
+4.3 Clone the repo
 ^^^^^^^^^^^^^^^^^^
 
 For these instructions we'll clone the repo to ``~/Projects``, but you can put
@@ -188,7 +174,7 @@ it anywhere you like.
     $ cd ~/Projects
     $ git clone https://github.com/countermeasure/taask.git
 
-4.5 Install dependencies
+4.4 Install dependencies
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 ::
@@ -196,22 +182,22 @@ it anywhere you like.
     $ cd ~/Projects/taask
     $ pip install -r requirements.txt
 
-4.6 Configure
-^^^^^^^^^^^^^
+4.5 Set up the database
+^^^^^^^^^^^^^^^^^^^^^^^
 
 ::
 
-    $ cp ~/Projects/taask/configuration/.taskrc ~
-    $ cp -r ~/Projects/taask/fixtures/.task ~
+    $ python manage.py migrate
+    $ python manage.py loaddata initial_data
 
-4.7 Start the server
+4.6 Start the server
 ^^^^^^^^^^^^^^^^^^^^
 
 ::
 
     $ python manage.py runserver
 
-4.8 Open Taask
+4.7 Open Taask
 ^^^^^^^^^^^^^^
 
-Browse to ``localhost:8000/list-tasks/today``.
+Browse to ``localhost:8000``.
