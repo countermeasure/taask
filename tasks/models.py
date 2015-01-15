@@ -26,11 +26,10 @@ class Task(TimeStampedModel):
         ('rubbish', 'Rubbish'),
     )
 
-    STATUS_CHOICES = (
-        ('active', 'active'),
-        ('completed', 'completed'),
+    completed = models.DateTimeField(
+        blank=True,
+        null=True,
     )
-
     description = models.CharField(
         max_length=200,
         blank=False,
@@ -62,12 +61,6 @@ class Task(TimeStampedModel):
         verbose_name='First occurance',
         blank=True,
         null=True,
-    )
-    status = models.CharField(
-        max_length=20,
-        choices=STATUS_CHOICES,
-        default='active',
-        blank = False,
     )
     time = models.PositiveIntegerField(
         blank=True,

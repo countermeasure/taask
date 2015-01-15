@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import render, redirect
 
 from forms import (
@@ -70,8 +72,8 @@ def edit_task(request, task_id):
     if request.method == "POST":
         form = TaskForm(request.POST, instance=task)
         if form.is_valid():
-            # TODO: process form eg. if completed task is being shifted to
-            # another view, its status must be changed to 'active', etc...
+            # TODO: process form eg. if a completed task is being shifted to
+            # another view, 'completed' must be set to 'None', etc...
             # processed_form = process_edited_task_form(form)
             # processed_form.save()
             form.save()
@@ -88,10 +90,11 @@ def edit_task(request, task_id):
 def complete_task(request, task_id):
     """Completes a task."""
 
+    # TODO: Display an error if the task cannot be completed
     task = Task.objects.get(pk=task_id)
     # Only tasks from certain views are able to be completed
     if task.view in ['inbox', 'today', 'next', 'someday']:
-        task.status = 'completed'
+        task.completed = datetime.now()
         task.view = 'completed'
         # Remove unnecessary data
         task.scheduled = None
@@ -99,7 +102,7 @@ def complete_task(request, task_id):
         task.underway = False
         task.save()
 
-    return redirect('list-tasks', 'view', 'today')
+    return redirect('list-tasks', 'view', 'completed')
 
 
 def rubbish_task(request, task_id):
