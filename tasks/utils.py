@@ -27,6 +27,20 @@ def get_task_count():
     return task_count
 
 
+def process_and_save_task(task, form):
+    """Processes a task form to ensur that the data it generates
+    is internally consistent, then save it.
+    """
+    updated_task = form.save(commit=False)
+
+    # When a completed task is moved to another view, set its
+    # 'completed' attribute to 'None'
+    if task.completed and (form.cleaned_data['view'] != 'completed'):
+        updated_task.completed = None
+
+    updated_task.save()
+
+
 @receiver(request_finished)
 def manage_scheduled_tasks(sender, **kwargs):
     """Moves scheduled tasks which are scheduled for today or

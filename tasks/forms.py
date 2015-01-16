@@ -27,6 +27,7 @@ class TaskForm(TaaskModelForm):
             ('scheduled', 'Scheduled'),
             ('recurring', 'Recurring'),
             ('someday', 'Someday'),
+            ('completed', 'Completed'),
             )
         self.fields['view'].choices = self.VIEW_CHOICES
 

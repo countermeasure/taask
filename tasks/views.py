@@ -14,7 +14,10 @@ from models import (
     Project,
     Task,
 )
-from utils import get_task_count
+from utils import (
+    get_task_count,
+    process_and_save_task,
+)
 
 
 def home(request):
@@ -72,11 +75,7 @@ def edit_task(request, task_id):
     if request.method == "POST":
         form = TaskForm(request.POST, instance=task)
         if form.is_valid():
-            # TODO: process form eg. if a completed task is being shifted to
-            # another view, 'completed' must be set to 'None', etc...
-            # processed_form = process_edited_task_form(form)
-            # processed_form.save()
-            form.save()
+            process_and_save_task(task, form)
             return render(request, 'single_task.html', {'task': task})
     else:
         form = TaskForm(instance=task)
