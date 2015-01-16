@@ -26,7 +26,7 @@
         <tr class="task-row" id="task-{{ task.id }}" url="{% url 'edit-task' task.id %}">
           <td>
             {% if task.underway %}
-              <i class="fa fa-toggle-right fa-lg"></i>
+              <i class="fa fa-toggle-right fa-lg"></i><span class="hidden">True</span>
             {% endif %}
           </td>
           <td>{{ task.description }}</td>
