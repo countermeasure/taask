@@ -78,11 +78,16 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
+          <a class="btn btn-primary" id="new_task"
+            href="{% url 'add-task' %}">
+            <i class="fa fa-plus-circle fa-lg"></i>&nbsp;Add new task</a>
+          <br><br>
           <small>NEW</small>
           <ul class="nav nav-sidebar">
-            <li id="new_task"><a href="{% url 'add-task' %}">Add new task</a></li>
             <li id="inbox"><a href="{% url 'list-tasks' 'view' 'inbox' %}">
-              Inbox<span class="badge pull-right">{{ task_count.inbox }}</span></a></li>
+              Inbox<span class="badge pull-right">
+              {{ task_count.inbox }}
+              </span></a></li>
           </ul>
           <small>VIEWS</small>
           <ul class="nav nav-sidebar">
