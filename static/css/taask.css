@@ -167,6 +167,10 @@ body {
   border-radius: 0px;
 }
 
+.panel .panel-heading-warning {
+  background-color: #dd3040;
+}
+
 .panel .panel-body,
 .panel .panel-footer {
   background-color: #aac9e3;

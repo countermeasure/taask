@@ -8,6 +8,13 @@
 
       <div class="panel panel-default">
 
+        {% ifequal form.view.value 'completed' %}
+          <div class="panel-heading panel-heading-warning">
+            <i class="fa fa-warning fa-lg"></i>&nbsp;
+            You are editing a completed task.
+          </div><!-- /.panel-heading -->
+        {% endifequal %}
+
         <div class="panel-heading">
           Basic information
         </div><!-- /.panel-heading -->
@@ -24,7 +31,7 @@
           </div><!-- /.form-group -->
 
           <br>
-          
+
           <div class="form-group">
             {{ form.view.label_tag|labelclass:"sr-only" }}
             <div class="input-group">
