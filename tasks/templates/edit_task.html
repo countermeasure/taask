@@ -1,8 +1,13 @@
 {% load customtags %}
 
-<td colspan="14" id="task-edit-cell">
-  <form role="form" class="form-inline" id="edittaskform"
-    action="{% url 'edit-task' task_id %}" method="POST">
+{% if task_id %}
+  <td colspan="14" class="task-form" id="task-edit-cell">
+    <form role="form" class="form-inline" id="edittaskform"
+      action="{% url 'edit-task' task_id %}" method="POST">
+{% else %}
+  <form role="form" class="form-inline" id="addtaskform"
+    action="" method="POST">
+{% endif %}
     <div id="form-contents">
       {% csrf_token %}
 
@@ -25,7 +30,7 @@
             {{ form.description.label_tag|labelclass:"sr-only" }}
               <div class="input-group">
                 <div class="input-group-addon">{{ form.description.label }}</div>
-                {{ form.description|inputclass:"form-control" }}
+                {{ form.description|inputclass:"form-control"|autofocus }}
               </div><!-- /.input-group -->
             {{ form.description.errors }}
           </div><!-- /.form-group -->
@@ -173,23 +178,29 @@
 
         </div><!-- /.panel-body -->
 
-        <div class="panel-footer">
+        <div class="panel-footer clearfix">
 
-          <a href={% url 'rubbish-task' task_id %} type="button"
-            class="btn btn-default">
-            <i class="fa fa-trash fa-lg"></i>&nbsp;Move to rubbish
-          </a>
-          <a href={% url 'complete-task' task_id %} type="button"
+          {% if task_id %}
+            <a href={% url 'rubbish-task' task_id %} type="button"
               class="btn btn-default">
-              <i class="fa fa-check-circle fa-lg"></i>&nbsp;Complete
-          </a>
+              <i class="fa fa-trash fa-lg"></i>&nbsp;Move to rubbish
+            </a>
+            <a href={% url 'complete-task' task_id %} type="button"
+                class="btn btn-default">
+                <i class="fa fa-check-circle fa-lg"></i>&nbsp;Complete
+            </a>
+          {% endif %}
           <div class="pull-right">
             <a href={% url 'list-tasks' 'view' 'today' %} type="button"
               class="btn btn-default">
               <i class="fa fa-minus-circle fa-lg"></i>&nbsp;Cancel
             </a>
-            <button type="button" class="btn btn-primary btn-save"
-              id="save-task-{{ task_id }}">
+            {% if task_id %}
+              <button type="button" class="btn btn-primary btn-save"
+                id="save-task-{{ task_id }}">
+            {% else %}
+              <button type="submit" class="btn btn-primary">
+            {% endif %}
               <i class="fa fa-check-circle fa-lg"></i>&nbsp;Save
             </button>
           </div><!-- /.pull-right -->

@@ -4,39 +4,10 @@
 
 {% block content %}
 
-<div class="col-sm-12 col-md-10 col-lg-8">
+<div class="col-sm-12 col-md-12 col-lg-10">
   <div class="panel panel-default">
-    <div class="panel-heading">
-      <i class="fa fa-plus-circle fa-fw fa-lg"></i>&nbsp;
-      Add new task
-    </div><!-- panel-heading -->
-    <div class="panel-body">
-      <form role="form" class="form-horizontal" id="addtaskform" action="" method="POST">
-        {% csrf_token %}
-        {% for field in form %}
-          <div class="form-group">
-            {{ field.label_tag|labelclass:"col-sm-2 control-label" }}
-            <div class="col-sm-10">
-              {% if field.name == 'description' %}
-                {{ field|inputclass:"form-control"|autofocus }}
-              {% elif field.name == 'deadline' or field.name == 'scheduled' or field.name == 'starts' or field.name == 'ends' %}
-                {{ field|inputclass:"form-control datepicker" }}
-              {% else %}
-                {{ field|inputclass:"form-control" }}
-              {% endif %}
-              {{field.errors}}
-            </div>
-          </div>
-        {%endfor%}
-        <div class="pull-right">
-          <a href="{% url 'list-tasks' 'view' 'today' %}" type="button" class="btn btn-default">
-            <i class="fa fa-minus-circle fa-lg"></i>&nbsp;Cancel
-          </a>
-          <button type="submit" class="btn btn-primary">
-            <i class="fa fa-check-circle fa-lg"></i>&nbsp;Save task
-          </button>
-        </div>
-      </form>
+    <div class="panel-body task-form">
+      {% include 'edit_task.html' %}
     </div><!-- /.panel-body -->
   </div><!-- /.panel -->
 </div><!-- /.col -->

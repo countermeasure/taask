@@ -109,6 +109,11 @@ body {
   width: 100%;
 }
 
+.task-form {
+  padding: 0 0 0 0 !important;
+  border: 0px !important;
+}
+
 
 /*
  * Table
@@ -176,9 +181,4 @@ body {
   background-color: #aac9e3;
   border: 0px;
   border-radius: 0px;
-}
-
-#task-edit-cell {
-  padding: 0 0 0 0 !important;
-  border: 0px !important;
 }
