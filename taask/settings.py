@@ -66,10 +66,12 @@ WSGI_APPLICATION = 'taask.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
+HOME = os.environ['HOME']
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'taask.sqlite3'),
+        'NAME': '%s/.taask/taask.sqlite3' % HOME,
     }
 }
 
