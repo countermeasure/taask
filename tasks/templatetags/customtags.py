@@ -44,3 +44,23 @@ def autofocus(field):
     field_string = unicode(field)
 
     return mark_safe(field_string.replace('>', ' autofocus>', 1))
+
+
+@register.filter(name='rows')
+def rows(field, rows):
+    """Allows the number of rows of a TextField to be set.
+    Must not be used before the 'inputclass' custom tag.
+    """
+    field_string = re.sub('rows="\d+"', 'rows="%s"' % rows, unicode(field))
+
+    return mark_safe(field_string)
+
+
+@register.filter(name='cols')
+def cols(field, cols):
+    """Allows the number of columns of a TextField to be set.
+    Must not be used before the 'inputclass' custom tag.
+    """
+    field_string = re.sub('cols="\d+"', 'cols="%s"' % cols, unicode(field))
+
+    return mark_safe(field_string)
