@@ -110,7 +110,7 @@
             {{ form.notes.label_tag|labelclass:"sr-only" }}
             <div class="input-group">
               <div class="input-group-addon">{{ form.notes.label }}</div>
-              {{ form.notes|inputclass:"form-control" }}
+              {{ form.notes|inputclass:"form-control"|rows:"3"|cols:"100" }}
             </div><!-- /.input-group -->
             {{ form.notes.errors }}
           </div><!-- /.form-group -->
