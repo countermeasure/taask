@@ -55,54 +55,54 @@
 },
 {
    "fields": {
-      "modified": "2015-01-15T03:45:29.298Z",
+      "modified": "2015-01-15T03:45:29.298",
       "context": "Computer",
-      "created": "2015-01-15T03:45:29.298Z"
+      "created": "2015-01-15T03:45:29.298"
    },
    "model": "tasks.context",
    "pk": 1
 },
 {
    "fields": {
-      "modified": "2015-01-15T03:45:49.682Z",
+      "modified": "2015-01-15T03:45:49.682",
       "context": "Email",
-      "created": "2015-01-15T03:45:49.682Z"
+      "created": "2015-01-15T03:45:49.682"
    },
    "model": "tasks.context",
    "pk": 2
 },
 {
    "fields": {
-      "modified": "2015-01-15T03:45:54.228Z",
+      "modified": "2015-01-15T03:45:54.228",
       "context": "Home",
-      "created": "2015-01-15T03:45:54.228Z"
+      "created": "2015-01-15T03:45:54.228"
    },
    "model": "tasks.context",
    "pk": 3
 },
 {
    "fields": {
-      "modified": "2015-01-15T03:46:07.355Z",
+      "modified": "2015-01-15T03:46:07.355",
       "context": "Internet",
-      "created": "2015-01-15T03:46:07.355Z"
+      "created": "2015-01-15T03:46:07.355"
    },
    "model": "tasks.context",
    "pk": 4
 },
 {
    "fields": {
-      "modified": "2015-01-15T03:46:16.682Z",
+      "modified": "2015-01-15T03:46:16.682",
       "context": "Phone",
-      "created": "2015-01-15T03:46:16.682Z"
+      "created": "2015-01-15T03:46:16.682"
    },
    "model": "tasks.context",
    "pk": 5
 },
 {
    "fields": {
-      "modified": "2015-01-15T03:46:27.727Z",
+      "modified": "2015-01-15T03:46:27.727",
       "context": "Work",
-      "created": "2015-01-15T03:46:27.727Z"
+      "created": "2015-01-15T03:46:27.727"
    },
    "model": "tasks.context",
    "pk": 6
@@ -111,8 +111,8 @@
    "fields": {
       "priority": "Extra High",
       "order": 1,
-      "modified": "2015-01-15T03:47:54.767Z",
-      "created": "2015-01-15T03:47:54.767Z"
+      "modified": "2015-01-15T03:47:54.767",
+      "created": "2015-01-15T03:47:54.767"
    },
    "model": "tasks.priority",
    "pk": 1
@@ -121,8 +121,8 @@
    "fields": {
       "priority": "High",
       "order": 2,
-      "modified": "2015-01-15T03:48:03.950Z",
-      "created": "2015-01-15T03:48:03.950Z"
+      "modified": "2015-01-15T03:48:03.950",
+      "created": "2015-01-15T03:48:03.950"
    },
    "model": "tasks.priority",
    "pk": 2
@@ -131,8 +131,8 @@
    "fields": {
       "priority": "Medium",
       "order": 3,
-      "modified": "2015-01-15T03:48:13.763Z",
-      "created": "2015-01-15T03:48:13.763Z"
+      "modified": "2015-01-15T03:48:13.763",
+      "created": "2015-01-15T03:48:13.763"
    },
    "model": "tasks.priority",
    "pk": 3
@@ -141,8 +141,8 @@
    "fields": {
       "priority": "Low",
       "order": 4,
-      "modified": "2015-01-15T03:48:21.075Z",
-      "created": "2015-01-15T03:48:21.075Z"
+      "modified": "2015-01-15T03:48:21.075",
+      "created": "2015-01-15T03:48:21.075"
    },
    "model": "tasks.priority",
    "pk": 4
@@ -151,8 +151,8 @@
    "fields": {
       "priority": "Extra Low",
       "order": 5,
-      "modified": "2015-01-15T03:48:30.225Z",
-      "created": "2015-01-15T03:48:30.225Z"
+      "modified": "2015-01-15T03:48:30.225",
+      "created": "2015-01-15T03:48:30.225"
    },
    "model": "tasks.priority",
    "pk": 5
