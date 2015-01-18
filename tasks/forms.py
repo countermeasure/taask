@@ -130,10 +130,11 @@ class TaskForm(TaaskModelForm):
                 msg = u"A task can only be scheduled for a future date."
                 self.add_error('scheduled', msg)
 
-        # A scheduled task can't be underway
-        if cleaned_data.get('scheduled') and cleaned_data.get('underway'):
-            msg = u"A scheduled task can't be underway."
-            self.add_error('underway', msg)
+        # A task can only be underway if it is in the 'Today' view
+        if cleaned_data.get('underway'):
+            if cleaned_data.get('view') != 'today':
+                msg = u"A task must be in 'Today' to be underway."
+                self.add_error('underway', msg)
 
 
 class ContextForm(TaaskModelForm):
