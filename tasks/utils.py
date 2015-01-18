@@ -44,15 +44,26 @@ def process_and_save_task(task, form):
 
 
 @receiver(request_finished)
-def manage_scheduled_tasks(sender, **kwargs):
-    """Moves scheduled tasks which are scheduled for today or
-    earlier into the 'Today' view.
+def manage_dated_tasks(sender, **kwargs):
+    """Moves scheduled or deadlined tasks to the 'Today' view
+    when appropriate.
     """
     scheduled_tasks = Task.objects.filter(view='scheduled')
+    deadlined_tasks = Task.objects.exclude(deadline=None)
     today = date.today()
 
+    # Move scheduled tasks to 'Today' if they are scheduled on
+    # or before today's date
     for task in scheduled_tasks:
         if task.scheduled <= today:
             task.scheduled = None
             task.view = 'today'
             task.save()
+
+    # Move deadlined tasks to 'Today' if their deadline is on
+    # or before today's date and they are not completed
+    for task in deadlined_tasks:
+        if (task.deadline <= today) and \
+            (task.view not in ['today', 'completed']):
+                task.view = 'today'
+                task.save()
