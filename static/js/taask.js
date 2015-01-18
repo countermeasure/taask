@@ -77,13 +77,13 @@ function ActivateTablesorter() {
     type: 'numeric'
   });
   $(function(){
+    var sort_order = JSON.parse($( "#sort-order" ).html());
     $("#tasktable").tablesorter({
       widgets: ["filter"],
       headers: { 5: { sorter: 'priority' },
                  12: { sorter: 'view' },
                },
-      // Sort by 'underway', then 'scheduled', then 'priority', then 'time'
-      sortList: [[0,0],[7,0],[5,1],[4,0]],
+      sortList: sort_order,
       widgetOptions : {
         filter_columnFilters : false,
         filter_defaultFilter: { 0 : '~{query}' },
