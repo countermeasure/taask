@@ -79,11 +79,11 @@ function ActivateTablesorter() {
   $(function(){
     $("#tasktable").tablesorter({
       widgets: ["filter"],
-      headers: { 6: { sorter: 'priority' },
+      headers: { 5: { sorter: 'priority' },
                  12: { sorter: 'view' },
                },
-      // Sort by 'priority', then 'order', then 'time', then 'view'
-      sortList: [[12,1],[6,1],[7,0],[5,0]],
+      // Sort by 'underway', then 'scheduled', then 'priority', then 'time'
+      sortList: [[0,0],[7,0],[5,1],[4,0]],
       widgetOptions : {
         filter_columnFilters : false,
         filter_defaultFilter: { 0 : '~{query}' },
