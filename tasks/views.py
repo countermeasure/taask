@@ -76,7 +76,7 @@ def edit_task(request, task_id):
         form = TaskForm(request.POST, instance=task)
         if form.is_valid():
             process_and_save_task(task, form)
-            return render(request, 'single_task.html', {'task': task})
+            return render(request, 'task_row.html', {'task': task})
     else:
         form = TaskForm(instance=task)
 

@@ -25,40 +25,7 @@
       {% endif %}
       {% for task in task_list %}
         <tr class="task-row" id="task-{{ task.id }}" url="{% url 'edit-task' task.id %}">
-          <td>
-            {% if task.underway %}
-              <i class="fa fa-toggle-right fa-lg"></i><span class="hidden">True</span>
-            {% endif %}
-          </td>
-          <td>{{ task.description }}</td>
-          <td><span class="label label-default">{{ task.project|default_if_none:'' }}</span></td>
-          <td>
-            {% for context in task.context.all %}
-              <span class="label label-primary">{{ context }}</span>
-            {% endfor %}
-          </td>
-          <td><span class="label label-primary label-time">{{ task.time|default_if_none:'' }}</span></td>
-          <td><span class="label label-primary label-priority">{{ task.priority|default_if_none:'' }}</span></td>
-          <td>
-            <span class="hidden">{{ task.deadline|date:'Ymd' }}</span>
-            <span class="label label-danger label-date">{{ task.deadline|default_if_none:'' }}</span>
-          </td>
-          <td>
-            <span class="hidden">{{ task.scheduled|date:'Ymd' }}</span>
-            <span class="label label-danger label-date">{{ task.scheduled|default_if_none:'' }}</span>
-          </td>
-          <td><span class="label label-danger">{{ task.frequency|default_if_none:'' }}</span></td>
-          <td><span class="label label-danger label-date">{{ task.starts|default_if_none:'' }}</span></td>
-          <td><span class="label label-danger label-date">{{ task.ends|default_if_none:'' }}</span></td>
-          <td>
-            <span class="hidden">{{ task.completed|date:'Ymd' }}{{ task.completed|time:'His' }}</span>
-            <span class="label label-danger label-date">{{ task.completed|default_if_none:'' }}</span>
-          </td>
-          <td class="hidden">
-            {% for context in task.context.all %}
-              {{ context }},
-            {% endfor %}
-          </td>
+          {% include 'task_row.html' %}
         </tr>
         <tr class="tablesorter-childRow" id="edit-task-{{ task.id }}">
         </tr>
