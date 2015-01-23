@@ -75,12 +75,24 @@
   {% endifequal %}
 
   <span class="hidden" id="sort-order">
-    {% if menu == 'completed' %}
-      [[11,1]]
+    {% if menu == 'inbox' %}
+      []
+    {% elif menu == 'today' %}
+      [[0,1],[5,1],[4,0]]
+    {% elif menu == 'next' %}
+      [[5,1],[6,0],[4,0]]
     {% elif menu == 'scheduled' %}
       [[7,0]]
+    {% elif menu == 'recurring' %}
+      [[8,0]]
+    {% elif menu == 'someday' %}
+      [[5,1],[6,0],[4,0]]
+    {% elif menu == 'completed' %}
+      [[11,1]]
+    {% elif menu == 'rubbish' %}
+      []
     {% else %}
-      [[0,1],[5,1],[4,0]]
+      [[5,1],[11,1],[6,0],[4,0]]
     {% endif %}
   </span>
 
