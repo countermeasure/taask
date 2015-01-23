@@ -91,9 +91,15 @@
           </ul>
           <small>VIEWS</small>
           <ul class="nav nav-sidebar">
-            <li id="today"><a href="{% url 'list-tasks' 'view' 'today' %}">
-              Today<span class="badge pull-right">{{ task_count.today }}
-              </span></a></li>
+            <li id="today">
+              <a href="{% url 'list-tasks' 'view' 'today' %}">
+                Today
+                <span class="badge pull-right">{{ task_count.today }}</span>
+                {% if total_time %}
+                  <span class="badge pull-right">{{ total_time }} mins</span>
+                {% endif %}
+              </a>
+            </li>
             <li id="next"><a href="{% url 'list-tasks' 'view' 'next' %}">
               Next<span class="badge pull-right">{{ task_count.next }}
               </span></a></li>

@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.db.models import Sum
 from django.shortcuts import render, redirect
 
 from forms import (
@@ -51,8 +52,12 @@ def list_tasks(request, selector_type, selector):
     project.
     """
 
+    total_time = None
+
     if selector_type == 'view':
         task_list = Task.objects.filter(view=selector)
+        if selector == 'today':
+            total_time = task_list.aggregate(Sum('time'))['time__sum']
     elif selector_type == 'project':
         task_list = Task.objects.filter(project=selector)
 
@@ -62,6 +67,7 @@ def list_tasks(request, selector_type, selector):
         'projects': Project.objects.all(),
         'task_count': get_task_count(),
         'task_list': task_list,
+        'total_time': total_time,
     })
 
 
