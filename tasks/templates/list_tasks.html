@@ -77,8 +77,10 @@
   <span class="hidden" id="sort-order">
     {% if menu == 'completed' %}
       [[11,1]]
+    {% elif menu == 'scheduled' %}
+      [[7,0]]
     {% else %}
-      [[0,1],[7,1],[5,1],[4,0]]
+      [[0,1],[5,1],[4,0]]
     {% endif %}
   </span>
 
