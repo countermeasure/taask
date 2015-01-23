@@ -64,6 +64,6 @@ def manage_dated_tasks(sender, **kwargs):
     # or before today's date and they are not completed
     for task in deadlined_tasks:
         if (task.deadline <= today) and \
-            (task.view not in ['today', 'completed']):
+            (task.view not in ['today', 'completed', 'rubbish']):
                 task.view = 'today'
                 task.save()
