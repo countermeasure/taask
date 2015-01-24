@@ -3,7 +3,12 @@
     <i class="fa fa-toggle-right fa-lg"></i><span class="hidden">True</span>
   {% endif %}
 </td>
-<td>{{ task.description }}</td>
+<td>
+  {{ task.description }}
+  {% if task.notes %}
+    <i class="fa fa-file-text"></i>
+  {% endif %}
+</td>
 <td><span class="label label-default">{{ task.project|default_if_none:'' }}</span></td>
 <td>
   {% for context in task.context.all %}
