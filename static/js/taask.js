@@ -128,10 +128,14 @@ function ReactivateForm() {
 
 function ExpandLabels() {
   $( ".label-time" ).each(function() {
-    var time = $( this ).html();
-    if ( (time) && !(time.substr(-4) =="mins")) {
-      $( this ).append(" mins");
+    var time = $( this ).prev().html();
+    var hours = Math.floor( time/60 );
+    var minutes = time % 60;
+    var formatted_time = '';
+    if ( ( hours != 0 ) || ( minutes != 0 ) ) {
+      formatted_time = hours + ":" + ( minutes < 10 ? "0" : "" ) + minutes;
     };
+    $( this ).html( formatted_time );
   });
   $( ".label-priority" ).each(function() {
     var priority_code = $( this ).html();

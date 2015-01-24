@@ -96,7 +96,10 @@
                 Today
                 <span class="badge pull-right">{{ task_count.today }}</span>
                 {% if total_time %}
-                  <span class="badge pull-right">{{ total_time }} mins</span>
+                  <span class="badge pull-right">
+                    <span class="hidden">{{ total_time|default_if_none:'' }}</span>
+                    <span class="label-time"></span> hours
+                  </span>
                 {% endif %}
               </a>
             </li>
