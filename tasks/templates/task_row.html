@@ -35,8 +35,3 @@
   <span class="hidden">{{ task.completed|date:'Ymd' }}{{ task.completed|time:'His' }}</span>
   <span class="label label-danger label-date">{{ task.completed|default_if_none:'' }}</span>
 </td>
-<td class="hidden">
-  {% for context in task.context.all %}
-    {{ context }},
-  {% endfor %}
-</td>
