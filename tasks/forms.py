@@ -56,14 +56,23 @@ class TaskForm(TaaskModelForm):
         # and context
         if not cleaned_data.get('view') == 'inbox':
             if not cleaned_data.get('priority'):
-                self.add_error('priority', u"This task must have a priority if"
-                                           u" it isn't going to 'Inbox'.")
+                # Don't require completed tasks to have a priority though
+                if not cleaned_data.get('view') == 'completed':
+                    msg = (u"This task must have a priority if it isn't going "
+                           u"to 'Inbox'.")
+                    self.add_error('priority', msg)
             if not cleaned_data.get('time'):
                 self.add_error('time', u"This task must have a time if it "
                                        u"isn't going to 'Inbox'.")
             if not cleaned_data.get('context'):
                 self.add_error('context', u"This task must have at least one "
                                        u"context if it isn't going to 'Inbox'.")
+
+        # A completed task which is being edited can't have a priority added
+        if cleaned_data.get('view') == 'completed':
+            if cleaned_data.get('priority'):
+                msg = u"A completed task can't have a priority."
+                self.add_error('priority', msg)
 
         # If a scheduled date is set, the task must go in the scheduled view
         if cleaned_data.get('scheduled'):
