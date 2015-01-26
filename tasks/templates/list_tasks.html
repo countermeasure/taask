@@ -17,6 +17,9 @@
         <th>Starts</th>
         <th>Ends</th>
         <th>Completed</th>
+        {% ifequal selector_type 'project' %}
+          <th>View</th>
+        {% endifequal %}
       </tr>
     </thead>
     <tbody>
@@ -59,7 +62,7 @@
     {% elif menu == 'rubbish' %}
       []
     {% else %}
-      [[5,1],[11,1],[6,0],[4,0]]
+      [[12,1],[5,1],[11,1],[6,0],[4,0]]
     {% endif %}
   </span>
 

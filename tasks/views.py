@@ -65,6 +65,7 @@ def list_tasks(request, selector_type, selector):
         'contexts': Context.objects.all(),
         'menu': selector,
         'projects': Project.objects.all(),
+        'selector_type': selector_type,
         'task_count': get_task_count(),
         'task_list': task_list,
         'total_time': total_time,
