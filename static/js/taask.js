@@ -226,3 +226,14 @@ function EnableAjaxForm() {
     });
   });
 };
+
+
+/* Enable form submission when Enter is pressed
+-------------------------------------------------- */
+
+$(document).keydown(function(event) {
+    if (event.keyCode == 13) {
+        $('.btn-save').click();
+        event.preventDefault();
+     }
+});
