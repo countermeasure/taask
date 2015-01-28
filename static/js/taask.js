@@ -231,9 +231,12 @@ function EnableAjaxForm() {
 /* Enable form submission when Enter is pressed
 -------------------------------------------------- */
 
-$(document).keydown(function(event) {
-    if (event.keyCode == 13) {
-        $('.btn-save').click();
-        event.preventDefault();
+$(document).keydown(function( event ) {
+    if ( event.keyCode == 13 ) {
+        var notes_has_focus = $( ".notes" ).is( ":focus" )
+        if ( !notes_has_focus ) {
+          $( ".btn-save" ).click();
+          event.preventDefault();
+        }
      }
 });
