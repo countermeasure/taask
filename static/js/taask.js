@@ -232,13 +232,13 @@ function EnableAjaxForm() {
 -------------------------------------------------- */
 
 $(document).keydown(function( event ) {
-    if ( event.keyCode == 13 ) {
-        var notes_has_focus = $( ".notes" ).is( ":focus" )
-        if ( !notes_has_focus ) {
-          $( ".btn-save" ).click();
-          event.preventDefault();
-        }
-     }
+  if ( event.keyCode == 13 ) {
+    var notes_has_focus = $( ".notes" ).is( ":focus" );
+    if ( !notes_has_focus ) {
+      $( ".btn-save" ).click();
+      event.preventDefault();
+    };
+  };
 });
 
 
