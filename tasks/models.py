@@ -25,6 +25,12 @@ class Task(TimeStampedModel):
         ('completed', 'Completed'),
         ('rubbish', 'Rubbish'),
     )
+    REPEAT_UNITS_CHOICES = (
+        ('daily', 'Daily'),
+        ('weekly', 'Weekly'),
+        ('monthly', 'Monthly'),
+        ('yearly', 'Yearly'),
+    )
 
     completed = models.DateTimeField(
         blank=True,
@@ -38,13 +44,29 @@ class Task(TimeStampedModel):
         blank=True,
         null=True,
     )
-    ends = models.DateField(
-        verbose_name='Recurs until',
+    repeat_details = models.CharField(
+        max_length=200,
+        blank=True,
+        null=False,
+    )
+    repeat_ends = models.DateField(
+        verbose_name='Repeats until',
         blank=True,
         null=True,
     )
-    frequency = models.CharField(
-        max_length=100,
+    repeat_every = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+    )
+    repeat_next = models.DateField(
+        verbose_name='Next occurance',
+        blank=True,
+        null=True,
+    )
+    repeat_units = models.CharField(
+        max_length=20,
+        verbose_name='Create copies',
+        choices=REPEAT_UNITS_CHOICES,
         blank=True,
         null=False,
     )
@@ -54,11 +76,6 @@ class Task(TimeStampedModel):
     )
     scheduled = models.DateField(
         verbose_name='Postpone until',
-        blank=True,
-        null=True,
-    )
-    starts = models.DateField(
-        verbose_name='First occurance',
         blank=True,
         null=True,
     )
