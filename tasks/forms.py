@@ -37,13 +37,14 @@ class TaskForm(TaaskModelForm):
             'context',
             'deadline',
             'description',
-            'ends',
-            'frequency',
+            'repeat_ends',
+            'repeat_every',
+            'repeat_next',
+            'repeat_units',
             'notes',
             'priority',
             'project',
             'scheduled',
-            'starts',
             'time',
             'underway',
             'view',
@@ -93,42 +94,47 @@ class TaskForm(TaaskModelForm):
                                       u"task's 'Postpone until' date.")
 
         # A recurring task mustn't have any information missing
-        if cleaned_data.get('starts'):
-            if not cleaned_data.get('frequency'):
-                msg = u"A recurring task must have a frequency."
-                self.add_error('frequency', msg)
-            if not cleaned_data.get('ends'):
+        if (cleaned_data.get('repeat_details') or
+            cleaned_data.get('repeat_ends') or
+            cleaned_data.get('repeat_every') or
+            cleaned_data.get('repeat_next') or
+            cleaned_data.get('repeat_units')):
+            # if not cleaned_data.get('repeat_details'):
+            #     msg = u"A recurring task must have repeat details."
+            #     self.add_error('repeat_details', msg)
+            if not cleaned_data.get('repeat_ends'):
                 msg = u"A recurring task must have an end date."
-                self.add_error('ends', msg)
-        if cleaned_data.get('frequency'):
-            if not cleaned_data.get('ends'):
-                msg = u"A recurring task must have an end date."
-                self.add_error('ends', msg)
-            if not cleaned_data.get('starts'):
-                msg = u"A recurring task must have a start date."
-                self.add_error('starts', msg)
-        if cleaned_data.get('ends'):
-            if not cleaned_data.get('frequency'):
-                msg = u"A recurring task must have a frequency."
-                self.add_error('frequency', msg)
-            if not cleaned_data.get('starts'):
-                msg = u"A recurring task must have a start date."
-                self.add_error('starts', msg)
+                self.add_error('repeat_ends', msg)
+            if not cleaned_data.get('repeat_every'):
+                msg = u"A recurring task must have 'Repeat every' set."
+                self.add_error('repeat_every', msg)
+            if not cleaned_data.get('repeat_next'):
+                msg = u"A recurring task must have a next date."
+                self.add_error('repeat_next', msg)
+            if not cleaned_data.get('repeat_units'):
+                msg = u"A recurring task must have repeat units."
+                self.add_error('repeat_units', msg)
 
         # A recurring task can't have a deadline
         # TODO: Allow recurring tasks to have deadlines
-        if cleaned_data.get('deadline') and cleaned_data.get('ends'):
+        if cleaned_data.get('deadline') and cleaned_data.get('repeat_ends'):
             msg = u"At the moment, recurring tasks can't have deadlines."
             self.add_error('deadline', msg)
 
+        # A recurring task's next date can't be before it's end date
+        if cleaned_data.get('repeat_next'):
+            if cleaned_data.get('repeat_next') > cleaned_data.get('repeat_ends'):
+                msg = u"A repeating task must not end before the next date"
+                self.add_error('repeat_ends', msg)
+
         # A recurring task can't be scheduled for later
-        if cleaned_data.get('ends'):
+        if cleaned_data.get('repeat_ends'):
             if cleaned_data.get('scheduled'):
                 msg = u"A recurring task can't have a 'Postpone until' date set."
                 self.add_error('scheduled', msg)
 
         # A recurring task must go in the recurring view
-        if cleaned_data.get('ends'):
+        if cleaned_data.get('repeat_ends'):
             if cleaned_data.get('view') != 'recurring':
                 msg = u"A recurring task's view must be set to 'Recurring'."
                 self.add_error('view', msg)

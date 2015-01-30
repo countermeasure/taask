@@ -240,3 +240,27 @@ $(document).keydown(function( event ) {
         }
      }
 });
+
+
+/* Control the repeating task form fields
+-------------------------------------------------- */
+
+$(document).on("change", "#id_repeat_units", function() {
+  var units = $( "#id_repeat_units" ).val();
+  $( "#repeat-weekly, #repeat-monthly, #repeat-yearly" ).addClass( "hidden" );
+  if ( units == "daily" ) {
+    $( ".repeat-units" ).html( "day/s" );
+  } else if ( units == "weekly" ) {
+    $( ".repeat-units" ).html( "week/s" );
+    $( "#repeat-weekly" ).toggleClass( "hidden" );
+  } else if ( units == "monthly" ) {
+    $( ".repeat-units" ).html( "month/s" );
+    $( "#repeat-monthly" ).toggleClass( "hidden" );
+  } else if ( units == "yearly" ) {
+    $( ".repeat-units" ).html( "year/s" );
+    $( "#repeat-monthly" ).toggleClass( "hidden" );
+    $( "#repeat-yearly" ).toggleClass( "hidden" );
+  } else if ( units == "" ) {
+    $( ".repeat-units" ).html( "" );
+  }
+});
