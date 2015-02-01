@@ -42,12 +42,16 @@ class Command(BaseCommand):
                 task_string += ' scheduled:"%s"\n' % task.scheduled
             if task.deadline:
                 task_string += ' deadline:"%s"\n' % task.deadline
-            if task.frequency:
-                task_string += ' frequency:"%s"\n' % task.frequency
-            if task.starts:
-                task_string += ' starts:"%s"\n' % task.starts
-            if task.ends:
-                task_string += ' ends:"%s"\n' % task.ends
+            if task.repeat_details:
+                task_string += ' repeat details:"%s"\n' % task.repeat_details
+            if task.repeat_ends:
+                task_string += ' repeat ends:"%s"\n' % task.repeat_ends
+            if task.repeat_every:
+                task_string += ' repeat every:"%s"\n' % task.repeat_every
+            if task.repeat_next:
+                task_string += ' repeat next:"%s"\n' % task.repeat_next
+            if task.repeat_units:
+                task_string += ' repeat units:"%s"\n' % task.repeat_units
             if task.task:
                 task_string += ' task:"%s"\n' % task.task
             if task.notes:
