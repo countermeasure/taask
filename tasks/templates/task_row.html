@@ -28,9 +28,9 @@
   <span class="hidden">{{ task.scheduled|date:'Ymd' }}</span>
   <span class="label label-danger label-date">{{ task.scheduled|default_if_none:'' }}</span>
 </td>
-<td><span class="label label-danger">{{ task.frequency|default_if_none:'' }}</span></td>
-<td><span class="label label-danger label-date">{{ task.starts|default_if_none:'' }}</span></td>
-<td><span class="label label-danger label-date">{{ task.ends|default_if_none:'' }}</span></td>
+<td><span class="label label-danger">{{ task.repeat_units|default_if_none:'' }}</span></td>
+<td><span class="label label-danger label-date">{{ task.repeat_next|default_if_none:'' }}</span></td>
+<td><span class="label label-danger label-date">{{ task.repeat_ends|default_if_none:'' }}</span></td>
 <td>
   <span class="hidden">{{ task.completed|date:'Ymd' }}{{ task.completed|time:'His' }}</span>
   <span class="label label-danger label-date">{{ task.completed|default_if_none:'' }}</span>
