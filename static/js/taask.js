@@ -137,16 +137,6 @@ function ExpandLabels() {
     };
     $( this ).html( formatted_time );
   });
-  $( ".label-priority" ).each(function() {
-    var priority_code = $( this ).html();
-    if ( priority_code == "L") {
-      $( this ).html ( "Low" );
-    } else if ( priority_code == "M" ) {
-      $( this ).html ( "Medium" );
-    } else if ( priority_code == "H" ) {
-      $( this ).html ( "High" );
-    };
-  });
   $( ".label-date" ).each(function() {
     var today_raw = new Date();
     today = $.datepicker.formatDate( "dd M yy", today_raw);
