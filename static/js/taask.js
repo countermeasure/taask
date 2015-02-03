@@ -139,13 +139,13 @@ function ExpandLabels() {
   });
   $( ".label-date" ).each(function() {
     var today_raw = new Date();
-    today = $.datepicker.formatDate( "dd M yy", today_raw);
+    today = $.datepicker.formatDate( "d M yy", today_raw);
     var tomorrow_raw = new Date();
     tomorrow_raw.setTime(today_raw.getTime() + (24*60*60*1000));
-    tomorrow = $.datepicker.formatDate( "dd M yy", tomorrow_raw);
+    tomorrow = $.datepicker.formatDate( "d M yy", tomorrow_raw);
     var yesterday_raw = new Date();
     yesterday_raw.setTime(today_raw.getTime() - (24*60*60*1000));
-    yesterday = $.datepicker.formatDate( "dd M yy", yesterday_raw);
+    yesterday = $.datepicker.formatDate( "d M yy", yesterday_raw);
     var due_date = $( this ).html();
     if ( due_date == today ) {
       $( this ).html ( "Today" );
