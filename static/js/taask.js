@@ -151,6 +151,8 @@ function ExpandLabels() {
       $( this ).html ( "Today" );
     } else if ( due_date == tomorrow ) {
       $( this ).html ( "Tomorrow" );
+      $( this ).removeClass ( "label-danger" );
+      $( this ).addClass ( "label-success" );
     } else if ( due_date == yesterday ) {
       $( this ).html ( "Yesterday" );
     };
