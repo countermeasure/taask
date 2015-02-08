@@ -283,6 +283,10 @@
                 class="btn btn-default">
                 <i class="fa fa-check-circle fa-lg"></i>&nbsp;Complete
             </a>
+            <a href={% url 'postpone-task' task_id 1 %} type="button"
+                class="btn btn-default">
+                <i class="fa fa-arrow-circle-right fa-lg"></i>&nbsp;Postpone 1 day
+            </a>
           {% endif %}
           <div class="pull-right">
             <a href={% url 'list-tasks' 'view' 'today' %} type="button"

@@ -1,4 +1,8 @@
-from datetime import datetime
+from datetime import (
+    date,
+    datetime,
+    timedelta,
+)
 
 from django.db.models import Sum
 from django.shortcuts import render, redirect
@@ -109,6 +113,23 @@ def complete_task(request, task_id):
         task.save()
 
     return redirect('list-tasks', 'view', 'completed')
+
+
+def postpone_task(request, task_id, days_to_postpone):
+    """Postpones a task by the given number of days."""
+
+    task = Task.objects.get(pk=task_id)
+    referring_view = task.view
+    if task.view in ('today', 'scheduled'):
+        days_to_postpone = int(days_to_postpone)
+        task.view = 'scheduled'
+        if task.scheduled:
+            task.scheduled += timedelta(days=days_to_postpone)
+        else:
+            task.scheduled = date.today() + timedelta(days=days_to_postpone)
+        task.save()
+
+    return redirect('list-tasks', 'view', referring_view)
 
 
 def rubbish_task(request, task_id):
