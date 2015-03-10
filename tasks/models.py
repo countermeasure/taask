@@ -79,7 +79,11 @@ class Task(TimeStampedModel):
         blank=True,
         null=True,
     )
-    time = models.PositiveIntegerField(
+    time_remaining = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+    )
+    time_spent = models.PositiveIntegerField(
         blank=True,
         null=True,
     )

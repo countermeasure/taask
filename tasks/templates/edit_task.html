@@ -47,12 +47,21 @@
           </div><!-- /.form-group -->
 
           <div class="form-group">
-            {{ form.time.label_tag|labelclass:"sr-only" }}
+            {{ form.time_remaining.label_tag|labelclass:"sr-only" }}
             <div class="input-group">
-              <div class="input-group-addon">{{ form.time.label }}</div>
-              {{ form.time|inputclass:"form-control" }}
+              <div class="input-group-addon">{{ form.time_remaining.label }}</div>
+              {{ form.time_remaining|inputclass:"form-control" }}
             </div><!-- /.input-group -->
-            {{ form.time.errors }}
+            {{ form.time_remaining.errors }}
+          </div><!-- /.form-group -->
+
+          <div class="form-group">
+            {{ form.time_spent.label_tag|labelclass:"sr-only" }}
+            <div class="input-group">
+              <div class="input-group-addon">{{ form.time_spent.label }}</div>
+              {{ form.time_spent|inputclass:"form-control" }}
+            </div><!-- /.input-group -->
+            {{ form.time_spent.errors }}
           </div><!-- /.form-group -->
 
           <div class="form-group">

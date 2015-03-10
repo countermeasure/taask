@@ -61,7 +61,8 @@ def list_tasks(request, selector_type, selector):
     if selector_type == 'view':
         task_list = Task.objects.filter(view=selector)
         if selector == 'today':
-            total_time = task_list.aggregate(Sum('time'))['time__sum']
+            total_time = \
+            task_list.aggregate(Sum('time_remaining'))['time_remaining__sum']
     elif selector_type == 'project':
         task_list = Task.objects.filter(project=selector)
 
@@ -110,6 +111,12 @@ def complete_task(request, task_id):
         task.scheduled = None
         task.priority = None
         task.underway = False
+        if not task.time_remaining:
+            task.time_remaining = 0
+        if not task.time_spent:
+            task.time_spent = 0
+        task.time_spent += task.time_remaining
+        task.time_remaining = None
         task.save()
 
     return redirect('list-tasks', 'view', 'completed')

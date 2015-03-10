@@ -30,8 +30,10 @@ class Command(BaseCommand):
             if task.underway:
                 task_string += ' underway:"%s"\n' % task.underway
             task_string += ' view:"%s"\n' % task.view
-            if task.time:
-                task_string += ' time:"%s"\n' % task.time
+            if task.time_remaining:
+                task_string += ' time remaining:"%s"\n' % task.time_remaining
+            if task.time_spent:
+                task_string += ' time remaining:"%s"\n' % task.time_spent
             if task.project:
                 task_string += ' project:"%s"\n' % task.project
             if contexts:

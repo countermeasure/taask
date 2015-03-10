@@ -80,8 +80,8 @@ function ActivateTablesorter() {
     var sort_order = JSON.parse($( "#sort-order" ).html());
     $("#tasktable").tablesorter({
       widgets: ["filter"],
-      headers: { 5: { sorter: 'priority' },
-                 12: { sorter: 'view' },
+      headers: { 6: { sorter: 'priority' },
+                 13: { sorter: 'view' },
                },
       sortList: sort_order,
       widgetOptions : {

@@ -9,7 +9,8 @@
         <th>Description</th>
         <th>Project</th>
         <th>Contexts</th>
-        <th>Time</th>
+        <th>Time remaining</th>
+        <th>Time spent</th>
         <th>Priority</th>
         <th>Deadline</th>
         <th>Postpone</th>
@@ -48,21 +49,21 @@
     {% if menu == 'inbox' %}
       []
     {% elif menu == 'today' %}
-      [[0,1],[5,1],[4,0]]
+      [[0,1],[6,1],[4,0]]
     {% elif menu == 'next' %}
-      [[5,1],[6,0],[4,0]]
+      [[5,1],[7,0],[4,0]]
     {% elif menu == 'scheduled' %}
-      [[7,0],[5,1],[6,1],[4,0]]
+      [[8,0],[6,1],[7,1],[4,0]]
     {% elif menu == 'recurring' %}
-      [[8,0]]
+      [[9,0]]
     {% elif menu == 'someday' %}
-      [[5,1],[6,0],[4,0]]
+      [[6,1],[7,0],[4,0]]
     {% elif menu == 'completed' %}
-      [[11,1]]
+      [[12,1]]
     {% elif menu == 'rubbish' %}
       []
     {% else %}
-      [[12,1],[5,1],[11,1],[6,0],[4,0]]
+      [[13,1],[6,1],[12,1],[7,0],[4,0]]
     {% endif %}
   </span>
 

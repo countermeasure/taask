@@ -45,7 +45,8 @@ class TaskForm(TaaskModelForm):
             'priority',
             'project',
             'scheduled',
-            'time',
+            'time_remaining',
+            'time_spent',
             'underway',
             'view',
         ]
@@ -53,8 +54,8 @@ class TaskForm(TaaskModelForm):
     def clean(self):
         cleaned_data = super(TaskForm, self).clean()
 
-        # If the task is not going to inbox, it must have a priority and time
-        # and context
+        # If the task is not going to inbox, it must have a priority and
+        # context and time remaining must not be None
         if not cleaned_data.get('view') == 'inbox':
             if not cleaned_data.get('priority'):
                 # Don't require completed tasks to have a priority though
@@ -62,9 +63,9 @@ class TaskForm(TaaskModelForm):
                     msg = (u"This task must have a priority if it isn't going "
                            u"to 'Inbox'.")
                     self.add_error('priority', msg)
-            if not cleaned_data.get('time'):
-                self.add_error('time', u"This task must have a time if it "
-                                       u"isn't going to 'Inbox'.")
+            if cleaned_data.get('time_remaining') is None:
+                self.add_error('time_remaining', u"This task must have a time "
+                               u"remaining if it isn't going to 'Inbox'.")
             if not cleaned_data.get('context'):
                 self.add_error('context', u"This task must have at least one "
                                        u"context if it isn't going to 'Inbox'.")
