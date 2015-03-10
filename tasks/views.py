@@ -127,9 +127,14 @@ def postpone_task(request, task_id, days_to_postpone):
 
     task = Task.objects.get(pk=task_id)
     referring_view = task.view
+    # TODO: Add a check that task.time_remaining > 0
+    # TODO: Add a check that task.deadline is after the date that the task
+    # is being postponed until
+
     if task.view in ('today', 'scheduled'):
         days_to_postpone = int(days_to_postpone)
         task.view = 'scheduled'
+        task.underway = False
         if task.scheduled:
             task.scheduled += timedelta(days=days_to_postpone)
         else:
