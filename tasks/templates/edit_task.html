@@ -292,10 +292,35 @@
                 class="btn btn-default">
                 <i class="fa fa-check-circle fa-lg"></i>&nbsp;Complete
             </a>
+            <div class="btn-group" role="group">
+            <a type="button" class="btn btn-default">
+                <i class="fa fa-arrow-circle-right fa-lg"></i>&nbsp;Postpone
+            </a>
             <a href={% url 'postpone-task' task_id 1 %} type="button"
                 class="btn btn-default">
-                <i class="fa fa-arrow-circle-right fa-lg"></i>&nbsp;Postpone 1 day
+                1 day
             </a>
+            <a href={% url 'postpone-task' task_id 2 %} type="button"
+                class="btn btn-default">
+                2 days
+            </a>
+            <a href={% url 'postpone-task' task_id 3 %} type="button"
+                class="btn btn-default">
+                3 days
+            </a>
+            <a href={% url 'postpone-task' task_id 5 %} type="button"
+                class="btn btn-default">
+                5 days
+            </a>
+            <a href={% url 'postpone-task' task_id 7 %} type="button"
+                class="btn btn-default">
+                1 week
+            </a>
+            <a href={% url 'postpone-task' task_id 14 %} type="button"
+                class="btn btn-default">
+                2 weeks
+            </a>
+            </div><!-- /.btn-group -->
           {% endif %}
           <div class="pull-right">
             <a href={% url 'list-tasks' 'view' 'today' %} type="button"
