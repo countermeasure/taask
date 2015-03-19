@@ -8,12 +8,6 @@ Taask
 
 |
 
-===========================  ===============================
-**Development started**      Sept 2014
-**Stable version expected**  Dec 2014 / Jan 2015
-**Working demo**             `taask.org <http://taask.org>`_
-===========================  ===============================
-
 Contents
 --------
 
@@ -107,14 +101,11 @@ sorts and filters tables
 4. Setting up a development instance
 ------------------------------------
 
-Work on Taask started on 30 September 2014, and it isn't stable yet, so don't
-even think about relying on it at the moment!
-
 If you'd like contribute to the project, the steps below will guide you through
 setting up a development instance.
 
-Don't forget though, that if you just want to get a quick feel for Taask,
-there's a demo at `taask.org <http://taask.org>`_ that you can test-drive!
+If you just want to get a quick feel for Taask, there's a demo at
+`taask.org <http://taask.org>`_ that you can test-drive.
 
 4.1 Install pip, virtualenv and virtualenvwrapper
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
