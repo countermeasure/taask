@@ -6,3 +6,4 @@
 # Ignore files in these locations
 /node_modules
 /bower_components
+/.tmp
