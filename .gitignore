@@ -1,4 +1,8 @@
-# Ignore the following types of files
+# Ignore these types of files
 *.sqlite3
 *.pyc
 *.swp
+
+# Ignore files in these locations
+/node_modules
+/bower_components
