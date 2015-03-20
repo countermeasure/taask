@@ -6,6 +6,12 @@ var $ = require('gulp-load-plugins')();
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 
+gulp.task('templates', function () {
+  return gulp.src('frontend/scripts/**/*.jsx')
+    .pipe($.react())
+    .pipe(gulp.dest('.tmp/scripts'));
+});
+
 gulp.task('styles', function () {
   return gulp.src('frontend/styles/main.less')
     .pipe($.sourcemaps.init())
@@ -28,7 +34,7 @@ gulp.task('jshint', function () {
     .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
 });
 
-gulp.task('html', ['styles'], function () {
+gulp.task('html', ['styles', 'templates'], function () {
   var assets = $.useref.assets({searchPath: ['.tmp', 'frontend', '.']});
 
   return gulp.src('frontend/*.html')
@@ -72,7 +78,7 @@ gulp.task('extras', function () {
 
 gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
 
-gulp.task('serve', ['styles', 'fonts'], function () {
+gulp.task('serve', ['styles', 'templates', 'fonts'], function () {
   browserSync({
     notify: false,
     port: 9000,
@@ -88,11 +94,13 @@ gulp.task('serve', ['styles', 'fonts'], function () {
   gulp.watch([
     'frontend/*.html',
     'frontend/scripts/**/*.js',
+    '.tmp/scripts/**/*.js',
     'frontend/images/**/*',
     '.tmp/fonts/**/*'
   ]).on('change', reload);
 
   gulp.watch('frontend/styles/**/*.less', ['styles']);
+  gulp.watch('frontend/scripts/**/*.jsx', ['templates']);
   gulp.watch('frontend/fonts/**/*', ['fonts']);
   gulp.watch('bower.json', ['wiredep', 'fonts']);
 });
