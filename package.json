@@ -6,9 +6,11 @@
   "devDependencies": {
     "autoprefixer-core": "^4.0.2",
     "browser-sync": "^1.8.2",
+    "browserify": "^9.0.3",
     "del": "^1.1.1",
     "gulp": "^3.6.0",
     "gulp-cache": "^0.2.2",
+    "gulp-concat": "^2.5.2",
     "gulp-csso": "^0.2.6",
     "gulp-if": "^1.2.1",
     "gulp-imagemin": "^2.0.0",
@@ -25,6 +27,9 @@
     "jshint-stylish": "^1.0.0",
     "main-bower-files": "^2.5.0",
     "opn": "^1.0.0",
+    "reactify": "^1.1.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^2.6.0",
     "wiredep": "^2.0.0"
   }
 }
