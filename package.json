@@ -31,5 +31,12 @@
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^2.6.0",
     "wiredep": "^2.0.0"
+  },
+  "dependencies": {
+    "events": "^1.0.2",
+    "flux": "^2.0.1",
+    "keymirror": "^0.1.1",
+    "object-assign": "^2.0.0",
+    "react": "^0.13.1"
   }
 }

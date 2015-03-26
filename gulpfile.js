@@ -1,19 +1,50 @@
 /*global -$ */
 'use strict';
-// generated on 2015-03-20 using generator-gulp-webapp 0.3.0
+
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
+
+var browserify = require('browserify');
 var browserSync = require('browser-sync');
+var reactify = require('reactify');
+var source = require('vinyl-source-stream');
+var watchify = require('watchify');
+
 var reload = browserSync.reload;
 
+var path = {
+  HTML: 'frontend/*.html',
+  MAIN_LESS: 'frontend/styles/main.less',
+  MAIN_JS: './frontend/scripts/main.js',
+  JS: 'frontend/scripts/**/*.js',
+  FONTS: 'frontend/fonts/**/*',
+  IMAGES: 'frontend/images/**/*',
+  MINIFIED_OUT: 'main.min.js',
+  DEST_BUILD_JS: '.tmp/scripts',
+  DEST_BUILD_CSS: '.tmp/styles',
+  DEST_FONTS: '.tmp/fonts/**/*',
+};
+path.WATCHING = [
+    path.HTML,
+    path.MAIN_LESS,
+    path.JS,
+    path.DEST_BUILD_JS,
+    path.IMAGES,
+    path.DEST_FONTS
+];
+
+
 gulp.task('templates', function () {
-  return gulp.src('frontend/scripts/*.jsx')
-    .pipe($.react())
-    .pipe(gulp.dest('.tmp/scripts'));
+  browserify(path.MAIN_JS)
+    .transform(reactify)
+    .bundle()
+    .pipe(source('main.js'))
+    .pipe(gulp.dest(path.DEST_BUILD_JS));
 });
 
+
 gulp.task('styles', function () {
-  return gulp.src('frontend/styles/main.less')
+  return gulp.src(path.MAIN_LESS)
     .pipe($.sourcemaps.init())
     .pipe($.less({
       paths: ['.']
@@ -22,22 +53,24 @@ gulp.task('styles', function () {
       require('autoprefixer-core')({browsers: ['last 1 version']})
     ]))
     .pipe($.sourcemaps.write())
-    .pipe(gulp.dest('.tmp/styles'))
+    .pipe(gulp.dest(path.DEST_BUILD_CSS))
     .pipe(reload({stream: true}));
 });
 
+
 gulp.task('jshint', function () {
-  return gulp.src('frontend/scripts/*.js')
+  return gulp.src(path.JS)
     .pipe(reload({stream: true, once: true}))
     .pipe($.jshint())
     .pipe($.jshint.reporter('jshint-stylish'))
     .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
 });
 
+
 gulp.task('html', ['styles', 'templates'], function () {
   var assets = $.useref.assets({searchPath: ['.tmp', 'frontend', '.']});
 
-  return gulp.src('frontend/*.html')
+  return gulp.src(path.HTML)
     .pipe(assets)
     .pipe($.if('*.js', $.uglify()))
     .pipe($.if('*.css', $.csso()))
@@ -46,6 +79,7 @@ gulp.task('html', ['styles', 'templates'], function () {
     .pipe($.if('*.html', $.minifyHtml({conditionals: true, loose: true})))
     .pipe(gulp.dest('dist'));
 });
+
 
 gulp.task('images', function () {
   return gulp.src('frontend/images/*')
@@ -67,6 +101,7 @@ gulp.task('fonts', function () {
     .pipe(gulp.dest('dist/fonts'));
 });
 
+
 gulp.task('extras', function () {
   return gulp.src([
     'frontend/*.*',
@@ -76,7 +111,9 @@ gulp.task('extras', function () {
   }).pipe(gulp.dest('dist'));
 });
 
+
 gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
+
 
 gulp.task('serve', ['styles', 'templates', 'fonts'], function () {
   browserSync({
@@ -89,8 +126,6 @@ gulp.task('serve', ['styles', 'templates', 'fonts'], function () {
       }
     }
   });
-
-  // watch for changes
   gulp.watch([
     'frontend/*.html',
     'frontend/scripts/*.js',
@@ -98,14 +133,13 @@ gulp.task('serve', ['styles', 'templates', 'fonts'], function () {
     'frontend/images/**/*',
     '.tmp/fonts/**/*'
   ]).on('change', reload);
-
   gulp.watch('frontend/styles/**/*.less', ['styles']);
-  gulp.watch('frontend/scripts/*.jsx', ['templates']);
-  gulp.watch('frontend/fonts/**/*', ['fonts']);
+  gulp.watch(path.JS, ['templates']);
+  gulp.watch(path.FONTS, ['fonts']);
   gulp.watch('bower.json', ['wiredep', 'fonts']);
 });
 
-// inject bower components
+
 gulp.task('wiredep', function () {
   var wiredep = require('wiredep').stream;
 
@@ -122,9 +156,11 @@ gulp.task('wiredep', function () {
     .pipe(gulp.dest('frontend'));
 });
 
+
 gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras'], function () {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
+
 
 gulp.task('default', ['clean'], function () {
   gulp.start('build');
