@@ -7,6 +7,8 @@ from datetime import (
 from django.db.models import Sum
 from django.shortcuts import render, redirect
 
+from rest_framework import generics
+
 from forms import (
     ContextForm,
     PriorityForm,
@@ -19,6 +21,7 @@ from models import (
     Project,
     Task,
 )
+from serializers import TaskSerializer
 from utils import (
     get_task_count,
     process_and_save_task,
@@ -26,76 +29,19 @@ from utils import (
 
 
 def home(request):
-    "Redirectss requests to the root domain to the 'Today' view."""
+    "Redirects requests to the root domain to the 'Today' view."""
 
     return redirect('list-tasks', 'view', 'today')
 
 
-def add_task(request):
-    """Adds a task."""
-
-    if request.method == "POST":
-        form = TaskForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('list-tasks', 'view', 'today')
-    else:
-        form = TaskForm()
-
-    return render(request, 'add_task.html', {
-        'contexts': Context.objects.all(),
-        'form': form,
-        'menu': 'new_task',
-        'projects': Project.objects.all(),
-        'task_count': get_task_count(),
-    })
+class TaskList(generics.ListCreateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
 
 
-def list_tasks(request, selector_type, selector):
-    """Shows the list of tasks for the specified view or
-    project.
-    """
-
-    total_time = None
-
-    if selector_type == 'view':
-        task_list = Task.objects.filter(view=selector)
-        if selector == 'today':
-            total_time = \
-            task_list.aggregate(Sum('time_remaining'))['time_remaining__sum']
-    elif selector_type == 'project':
-        task_list = Task.objects.filter(project=selector)
-
-    return render(request, 'list_tasks.html', {
-        'contexts': Context.objects.all(),
-        'menu': selector,
-        'projects': Project.objects.all(),
-        'selector_type': selector_type,
-        'task_count': get_task_count(),
-        'task_list': task_list,
-        'total_time': total_time,
-    })
-
-
-def edit_task(request, task_id):
-    """Opens a task for editing. This is done with an AJAX
-    call.
-    """
-
-    task = Task.objects.get(pk=task_id)
-
-    if request.method == "POST":
-        form = TaskForm(request.POST, instance=task)
-        if form.is_valid():
-            process_and_save_task(task, form)
-            return render(request, 'task_row.html', {'task': task})
-    else:
-        form = TaskForm(instance=task)
-
-    return render(request, 'edit_task.html', {
-        'form': form,
-        'task_id': task_id,
-    })
+class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
 
 
 def complete_task(request, task_id):

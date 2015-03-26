@@ -45,11 +45,14 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
+    'rest_framework',
     'tasks',
 )
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -117,4 +120,10 @@ DATETIME_INPUT_FORMATS = (
 # https://docs.djangoproject.com/en/1.7/howto/initial-data/
 FIXTURE_DIRS = (
     os.path.join(BASE_DIR, 'fixtures'),
+)
+
+# Cross-Origin Resource Sharing
+# https://github.com/ottoyiu/django-cors-headers/
+CORS_ORIGIN_WHITELIST = (
+    'localhost:9000',
 )

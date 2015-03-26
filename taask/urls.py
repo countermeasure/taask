@@ -2,13 +2,14 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
+from tasks import views
+
+
 urlpatterns = patterns('',
 
     url(r'^$', 'tasks.views.home'),
-    url(r'^(view|project)/(\w+)/tasks/$', 'tasks.views.list_tasks',
-        name='list-tasks'),
-    url(r'^task/add/$', 'tasks.views.add_task', name='add-task'),
-    url(r'^task/edit/(\d{1,6})/$', 'tasks.views.edit_task', name='edit-task'),
+    url(r'^tasks/$', views.TaskList.as_view()),
+    url(r'^tasks/(?P<pk>[0-9]+)/$', views.TaskDetail.as_view()),
     url(r'^task/postpone/(\d{1,6})/(\d{1,6})/$', 'tasks.views.postpone_task',
         name='postpone-task'),
     url(r'^task/complete/(\d{1,6})/$', 'tasks.views.complete_task',

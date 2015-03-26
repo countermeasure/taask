@@ -98,7 +98,7 @@ var TaskList = React.createClass({
   },
 
   _onTasksChange: function() {
-    this.setState({tasks: getTasks()});
+    this.setState({tasks: getAllTasks()});
   },
 
 });
