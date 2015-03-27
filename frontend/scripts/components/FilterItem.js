@@ -11,16 +11,15 @@ var FilterItem = React.createClass({
     return (
       <button
         type="button"
-        key={this.props.filter}
         className={buttonClass}
         onClick={this._handleClick}>
-        {this.props.filter}
+        {this.props.context}
       </button>
     );
   },
 
   _handleClick: function(event) {
-    FilterActions.setFilter(this.props.filter);
+    FilterActions.setFilter(this.props.id);
   },
 
 

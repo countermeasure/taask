@@ -7,8 +7,6 @@ from models import (
 
 class TaskSerializer(serializers.ModelSerializer):
 
-    context = serializers.StringRelatedField(many=True)
-
     class Meta:
         model = Task
         fields = (
@@ -35,6 +33,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
 
 class ContextSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Context
         fields = (

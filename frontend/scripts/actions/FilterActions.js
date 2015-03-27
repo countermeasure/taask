@@ -8,10 +8,10 @@ var ActionType = Constants.ActionType;
 
 var FilterActions = {
 
-  setFilter: function(filter) {
+  setFilter: function(newFilter) {
     AppDispatcher.handleViewAction({
       type: ActionType.SET_FILTER,
-      activeFilter: filter
+      newFilter: newFilter
     });
   }
 

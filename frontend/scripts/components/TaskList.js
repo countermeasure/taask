@@ -10,6 +10,10 @@ function getActiveFilter() {
   return FilterStore.getActiveFilter();
 };
 
+function getFilters() {
+  return FilterStore.getFilters();
+};
+
 function getAllTasks() {
   return TaskStore.getAllTasks();
 };
@@ -36,12 +40,14 @@ var TaskList = React.createClass({
   },
 
   render: function() {
-    activeFilter = this.state.filter;
+    var activeFilter = +this.state.filter;
+    var filters = getFilters();
     var taskItems = [];
     _.forEach(getAllTasks(), function(value, key) {
       /* value.context is an array, so .flatten is required to effectively
          add All to it */
-      if (_.includes(_.flatten([value.context, 'All']), activeFilter)) {
+      if (_.includes(_.flatten([value.context, 0]), activeFilter)) {
+        var contextNo = +value.context;
         taskItems.push(
           <TaskItem
             key={key}
@@ -59,7 +65,7 @@ var TaskList = React.createClass({
             time_spent={value['time_spent']}
             underway={value['underway']}
             view={value['view']}
-            context={value['context']}
+            context={filters[contextNo]['context']}
             priority={value['priority']}
             project={value['project']}
             task={value['task']}

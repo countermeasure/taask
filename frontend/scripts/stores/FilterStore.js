@@ -12,17 +12,20 @@ var _filters = {};
 
 
 function initialise(rawFilters) {
-  _filters['All'] = 'on';
+  _filters[0] = {context: 'All', status: 'on'};
   _.forEach(rawFilters, function(filter) {
-    _filters[filter['context']] = 'off';
+    _filters[filter['id']] = {
+      context: filter['context'],
+      status: 'off'
+    };
   });
 };
 
-function updateState(filter) {
-  _.forEach(_filters, function(value, key) {
-    _filters[key] = 'off';
+function updateState(newFilter) {
+  _.forEach(_filters, function(obj, id) {
+    _filters[id]['status'] = 'off';
   });
-  _filters[filter] = 'on';
+  _filters[newFilter]['status'] = 'on';
 };
 
 
@@ -45,9 +48,7 @@ var FilterStore = assign({}, EventEmitter.prototype, {
   },
 
   getActiveFilter: function() {
-    return  _.findKey(_filters, function(chr) {
-      return chr == 'on';
-    });
+    return  _.findKey(_filters, 'status', 'on');
   },
 
 });
@@ -63,7 +64,7 @@ FilterStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
 
     case ActionType.SET_FILTER:
-      updateState(action.activeFilter);
+      updateState(action.newFilter);
       FilterStore.emitChange();
       break;
 

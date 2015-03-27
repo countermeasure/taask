@@ -5,14 +5,14 @@ var FilterStore = require('../stores/FilterStore');
 
 
 function getFilters() {
-  return FilterStore.getFilters();
+  return {filters: FilterStore.getFilters()};
 };
 
 
 var FilterList = React.createClass({
 
   getInitialState: function() {
-    return {filters: getFilters()};
+    return getFilters();
   },
 
   componentDidMount: function() {
@@ -26,12 +26,13 @@ var FilterList = React.createClass({
   render: function() {
     filters = this.state.filters;
     var filterItems = [];
-    _.forEach(filters, function(status, filter) {
+    _.forEach(filters, function(obj, id) {
       filterItems.push(
         <FilterItem
-          key={filter}
-          filter={filter}
-          status={status}
+          key={id}
+          id={id}
+          context={obj['context']}
+          status={obj['status']}
         />
       );
     });
