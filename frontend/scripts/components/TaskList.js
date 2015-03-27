@@ -4,6 +4,7 @@ var TaskActions = require('../actions/TaskActions');
 var FilterStore = require('../stores/FilterStore');
 var TaskItem = require('./TaskItem');
 var TaskStore = require('../stores/TaskStore');
+var WaitingSpinner = require('./WaitingSpinner');
 
 
 function getActiveFilter() {
@@ -22,7 +23,10 @@ function getAllTasks() {
 var TaskList = React.createClass({
 
   getInitialState: function() {
-    return {filter: getActiveFilter()};
+    return {
+      filter: getActiveFilter(),
+      waiting: true
+    };
   },
 
   componentWillMount: function() {
@@ -73,32 +77,49 @@ var TaskList = React.createClass({
         );
       };
     });
-    return (
-      <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <table className="table tablesorter" id="tasktable">
-          <thead>
-            <tr>
-              <th><i className="fa fa-toggle-right fa-lg"></i></th>
-              <th>Description</th>
-              <th>Project</th>
-              <th>Contexts</th>
-              <th>Time remaining</th>
-              <th>Time spent</th>
-              <th>Priority</th>
-              <th>Deadline</th>
-              <th>Postpone</th>
-              <th>Repeat units</th>
-              <th>Repeat next</th>
-              <th>Repeat ends</th>
-              <th>Completed</th>
-             </tr>
-          </thead>
-          <tbody>
-            {taskItems}
-          </tbody>
-        </table>
-      </div>
-    );
+    switch (this.state.waiting) {
+
+      case true:
+        return (
+          <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <WaitingSpinner />
+          </div>
+        );
+        break;
+
+      case false:
+        return (
+          <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <table className="table tablesorter" id="tasktable">
+              <thead>
+                <tr>
+                  <th><i className="fa fa-toggle-right fa-lg"></i></th>
+                  <th>Description</th>
+                  <th>Project</th>
+                  <th>Contexts</th>
+                  <th>Time remaining</th>
+                  <th>Time spent</th>
+                  <th>Priority</th>
+                  <th>Deadline</th>
+                  <th>Postpone</th>
+                  <th>Repeat units</th>
+                  <th>Repeat next</th>
+                  <th>Repeat ends</th>
+                  <th>Completed</th>
+                 </tr>
+              </thead>
+              <tbody>
+                {taskItems}
+              </tbody>
+            </table>
+          </div>
+        );
+        break;
+
+      default:
+        // do nothing
+
+    };
   },
   
   _onFiltersChange: function() {
@@ -106,7 +127,10 @@ var TaskList = React.createClass({
   },
 
   _onTasksChange: function() {
-    this.setState({tasks: getAllTasks()});
+    this.setState({
+      tasks: getAllTasks(),
+      waiting: false
+    });
   },
 
 });
