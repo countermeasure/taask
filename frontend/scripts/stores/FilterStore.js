@@ -45,13 +45,9 @@ var FilterStore = assign({}, EventEmitter.prototype, {
   },
 
   getActiveFilter: function() {
-    activeFilter =  _.findKey(_filters, function(chr) {
+    return  _.findKey(_filters, function(chr) {
       return chr == 'on';
     });
-    if (activeFilter) {
-      activeFilter = activeFilter.toLowerCase();
-    };
-    return activeFilter;
   },
 
 });

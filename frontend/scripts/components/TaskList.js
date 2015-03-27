@@ -39,7 +39,9 @@ var TaskList = React.createClass({
     activeFilter = this.state.filter;
     var taskItems = [];
     _.forEach(getAllTasks(), function(value, key) {
-      if (_.includes([value.view, 'all'], activeFilter)) {
+      /* value.context is an array, so .flatten is required to effectively
+         add All to it */
+      if (_.includes(_.flatten([value.context, 'All']), activeFilter)) {
         taskItems.push(
           <TaskItem
             key={key}

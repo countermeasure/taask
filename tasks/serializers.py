@@ -6,6 +6,9 @@ from models import (
 
 
 class TaskSerializer(serializers.ModelSerializer):
+
+    context = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = Task
         fields = (
