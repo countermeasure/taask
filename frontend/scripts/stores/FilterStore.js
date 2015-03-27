@@ -14,7 +14,7 @@ var _filters = {};
 function initialise(rawFilters) {
   _filters['All'] = 'on';
   _.forEach(rawFilters, function(filter) {
-    _filters[filter['name']] = 'off';
+    _filters[filter['context']] = 'off';
   });
 };
 
@@ -45,9 +45,13 @@ var FilterStore = assign({}, EventEmitter.prototype, {
   },
 
   getActiveFilter: function() {
-    return _.findKey(_filters, function(chr) {
+    activeFilter =  _.findKey(_filters, function(chr) {
       return chr == 'on';
     });
+    if (activeFilter) {
+      activeFilter = activeFilter.toLowerCase();
+    };
+    return activeFilter;
   },
 
 });

@@ -36,7 +36,7 @@ var TaskList = React.createClass({
   },
 
   render: function() {
-    activeFilter = this.state.filter.toLowerCase();
+    activeFilter = this.state.filter;
     var taskItems = [];
     _.forEach(getAllTasks(), function(value, key) {
       if (_.includes([value.view, 'all'], activeFilter)) {

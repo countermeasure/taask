@@ -11,6 +11,7 @@ var FilterItem = React.createClass({
     return (
       <button
         type="button"
+        key={this.props.filter}
         className={buttonClass}
         onClick={this._handleClick}>
         {this.props.filter}

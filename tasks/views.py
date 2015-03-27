@@ -21,7 +21,10 @@ from models import (
     Project,
     Task,
 )
-from serializers import TaskSerializer
+from serializers import (
+    ContextSerializer,
+    TaskSerializer,
+)
 from utils import (
     get_task_count,
     process_and_save_task,
@@ -42,6 +45,11 @@ class TaskList(generics.ListCreateAPIView):
 class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+
+
+class ContextList(generics.ListCreateAPIView):
+    queryset = Context.objects.all()
+    serializer_class = ContextSerializer
 
 
 def complete_task(request, task_id):

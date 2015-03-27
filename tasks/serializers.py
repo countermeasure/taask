@@ -1,5 +1,8 @@
 from rest_framework import serializers
-from models import Task
+from models import (
+    Context,
+    Task,
+)
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -25,4 +28,13 @@ class TaskSerializer(serializers.ModelSerializer):
             'priority',
             'project',
             'task',
+        )
+
+
+class ContextSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Context
+        fields = (
+            'id',
+            'context',
         )

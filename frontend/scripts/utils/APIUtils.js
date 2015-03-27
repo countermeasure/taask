@@ -2,7 +2,6 @@
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var APIReceiveActions = require('../actions/APIReceiveActions');
-var DummyFilters = require('../components/DummyFilterData');
 var request = require('superagent');
 
 var BASE_URL = 'http://localhost:8001/';
@@ -29,8 +28,12 @@ var APIUtils = {
   },
 
   getFiltersFromServer: function() {
-    var rawFilters = JSON.parse(DummyFilters);
-    APIReceiveActions.receiveFilters(rawFilters);
+    get('contexts').end(
+      function(error, response) {
+        rawFilters = JSON.parse(response.text);
+        APIReceiveActions.receiveFilters(rawFilters);
+      }
+    );
   },
 
 };
