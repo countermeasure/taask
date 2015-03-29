@@ -1,10 +1,16 @@
 /* jshint devel:true */
 
+var TaskActions = require('../actions/TaskActions');
+var TaskStore = require('../stores/TaskStore');
 
-var TaskItem = React.createClass({
+var TaskItemView = React.createClass({
+
   render: function() {
+  
+    var visibility = (this.props.filter != this.props.context) ? "" : "";
+    
     return (
-      <tr>
+      <tr className="{visibility}" onClick={this._handleClick}>
         <td>
           <i className="fa fa-toggle-right fa-lg"></i>
         </td>
@@ -68,8 +74,13 @@ var TaskItem = React.createClass({
         </td>
       </tr>
     );
-  }
+  },
+
+  _handleClick: function () {
+    TaskActions.editTask(this.props.id);
+  },
+
 });
 
 
-module.exports = TaskItem;
+module.exports = TaskItemView;

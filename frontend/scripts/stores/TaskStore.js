@@ -8,15 +8,20 @@ var assign = require('object-assign');
 var ActionType = Constants.ActionType;
 var CHANGE_EVENT = 'change';
 
+var _taskBeingEdited = null;
 var _tasks = {};
 
 
 function initialise(rawTasks) {
+
   _.forEach(rawTasks, function(task) {
-    if (!_tasks[task.id]) {
-      _tasks[task.id] = task;
-    }
+    _tasks[task.id] = task;
   });
+  _taskBeingEdited = null;
+};
+
+function noteTaskBeingEdited(taskId) {
+  _taskBeingEdited = taskId;
 };
 
 
@@ -38,6 +43,10 @@ var TaskStore = assign({}, EventEmitter.prototype, {
     return _tasks;
   },
 
+  getTaskBeingEdited: function() {
+    return _taskBeingEdited;
+  },
+
 });
 
 
@@ -47,6 +56,11 @@ TaskStore.dispatchToken = AppDispatcher.register(function(action) {
 
     case ActionType.RECEIVE_TASKS:
       initialise(action.rawTasks);
+      TaskStore.emitChange();
+      break;
+
+    case ActionType.EDIT_TASK:
+      noteTaskBeingEdited(action.taskId);
       TaskStore.emitChange();
       break;
 

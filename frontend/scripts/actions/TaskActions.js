@@ -8,10 +8,10 @@ var ActionType = Constants.ActionType;
 
 var TaskActions = {
 
-  saveTasks: function(tasks) {
+  editTask: function(taskId) {
     AppDispatcher.handleViewAction({
-      type: ActionType.SAVE_TASKS,
-      rawTasks: tasks
+      type: ActionType.EDIT_TASK,
+      taskId: taskId
     });
   }
 

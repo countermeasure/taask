@@ -1,36 +1,46 @@
 /* jshint devel:true */
 
+var assign = require('object-assign');
 var TaskActions = require('../actions/TaskActions');
 var FilterStore = require('../stores/FilterStore');
-var TaskItem = require('./TaskItem');
+var TaskItemEdit = require('./TaskItemEdit');
+var TaskItemView = require('./TaskItemView');
 var TaskStore = require('../stores/TaskStore');
 var WaitingSpinner = require('./WaitingSpinner');
 
 
-function getActiveFilter() {
-  return FilterStore.getActiveFilter();
+function getStateFromTaskStores() {
+  return {
+    tasks: TaskStore.getAllTasks(),
+    taskBeingEdited: TaskStore.getTaskBeingEdited()
+  };
 };
 
-function getFilters() {
-  return FilterStore.getFilters();
-};
-
-function getAllTasks() {
-  return TaskStore.getAllTasks();
+function getStateFromFilterStores() {
+  return {
+    activeFilter: FilterStore.getActiveFilter(),
+    filters: FilterStore.getFilters(),
+  };
 };
 
 
 var TaskList = React.createClass({
 
   getInitialState: function() {
-    return {
-      filter: getActiveFilter(),
-      waiting: true
-    };
+    var initState = assign(
+      getStateFromFilterStores(),
+      {waiting: true}
+    );
+    return initState;
   },
 
   componentWillMount: function() {
-    this.setState({filter: getActiveFilter()});
+    this.setState(
+      assign(
+        getStateFromFilterStores(),
+        getStateFromTaskStores()
+      )
+    );
   },
 
   componentDidMount: function() {
@@ -44,39 +54,46 @@ var TaskList = React.createClass({
   },
 
   render: function() {
-    var activeFilter = +this.state.filter;
-    var filters = getFilters();
+
+    var activeFilter = +this.state.activeFilter;
+    var filters = this.state.filters;
+    var taskBeingEdited = this.state.taskBeingEdited;
     var taskItems = [];
-    _.forEach(getAllTasks(), function(value, key) {
-      /* value.context is an array, so .flatten is required to effectively
-         add All to it */
-      if (_.includes(_.flatten([value.context, 0]), activeFilter)) {
-        var contextNo = +value.context;
-        taskItems.push(
-          <TaskItem
-            key={key}
-            completed={value['completed']}
-            description={value['description']}
-            deadline={value['deadline']}
-            repeat_details={value['repeat_details']}
-            repeat_ends={value['repeat_ends']}
-            repeat_every={value['repeat_every']}
-            repeat_next={value['repeat_next']}
-            repeat_units={value['repeat_units']}
-            notes={value['notes']}
-            scheduled={value['scheduled']}
-            time_remaining={value['time_remaining']}
-            time_spent={value['time_spent']}
-            underway={value['underway']}
-            view={value['view']}
-            context={filters[contextNo]['context']}
-            priority={value['priority']}
-            project={value['project']}
-            task={value['task']}
-          />
-        );
+    var tasks = this.state.tasks;
+
+    _.forEach(tasks, function(props, key) {
+      var contextNo = +props.context;
+      if (_.includes([contextNo, 0], activeFilter)) {
+        var context = filters[contextNo]['context'];
+
+        switch (props['id'] == taskBeingEdited) {
+
+          case true:
+            taskItems.push(
+              <TaskItemEdit
+                {...props}
+                key={key}
+                context={context}
+                filter={activeFilter}
+              />
+            );
+            break;
+
+          case false:
+            taskItems.push(
+              <TaskItemView
+                {...props}
+                key={key}
+                context={context}
+                filter={activeFilter}
+              />
+            );
+            break;
+
+        };
       };
     });
+
     switch (this.state.waiting) {
 
       case true:
@@ -121,16 +138,21 @@ var TaskList = React.createClass({
 
     };
   },
-  
+
   _onFiltersChange: function() {
-    this.setState({filter: getActiveFilter()});
+    this.setState(
+      getStateFromFilterStores()
+    );
   },
 
   _onTasksChange: function() {
-    this.setState({
-      tasks: getAllTasks(),
-      waiting: false
-    });
+    this.setState(
+      assign(
+        getStateFromFilterStores(),
+        getStateFromTaskStores(),
+        {waiting: false}
+      )
+    );
   },
 
 });

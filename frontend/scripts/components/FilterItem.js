@@ -18,7 +18,7 @@ var FilterItem = React.createClass({
     );
   },
 
-  _handleClick: function(event) {
+  _handleClick: function() {
     FilterActions.setFilter(this.props.id);
   },
 

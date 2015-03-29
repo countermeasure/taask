@@ -19,18 +19,18 @@ function get(url) {
 var APIUtils = {
 
   getTasksFromServer: function() {
-    get('tasks').end(
+    get('tasks/').end(
       function(error, response) {
-        rawTasks = JSON.parse(response.text);
+        var rawTasks = JSON.parse(response.text);
         APIReceiveActions.receiveTasks(rawTasks);
       }
     );
   },
 
   getFiltersFromServer: function() {
-    get('contexts').end(
+    get('contexts/').end(
       function(error, response) {
-        rawFilters = JSON.parse(response.text);
+        var rawFilters = JSON.parse(response.text);
         APIReceiveActions.receiveFilters(rawFilters);
       }
     );
