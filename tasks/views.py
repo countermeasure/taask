@@ -106,6 +106,7 @@ def complete_task(request, task_id):
     # Only tasks from certain views are able to be completed
     if task.view in ['inbox', 'today', 'next', 'someday']:
         task.completed = datetime.now()
+        current_view = task.view
         task.view = 'completed'
         # Remove unnecessary data
         task.scheduled = None
@@ -119,7 +120,7 @@ def complete_task(request, task_id):
         task.time_remaining = None
         task.save()
 
-    return redirect('list-tasks', 'view', 'completed')
+    return redirect('list-tasks', 'view', current_view)
 
 
 def postpone_task(request, task_id, days_to_postpone):
@@ -148,10 +149,11 @@ def rubbish_task(request, task_id):
     """Moves a task to the rubbish view."""
 
     task = Task.objects.get(pk=task_id)
+    current_view = task.view
     task.view = 'rubbish'
     task.save()
 
-    return redirect('list-tasks', 'view', 'rubbish')
+    return redirect('list-tasks', 'view', current_view)
 
 
 def empty_rubbish(request):
