@@ -84,14 +84,14 @@
           <br><br>
           <small>NEW</small>
           <ul class="nav nav-sidebar">
-            <li id="inbox"><a href="{% url 'list-tasks' 'view' 'inbox' %}">
+            <li id="view-inbox"><a href="{% url 'list-tasks' 'view' 'inbox' %}">
               Inbox<span class="badge pull-right">
               {{ task_count.inbox }}
               </span></a></li>
           </ul>
           <small>VIEWS</small>
           <ul class="nav nav-sidebar">
-            <li id="today">
+            <li id="view-today">
               <a href="{% url 'list-tasks' 'view' 'today' %}">
                 Today
                 <span class="badge pull-right">{{ task_count.today }}</span>
@@ -103,36 +103,51 @@
                 {% endif %}
               </a>
             </li>
-            <li id="next"><a href="{% url 'list-tasks' 'view' 'next' %}">
+            <li id="view-next"><a href="{% url 'list-tasks' 'view' 'next' %}">
               Next<span class="badge pull-right">{{ task_count.next }}
               </span></a></li>
-            <li id="scheduled"><a href="{% url 'list-tasks' 'view' 'scheduled' %}">
-              Scheduled<span class="badge pull-right">
-              {{ task_count.scheduled }}
-              </span></a></li>
-            <li id="recurring"><a href="{% url 'list-tasks' 'view' 'recurring' %}">
-              Recurring<span class="badge pull-right">
-              {{ task_count.recurring }}
-              </span></a></li>
-            <li id="someday"><a href="{% url 'list-tasks' 'view' 'someday' %}">
-              Someday<span class="badge pull-right">{{ task_count.someday }}
-              </span></a></li>
+            <li id="view-scheduled">
+              <a href="{% url 'list-tasks' 'view' 'scheduled' %}">
+                Scheduled
+                <span class="badge pull-right">{{ task_count.scheduled }}</span>
+              </a>
+            </li>
+            <li id="view-recurring">
+              <a href="{% url 'list-tasks' 'view' 'recurring' %}">
+                Recurring
+                <span class="badge pull-right">{{ task_count.recurring }}</span>
+              </a>
+            </li>
+            <li id="view-someday">
+              <a href="{% url 'list-tasks' 'view' 'someday' %}">
+                Someday
+                <span class="badge pull-right">{{ task_count.someday }}</span>
+              </a>
+            </li>
+            <li id="view-all"><a href="{% url 'list-tasks' 'view' 'all' %}">
+              All</a></li>
           </ul>
           <small>PROJECTS</small>
           <ul class="nav nav-sidebar">
             {% for project in projects %}
-              <li id="{{ project|lower }}">
+              <li id="view-{{ project|lower }}">
                 <a href="{% url 'list-tasks' 'project' project.id %}">
                 {{ project }}</a></li>
             {% endfor %}
           </ul>
           <small>OLD</small>
           <ul class="nav nav-sidebar">
-            <li id="completed"><a href="{% url 'list-tasks' 'view' 'completed' %}">
-              Completed</a></li>
-            <li id="rubbish"><a href="{% url 'list-tasks' 'view' 'rubbish' %}">
-              Rubbish<span class="badge pull-right">{{ task_count.rubbish }}
-              </span></a></li>
+            <li id="view-completed">
+              <a href="{% url 'list-tasks' 'view' 'completed' %}">
+                Completed
+              </a>
+            </li>
+            <li id="view-rubbish">
+              <a href="{% url 'list-tasks' 'view' 'rubbish' %}">
+                Rubbish
+                <span class="badge pull-right">{{ task_count.rubbish }}</span>
+              </a>
+            </li>
           </ul>
           <small>SEARCH</small>
           <form role="form" class="nav nav-sidebar navbar-form">
@@ -161,10 +176,10 @@
     <script src="{% static 'js/jquery-tablesorter.widgets.min.js' %}"></script>
     <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
     <script src="{% static 'js/taask.js' %}"></script>
-    
+
     <!-- Set the active menu option on the sidebar -->
     <script>
-      $( "#{{ menu }}" ).addClass( "active" );
+      $( "#view-{{ menu }}" ).addClass( "active" );
     </script>
 
     {% block extra-js %}

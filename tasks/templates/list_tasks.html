@@ -18,9 +18,9 @@
         <th>Repeat next</th>
         <th>Repeat ends</th>
         <th>Completed</th>
-        {% ifequal selector_type 'project' %}
+        {% if menu == 'all' or selector_type == 'project' %}
           <th>View</th>
-        {% endifequal %}
+        {% endif %}
       </tr>
     </thead>
     <tbody>
@@ -36,7 +36,7 @@
       {% endfor %}
     </tbody>
   </table>
-  
+
   {% ifequal menu 'rubbish' %}
     <div>
       <a href={% url 'empty-rubbish' %} class="btn btn-primary">

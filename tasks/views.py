@@ -59,7 +59,10 @@ def list_tasks(request, selector_type, selector):
     total_time = None
 
     if selector_type == 'view':
-        task_list = Task.objects.filter(view=selector)
+        if selector == 'all':
+            task_list = Task.objects.exclude(view='completed')
+        else:
+            task_list = Task.objects.filter(view=selector)
         if selector == 'today':
             total_time = \
             task_list.aggregate(Sum('time_remaining'))['time_remaining__sum']
