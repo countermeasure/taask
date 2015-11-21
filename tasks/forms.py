@@ -50,6 +50,12 @@ class TaskForm(TaaskModelForm):
             'underway',
             'view',
         ]
+        widgets = {
+            'context': forms.CheckboxSelectMultiple(),
+            'priority': forms.RadioSelect(),
+            'project': forms.RadioSelect(),
+            'view': forms.RadioSelect(),
+        }
 
     def clean(self):
         cleaned_data = super(TaskForm, self).clean()

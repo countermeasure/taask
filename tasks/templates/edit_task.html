@@ -37,14 +37,56 @@
 
           <br>
 
-          <div class="form-group">
+          <div class="form-group width-80">
             {{ form.view.label_tag|labelclass:"sr-only" }}
             <div class="input-group">
               <div class="input-group-addon">{{ form.view.label }}</div>
-              {{ form.view|inputclass:"form-control" }}
+              <div class="btn-group" data-toggle="buttons">
+                {% for radio in form.view %}
+                  <label class="btn btn-primary" for="{{ radio.id_for_label }}">
+                    {{ radio.tag }}{{ radio.choice_label }}
+                  </label>
+                {% endfor %}
+              </div>
             </div><!-- /.input-group -->
             {{ form.view.errors }}
           </div><!-- /.form-group -->
+
+          <br>
+
+          <div class="form-group width-80">
+            {{ form.priority.label_tag|labelclass:"sr-only" }}
+            <div class="input-group">
+              <div class="input-group-addon">{{ form.priority.label }}</div>
+              <div class="btn-group" data-toggle="buttons">
+                {% for radio in form.priority %}
+                  <label class="btn btn-primary" for="{{ radio.id_for_label }}">
+                    {{ radio.tag }}{{ radio.choice_label }}
+                  </label>
+                {% endfor %}
+              </div>
+            </div><!-- /.input-group -->
+            {{ form.priority.errors }}
+          </div><!-- /.form-group -->
+
+          <br>
+
+          <div class="form-group width-80">
+            {{ form.project.label_tag|labelclass:"sr-only" }}
+            <div class="input-group">
+              <div class="input-group-addon">{{ form.project.label }}</div>
+              <div class="btn-group" data-toggle="buttons">
+                {% for radio in form.project %}
+                  <label class="btn btn-primary" for="{{ radio.id_for_label }}">
+                    {{ radio.tag }}{{ radio.choice_label }}
+                  </label>
+                {% endfor %}
+              </div>
+            </div><!-- /.input-group -->
+            {{ form.project.errors }}
+          </div><!-- /.form-group -->
+
+          <br>
 
           <div class="form-group">
             {{ form.time_remaining.label_tag|labelclass:"sr-only" }}
@@ -62,24 +104,6 @@
               {{ form.time_spent|inputclass:"form-control" }}
             </div><!-- /.input-group -->
             {{ form.time_spent.errors }}
-          </div><!-- /.form-group -->
-
-          <div class="form-group">
-            {{ form.priority.label_tag|labelclass:"sr-only" }}
-            <div class="input-group">
-              <div class="input-group-addon">{{ form.priority.label }}</div>
-              {{ form.priority|inputclass:"form-control" }}
-            </div><!-- /.input-group -->
-            {{ form.priority.errors }}
-          </div><!-- /.form-group -->
-
-          <div class="form-group">
-            {{ form.project.label_tag|labelclass:"sr-only" }}
-            <div class="input-group">
-              <div class="input-group-addon">{{ form.project.label }}</div>
-              {{ form.project|inputclass:"form-control" }}
-            </div><!-- /.input-group -->
-            {{ form.project.errors }}
           </div><!-- /.form-group -->
 
           <div class="checkbox">
@@ -102,7 +126,13 @@
             {{ form.context.label_tag|labelclass:"sr-only" }}
             <div class="input-group">
               <div class="input-group-addon">{{ form.context.label }}</div>
-              {{ form.context|inputclass:"form-control" }}
+              <div class="btn-group" data-toggle="buttons">
+                {% for checkbox in form.context %}
+                  <label class="btn btn-primary" for="{{ checkbox.id_for_label }}">
+                    {{ checkbox.tag }}{{ checkbox.choice_label }}
+                  </label>
+                {% endfor %}
+              </div>
             </div><!-- /.input-group -->
             {{ form.context.errors }}
           </div><!-- /.form-group -->

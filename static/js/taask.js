@@ -182,6 +182,7 @@ function EnableAjaxForm() {
       complete: function() {
         ReactivateForm();
         ActivateDatepicker();
+        MarkSelectedButtons();
       },
     });
   });
@@ -219,6 +220,17 @@ function EnableAjaxForm() {
   });
 };
 
+/* Shows which radio buttons or checkboxes are selected
+------------------------------------------------------- */
+
+function MarkSelectedButtons() {
+  $( "input" ).each(function() {
+    var isButton = ["radio", "checkbox"].indexOf($( this ).attr( "type" )) > -1;
+    if (isButton && $( this ).attr( "checked" ) == "checked") {
+      $( this ).parent().addClass( "active" );
+    }
+  })
+};
 
 /* Enable form submission when Enter is pressed
 -------------------------------------------------- */

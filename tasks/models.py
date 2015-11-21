@@ -91,6 +91,7 @@ class Task(TimeStampedModel):
     view = models.CharField(
         max_length=50,
         choices=VIEW_CHOICES,
+        default='inbox',
         blank=False,
     )
     context = models.ManyToManyField(
