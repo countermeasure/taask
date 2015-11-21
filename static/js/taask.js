@@ -146,14 +146,16 @@ function ExpandLabels() {
     var yesterday_raw = new Date();
     yesterday_raw.setTime(today_raw.getTime() - (24*60*60*1000));
     yesterday = $.datepicker.formatDate( "d M yy", yesterday_raw);
-    var due_date = $( this ).html();
-    if ( due_date == today ) {
+    var day = $( this ).html();
+    if ( day == today ) {
       $( this ).html ( "Today" );
-    } else if ( due_date == tomorrow ) {
+      $( this ).removeClass ( "label-danger" );
+      $( this ).addClass ( "label-success" );
+    } else if ( day == tomorrow ) {
       $( this ).html ( "Tomorrow" );
       $( this ).removeClass ( "label-danger" );
       $( this ).addClass ( "label-success" );
-    } else if ( due_date == yesterday ) {
+    } else if ( day == yesterday ) {
       $( this ).html ( "Yesterday" );
     };
   });
