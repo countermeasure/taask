@@ -318,10 +318,29 @@
               class="btn btn-default">
               <i class="fa fa-trash fa-lg"></i>&nbsp;Move to rubbish
             </a>
-            <a href={% url 'complete-task' task_id %} type="button"
+
+            <div class="btn-group">
+              <a href={% url 'complete-task' task_id %} type="button"
                 class="btn btn-default">
                 <i class="fa fa-check-circle fa-lg"></i>&nbsp;Complete
-            </a>
+              </a>
+              <button type="button" class="btn btn-default dropdown-toggle"
+                data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <i class="fa fa-caret-down"></i>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href={% url 'complete-with-followup' task_id %}
+                    type="button" class="btn btn-default">
+                    <i class="fa fa-check-circle fa-lg"></i>
+                    &nbsp;Complete and follow up
+                  </a>
+                </li>
+              </ul>
+            </div>
+
             <div class="btn-group" role="group">
             <a type="button" class="btn btn-default">
                 <i class="fa fa-arrow-circle-right fa-lg"></i>&nbsp;Postpone

@@ -101,13 +101,22 @@ def edit_task(request, task_id):
     })
 
 
-def complete_task(request, task_id):
+def complete_task(request, task_id, follow_up=False):
     """Completes a task."""
 
     # TODO: Display an error if the task cannot be completed
     task = Task.objects.get(pk=task_id)
     # Only tasks from certain views are able to be completed
     if task.view in ['inbox', 'today', 'next', 'someday']:
+        # Create a follow up task if necessary.
+        if follow_up:
+            follow_up_task = Task.objects.create(
+                description='Follow up: %s' % task.description,
+                time_remaining=5,
+                project=task.project,
+            )
+            contexts = Context.objects.filter(task=task.pk)
+            [follow_up_task.context.add(context) for context in contexts]
         task.completed = datetime.now()
         current_view = task.view
         task.view = 'completed'
