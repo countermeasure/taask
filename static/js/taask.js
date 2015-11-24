@@ -52,9 +52,11 @@ function ActivateTablesorter() {
     },
     format: function(s, table, cell, cellIndex) {
       return s.toLowerCase()
-        .replace(/high/,2)
-        .replace(/medium/,1)
-        .replace(/low/,0);
+        .replace(/extra\shigh/,4)
+        .replace(/high/,3)
+        .replace(/medium/,2)
+        .replace(/extra\slow/,0)
+        .replace(/low/,1);
     },
     type: 'numeric'
   });
