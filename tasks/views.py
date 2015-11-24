@@ -64,8 +64,13 @@ def list_tasks(request, selector_type, selector):
         else:
             task_list = Task.objects.filter(view=selector)
         if selector == 'today':
-            total_time = \
-            task_list.aggregate(Sum('time_remaining'))['time_remaining__sum']
+            total_time = task_list.\
+                aggregate(Sum('time_remaining'))['time_remaining__sum']
+        elif selector == 'scheduled':
+            tomorrow = date.today() + timedelta(days=1)
+            tasks_tomorrow = task_list.filter(scheduled=tomorrow)
+            total_time = tasks_tomorrow.\
+                aggregate(Sum('time_remaining'))['time_remaining__sum']
     elif selector_type == 'project':
         task_list = Task.objects.filter(project=selector)
 

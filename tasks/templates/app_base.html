@@ -95,10 +95,10 @@
               <a href="{% url 'list-tasks' 'view' 'today' %}">
                 Today
                 <span class="badge pull-right">{{ task_count.today }}</span>
-                {% if total_time %}
+                {% if menu == "today" and total_time %}
                   <span class="badge pull-right">
                     <span class="hidden">{{ total_time|default_if_none:'' }}</span>
-                    <span class="label-time"></span> hours
+                    <span class="label-time"></span> hrs
                   </span>
                 {% endif %}
               </a>
@@ -109,7 +109,14 @@
             <li id="view-scheduled">
               <a href="{% url 'list-tasks' 'view' 'scheduled' %}">
                 Scheduled
-                <span class="badge pull-right">{{ task_count.scheduled }}</span>
+                {% if menu == 'scheduled' and total_time %}
+                  <span class="badge pull-right">
+                    <span class="hidden">{{ total_time|default_if_none:'' }}</span>
+                    <span class="label-time"></span> hrs tomorrow
+                  </span>
+                {% else %}
+                  <span class="badge pull-right">{{ task_count.scheduled }}</span>
+                {% endif %}
               </a>
             </li>
             <li id="view-recurring">
