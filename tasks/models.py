@@ -80,6 +80,7 @@ class Task(TimeStampedModel):
         null=True,
     )
     time_remaining = models.PositiveIntegerField(
+        default=15,
         blank=True,
         null=True,
     )
