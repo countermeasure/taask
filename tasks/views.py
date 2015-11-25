@@ -5,7 +5,9 @@ from datetime import (
 )
 
 from django.db.models import Sum
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 
 from forms import (
     ContextForm,
@@ -181,6 +183,18 @@ def empty_rubbish(request):
       task.delete()
 
     return redirect('list-tasks', 'view', 'rubbish')
+
+@csrf_exempt
+def toggle_task_underway(request, task_id):
+    """Toggles a task's underway field."""
+
+    # TODO: Work out if there is a way to remove the csrf_exempt decorator
+    #       from this function.
+    task = Task.objects.get(pk=task_id)
+    task.underway = not task.underway
+    task.save()
+
+    return JsonResponse({'underway': task.underway})
 
 
 def documentation(request):

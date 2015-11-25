@@ -272,3 +272,25 @@ $(document).on("change", "#id_repeat_units", function() {
     $( ".repeat-units" ).html( "" );
   }
 });
+
+
+/* Control the underway field
+-------------------------------------------------- */
+
+function ManageUnderwayField() {
+  $( ".underway-btn" ).on("click", function(event) {
+    // Don't let the click bubble up to the row, or the task edit form opens.
+    event.stopPropagation();
+    var taskId = $( this ).attr( "taskid" );
+    $.ajax({
+      url: '../../../task/toggle-underway/' + taskId + '/',
+      context: $( this )
+    }).done(function(response) {
+      $( this ).toggleClass( 'active' );
+      var status = (response.underway) ? 'True' : 'False';
+      $( this ).next().html( status );
+      // Resort the table.
+      $("table").trigger("update", [true]);
+    });
+  });
+}

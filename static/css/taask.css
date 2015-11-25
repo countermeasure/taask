@@ -182,3 +182,15 @@ body {
   border: 0px;
   border-radius: 0px;
 }
+
+/*
+ * Buttons
+ */
+
+.underway-btn {
+  color: #bbb;
+}
+
+.underway-btn.active {
+  color: #333;
+}

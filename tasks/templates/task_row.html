@@ -1,6 +1,10 @@
 <td>
   {% if task.underway %}
-    <i class="fa fa-toggle-right fa-lg"></i><span class="hidden">True</span>
+    <i class="fa fa-toggle-right fa-lg underway-btn active" taskid={{ task.id }}></i>
+    <span class="hidden">True</span>
+  {% else %}
+    <i class="fa fa-toggle-right fa-lg underway-btn" taskid={{ task.id }}></i>
+    <span class="hidden">False</span>
   {% endif %}
 </td>
 <td>
