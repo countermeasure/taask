@@ -184,6 +184,7 @@ def empty_rubbish(request):
 
     return redirect('list-tasks', 'view', 'rubbish')
 
+
 @csrf_exempt
 def toggle_task_underway(request, task_id):
     """Toggles a task's underway field."""

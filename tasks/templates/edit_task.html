@@ -72,6 +72,23 @@
           <br>
 
           <div class="form-group width-80">
+            {{ form.context.label_tag|labelclass:"sr-only" }}
+            <div class="input-group">
+              <div class="input-group-addon">{{ form.context.label }}</div>
+              <div class="btn-group" data-toggle="buttons">
+                {% for checkbox in form.context %}
+                  <label class="btn btn-primary" for="{{ checkbox.id_for_label }}">
+                    {{ checkbox.tag }}{{ checkbox.choice_label }}
+                  </label>
+                {% endfor %}
+              </div>
+            </div><!-- /.input-group -->
+            {{ form.context.errors }}
+          </div><!-- /.form-group -->
+
+          <br>
+
+          <div class="form-group width-80">
             {{ form.project.label_tag|labelclass:"sr-only" }}
             <div class="input-group">
               <div class="input-group-addon">{{ form.project.label }}</div>
@@ -113,29 +130,6 @@
               {{ form.underway.errors }}
             </label>
           </div><!-- /.checkbox -->
-
-        </div><!-- /.panel-body -->
-
-        <div class="panel-heading">
-          Contexts
-        </div><!-- /.panel-heading -->
-
-        <div class="panel-body">
-
-          <div class="form-group">
-            {{ form.context.label_tag|labelclass:"sr-only" }}
-            <div class="input-group">
-              <div class="input-group-addon">{{ form.context.label }}</div>
-              <div class="btn-group" data-toggle="buttons">
-                {% for checkbox in form.context %}
-                  <label class="btn btn-primary" for="{{ checkbox.id_for_label }}">
-                    {{ checkbox.tag }}{{ checkbox.choice_label }}
-                  </label>
-                {% endfor %}
-              </div>
-            </div><!-- /.input-group -->
-            {{ form.context.errors }}
-          </div><!-- /.form-group -->
 
         </div><!-- /.panel-body -->
 
