@@ -187,6 +187,7 @@ function EnableAjaxForm() {
         ReactivateForm();
         ActivateDatepicker();
         MarkSelectedButtons();
+        Accordian();
       },
     });
   });
@@ -292,5 +293,46 @@ function ManageUnderwayField() {
       // Resort the table.
       $("table").trigger("update", [true]);
     });
+  });
+}
+
+
+/* Collapse and expand task edit form sections
+-------------------------------------------------- */
+
+function Accordian() {
+  // Hide the notes section if it is empty.
+  if ($( "#id_notes" ).html() == "") {
+    $( "#notes-body" ).addClass( "hidden" );
+    $( "#notes-heading" ).html( 'Notes <i class="fa fa-caret-down"></i>' );
+  }
+  // Expand the notes section when its heading is clicked.
+  $( "#notes-heading" ).on("click", function() {
+    $( "#notes-body" ).removeClass( "hidden" );
+    $( "#notes-heading" ).html( "Notes" );
+  });
+  // Hide the scheduling section if it is empty.
+  if (
+    !$( "#id_deadline" ).attr( "value" ) &&
+    !$( "#id_scheduled" ).attr( "value" )
+  ) {
+    $( "#scheduling-body" ).addClass( "hidden" );
+    var schedulingWithCaret = 'Scheduling <i class="fa fa-caret-down"></i>';
+    $( "#scheduling-heading" ).html( schedulingWithCaret );
+  }
+  // Expand the scheduling section when its heading is clicked.
+  $( "#scheduling-heading" ).on("click", function() {
+    $( "#scheduling-body" ).removeClass( "hidden" );
+    $( "#scheduling-heading" ).html( "Scheduling" );
+  });
+  // Hide the recurring section because it is not yet in use.
+  // TODO: Hide this section only if it is empty.
+  $( "#recurring-body" ).addClass( "hidden" );
+  var recurringWithCaret = 'Recurring <i class="fa fa-caret-down"></i>';
+  $( "#recurring-heading" ).html( recurringWithCaret );
+  // Expand the recurring section when its heading is clicked.
+  $( "#recurring-heading" ).on("click", function() {
+    $( "#recurring-body" ).removeClass( "hidden" );
+    $( "#recurring-heading" ).html( "Recurring" );
   });
 }

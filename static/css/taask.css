@@ -168,7 +168,10 @@ body {
 .panel .panel-heading {
   color: #ffffff;
   background-color: #428bca;
-  border: 0px;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  border-bottom: 2px solid #aac9e3;
   border-radius: 0px;
 }
 
@@ -193,4 +196,21 @@ body {
 
 .underway-btn.active {
   color: #333;
+}
+
+/*
+ * Datepicker
+ */
+
+.ui-widget-content .ui-state-highlight {
+  border-color: #428bca;
+  background-image: url();
+  color: #428bca;
+}
+
+.ui-widget-content .ui-state-active {
+  border-color: #428bca;
+  background-image: url();
+  background-color: #428bca;
+  color: #ffffff;
 }
