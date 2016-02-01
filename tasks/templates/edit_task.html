@@ -30,7 +30,7 @@
             {{ form.description.label_tag|labelclass:"sr-only" }}
               <div class="input-group">
                 <div class="input-group-addon">{{ form.description.label }}</div>
-                {{ form.description|inputclass:"form-control"|autofocus }}
+                {{ form.description|inputclass:"form-control"|spellcheck|autofocus }}
               </div><!-- /.input-group -->
             {{ form.description.errors }}
           </div><!-- /.form-group -->
@@ -143,7 +143,7 @@
             {{ form.notes.label_tag|labelclass:"sr-only" }}
             <div class="input-group">
               <div class="input-group-addon">{{ form.notes.label }}</div>
-              {{ form.notes|inputclass:"form-control notes"|rows:"3"|cols:"100" }}
+              {{ form.notes|inputclass:"form-control notes"|rows:"3"|cols:"100"|spellcheck }}
             </div><!-- /.input-group -->
             {{ form.notes.errors }}
           </div><!-- /.form-group -->

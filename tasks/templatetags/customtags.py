@@ -46,6 +46,15 @@ def autofocus(field):
     return mark_safe(field_string.replace('>', ' autofocus>', 1))
 
 
+@register.filter(name='spellcheck')
+def spellcheck(field):
+    """Sets spellcheck for a form input element."""
+
+    field_string = unicode(field)
+
+    return mark_safe(field_string.replace('>', ' spellcheck="true">', 1))
+
+
 @register.filter(name='rows')
 def rows(field, rows):
     """Allows the number of rows of a TextField to be set.
