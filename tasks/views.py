@@ -180,7 +180,7 @@ def empty_rubbish(request):
 
     tasks = Task.objects.filter(view='rubbish')
     for task in tasks:
-      task.delete()
+        task.delete()
 
     return redirect('list-tasks', 'view', 'rubbish')
 
