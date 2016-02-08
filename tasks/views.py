@@ -108,7 +108,7 @@ def edit_task(request, task_id):
     })
 
 
-def complete_task(request, task_id, follow_up=False):
+def complete_task(request, task_id, follow_up=False, duplicate=False):
     """Completes a task."""
 
     # TODO: Display an error if the task cannot be completed
@@ -119,11 +119,22 @@ def complete_task(request, task_id, follow_up=False):
         if follow_up:
             follow_up_task = Task.objects.create(
                 description='Follow up: %s' % task.description,
+                notes=task.notes,
                 time_remaining=5,
                 project=task.project,
             )
             contexts = Context.objects.filter(task=task.pk)
             [follow_up_task.context.add(context) for context in contexts]
+        # Create a duplicate task if necessary.
+        if duplicate:
+            duplicate_task = Task.objects.create(
+                description=task.description,
+                notes=task.notes,
+                time_remaining=task.time_remaining,
+                project=task.project,
+            )
+            contexts = Context.objects.filter(task=task.pk)
+            [duplicate_task.context.add(context) for context in contexts]
         task.completed = datetime.now()
         current_view = task.view
         task.view = 'completed'

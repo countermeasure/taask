@@ -326,6 +326,13 @@
               </button>
               <ul class="dropdown-menu">
                 <li>
+                  <a href={% url 'complete-and-duplicate' task_id %}
+                    type="button" class="btn btn-default">
+                    <i class="fa fa-check-circle fa-lg"></i>
+                    &nbsp;Complete and duplicate
+                  </a>
+                </li>
+                <li>
                   <a href={% url 'complete-with-followup' task_id %}
                     type="button" class="btn btn-default">
                     <i class="fa fa-check-circle fa-lg"></i>
