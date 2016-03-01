@@ -114,7 +114,7 @@ def complete_task(request, task_id, follow_up=False, duplicate=False):
     # TODO: Display an error if the task cannot be completed
     task = Task.objects.get(pk=task_id)
     # Only tasks from certain views are able to be completed
-    if task.view in ['inbox', 'today', 'next', 'someday']:
+    if task.view in ['inbox', 'today', 'next', 'scheduled', 'someday']:
         # Create a follow up task if necessary.
         if follow_up:
             follow_up_task = Task.objects.create(
