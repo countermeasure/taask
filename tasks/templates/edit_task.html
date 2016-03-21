@@ -6,7 +6,7 @@
       action="{% url 'edit-task' task_id %}" method="POST">
 {% else %}
   <form role="form" class="form-inline" id="addtaskform"
-    action="" method="POST">
+    action="" autocomplete="off" method="POST">
 {% endif %}
     <div id="form-contents">
       {% csrf_token %}
