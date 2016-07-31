@@ -113,6 +113,7 @@ function ActivateTablesorter() {
 function ActivateDatepicker() {
   $( ".datepicker" ).datepicker({
     dateFormat: 'dd M yy',
+    numberOfMonths: 2,
   });
 };
 
