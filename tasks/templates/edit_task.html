@@ -313,6 +313,7 @@
               <i class="fa fa-trash fa-lg"></i>&nbsp;Move to rubbish
             </a>
 
+            <!-- Complete button -->
             <div class="btn-group">
               <a href={% url 'complete-task' task_id %} type="button"
                 class="btn btn-default">
@@ -342,36 +343,51 @@
               </ul>
             </div>
 
+            <!-- Postpone buttons -->
             <div class="btn-group" role="group">
-            <a type="button" class="btn btn-default">
+              <button type="button" class="btn btn-default">
                 <i class="fa fa-arrow-circle-right fa-lg"></i>&nbsp;Postpone
-            </a>
-            <a href={% url 'postpone-task' task_id 1 %} type="button"
-                class="btn btn-default">
-                1 day
-            </a>
-            <a href={% url 'postpone-task' task_id 2 %} type="button"
-                class="btn btn-default">
-                2 days
-            </a>
-            <a href={% url 'postpone-task' task_id 3 %} type="button"
-                class="btn btn-default">
-                3 days
-            </a>
-            <a href={% url 'postpone-task' task_id 5 %} type="button"
-                class="btn btn-default">
-                5 days
-            </a>
-            <a href={% url 'postpone-task' task_id 7 %} type="button"
-                class="btn btn-default">
-                1 week
-            </a>
-            <a href={% url 'postpone-task' task_id 14 %} type="button"
-                class="btn btn-default">
-                2 weeks
-            </a>
-            </div><!-- /.btn-group -->
+              </button>
+            </div>
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default dropdown-toggle"
+                data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                Days <i class="fa fa-caret-down"></i>
+                <span class="sr-only">Toggle days dropdown button</span>
+              </button>
+              <ul class="dropdown-menu">
+                {% for days in postpone.days %}
+                <li>
+                  <a href={% url 'postpone-task' task_id days %}
+                    type="button" class="btn btn-default">
+                    &nbsp;{{ days }} day{{ days|pluralize }}
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default dropdown-toggle"
+                data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                Weeks <i class="fa fa-caret-down"></i>
+                <span class="sr-only">Toggle weeks dropdown button</span>
+              </button>
+              <ul class="dropdown-menu">
+                {% for days in postpone.weeks %}
+                <li>
+                  <a href={% url 'postpone-task' task_id days %}
+                    type="button" class="btn btn-default">
+                    &nbsp;{{ forloop.counter }}
+                    week{{ forloop.counter|pluralize }}
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
           {% endif %}
+
           <div class="pull-right">
             <a href={% url 'list-tasks' 'view' 'today' %} type="button"
               class="btn btn-default">

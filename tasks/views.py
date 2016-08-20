@@ -105,6 +105,10 @@ def edit_task(request, task_id):
     return render(request, 'edit_task.html', {
         'form': form,
         'task_id': task_id,
+        'postpone': {
+            'days': range(1, 7),
+            'weeks': [(weeks * 7) for weeks in range(1, 13)]
+        },
     })
 
 
