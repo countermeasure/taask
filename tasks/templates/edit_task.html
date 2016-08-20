@@ -3,7 +3,7 @@
 {% if task_id %}
   <td colspan="14" class="task-form" id="task-edit-cell">
     <form role="form" class="form-inline" id="edittaskform"
-      action="{% url 'edit-task' task_id %}" method="POST">
+      action="{% url 'edit-task' task_id %}" autocomplete="off" method="POST">
 {% else %}
   <form role="form" class="form-inline" id="addtaskform"
     action="" autocomplete="off" method="POST">
