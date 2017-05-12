@@ -141,24 +141,26 @@ function ExpandLabels() {
     $( this ).html( formatted_time );
   });
   $( ".label-date" ).each(function() {
-    var today_raw = new Date();
-    today = $.datepicker.formatDate( "d M yy", today_raw);
-    var tomorrow_raw = new Date();
-    tomorrow_raw.setTime(today_raw.getTime() + (24*60*60*1000));
-    tomorrow = $.datepicker.formatDate( "d M yy", tomorrow_raw);
-    var yesterday_raw = new Date();
-    yesterday_raw.setTime(today_raw.getTime() - (24*60*60*1000));
-    yesterday = $.datepicker.formatDate( "d M yy", yesterday_raw);
+    var today = new Date();
+    today.setHours(0,0,0,0);
+    var tomorrow = new Date();
+    tomorrow.setTime(today.getTime() + (24*60*60*1000));
+    var yesterday = new Date();
+    yesterday.setTime(today.getTime() - (24*60*60*1000));
     var day = $( this ).html();
-    if ( day == today ) {
+    var date = Date.parse(day);
+    if ( date == today.getTime() ) {
       $( this ).html ( "Today" );
       $( this ).removeClass ( "label-danger" );
-      $( this ).addClass ( "label-success" );
-    } else if ( day == tomorrow ) {
+      $( this ).addClass ( "label-warning" );
+    } else if ( date == tomorrow.getTime() ) {
       $( this ).html ( "Tomorrow" );
       $( this ).removeClass ( "label-danger" );
       $( this ).addClass ( "label-success" );
-    } else if ( day == yesterday ) {
+    } else if ( date > tomorrow.getTime() ) {
+      $( this ).removeClass ( "label-danger" );
+      $( this ).addClass ( "label-success" );
+    } else if ( date == yesterday ) {
       $( this ).html ( "Yesterday" );
     };
   });
